@@ -1,0 +1,1773 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regenix - Knee Rehab Exoskeleton</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+            line-height: 1.6;
+            color: #0f172a;
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            background: linear-gradient(to bottom right, #0f172a, #1e293b, #0f172a);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: url('https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1920');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+        }
+
+        .hero-content {
+            position: relative;
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 8rem 1.5rem;
+        }
+
+        .hero h1 {
+            font-size: clamp(3rem, 7vw, 6rem);
+            margin-bottom: 2rem;
+            color: white;
+            font-weight: 700;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+            max-width: 48rem;
+        }
+
+        .hero-description {
+            font-size: clamp(1.125rem, 1.5vw, 1.25rem);
+            color: #cbd5e1;
+            margin-bottom: 3rem;
+            max-width: 48rem;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            max-width: 42rem;
+            margin-top: 3rem;
+        }
+
+        .hero-stat-number {
+            font-size: 2rem;
+            color: #34d399;
+            margin-bottom: 0.5rem;
+        }
+
+        .hero-stat-label {
+            color: #94a3b8;
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 6rem 0;
+        }
+
+        .section-white {
+            background: white;
+        }
+
+        .section-gray {
+            background: linear-gradient(to bottom, #f8fafc, white);
+        }
+
+        .section-dark {
+            background: #0f172a;
+            color: white;
+        }
+
+        .section-light-gray {
+            background: #f8fafc;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .section-dark .section-title {
+            color: white;
+        }
+
+        .title-underline {
+            width: 6rem;
+            height: 4px;
+            background: #10b981;
+            margin: 0 auto 1.5rem;
+        }
+
+        .title-underline-blue {
+            background: #3b82f6;
+        }
+
+        .title-underline-slate {
+            background: #64748b;
+        }
+
+        .section-subtitle {
+            font-size: 1.25rem;
+            color: #64748b;
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+
+        .section-dark .section-subtitle {
+            color: #cbd5e1;
+        }
+
+        /* Story Section */
+        .story-text {
+            font-size: 1.125rem;
+            color: #475569;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .story-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .story-card {
+            background: #f8fafc;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            border: 1px solid #e2e8f0;
+        }
+
+        .story-card h3 {
+            font-size: 1.5rem;
+            color: #0f172a;
+            margin-bottom: 1rem;
+        }
+
+        .story-card p {
+            color: #64748b;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .story-card .note {
+            color: #475569;
+            font-size: 0.95rem;
+        }
+
+        .principles {
+            margin-top: 4rem;
+        }
+
+        .principles h3 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #0f172a;
+        }
+
+        .principle-item {
+            border-left: 4px solid #10b981;
+            padding-left: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .principle-item.blue {
+            border-color: #3b82f6;
+        }
+
+        .principle-item.slate {
+            border-color: #64748b;
+        }
+
+        .principle-item.teal {
+            border-color: #14b8a6;
+        }
+
+        .principle-item h4 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .principle-item p {
+            color: #475569;
+            line-height: 1.8;
+        }
+
+        /* How It Works */
+        .components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .component-card {
+            text-align: center;
+        }
+
+        .component-icon {
+            width: 3.5rem;
+            height: 3.5rem;
+            background: #dbeafe;
+            color: #3b82f6;
+            border-radius: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1rem;
+            font-size: 1.75rem;
+        }
+
+        .component-icon.emerald {
+            background: #d1fae5;
+            color: #10b981;
+        }
+
+        .component-icon.slate {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .component-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .component-card p {
+            color: #64748b;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .components-container {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            max-width: 56rem;
+            margin: 0 auto;
+        }
+
+        .components-container h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: #0f172a;
+        }
+
+        /* Rehab Session Timeline */
+        .timeline-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        .timeline-image {
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .timeline-image img {
+            width: 100%;
+            border-radius: 1rem;
+        }
+
+        .timeline-steps {
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 5rem;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: #e2e8f0;
+        }
+
+        .timeline-step {
+            position: relative;
+            padding-left: 8rem;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-time {
+            position: absolute;
+            left: 0;
+            width: 4rem;
+            text-align: right;
+        }
+
+        .timeline-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            background: #d1fae5;
+            color: #047857;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 4.6rem;
+            top: 0.5rem;
+            width: 0.75rem;
+            height: 0.75rem;
+            background: #10b981;
+            border-radius: 50%;
+            border: 4px solid white;
+        }
+
+        .timeline-content {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+
+        .timeline-content h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .timeline-content p {
+            color: #475569;
+        }
+
+        .session-summary {
+            background: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            margin-top: 4rem;
+        }
+
+        .session-summary h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+
+        .session-summary p {
+            color: #475569;
+            margin-bottom: 0.75rem;
+        }
+
+        .session-summary p strong {
+            color: #0f172a;
+        }
+
+        /* Differentiation */
+        .comparison-card {
+            background: #1e293b;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            margin-bottom: 1.5rem;
+        }
+
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1px;
+            background: #334155;
+        }
+
+        .comparison-column {
+            background: #1e293b;
+            padding: 2rem;
+        }
+
+        .comparison-column.highlight {
+            border-left: 4px solid #10b981;
+        }
+
+        .comparison-column.highlight-blue {
+            border-left: 4px solid #3b82f6;
+        }
+
+        .comparison-column.highlight-purple {
+            border-left: 4px solid #a855f7;
+        }
+
+        .comparison-column h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1.25rem;
+            color: #cbd5e1;
+        }
+
+        .comparison-column.highlight h3 {
+            color: #10b981;
+        }
+
+        .comparison-column.highlight-blue h3 {
+            color: #60a5fa;
+        }
+
+        .comparison-column.highlight-purple h3 {
+            color: #c084fc;
+        }
+
+        .comparison-list {
+            list-style: none;
+        }
+
+        .comparison-list li {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+            color: #94a3b8;
+            line-height: 1.6;
+        }
+
+        .comparison-column.highlight .comparison-list li,
+        .comparison-column.highlight-blue .comparison-list li,
+        .comparison-column.highlight-purple .comparison-list li {
+            color: #cbd5e1;
+        }
+
+        .comparison-icon {
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .icon-check {
+            color: #10b981;
+        }
+
+        .icon-cross {
+            color: #ef4444;
+        }
+
+        .summary-box {
+            background: #1e293b;
+            border: 2px solid #334155;
+            border-radius: 0.75rem;
+            padding: 2rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        .summary-box p {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+        }
+
+        .summary-box strong {
+            color: white;
+        }
+
+        /* Use Cases */
+        .use-cases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .use-case-card {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .use-case-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .use-case-image {
+            width: 100%;
+            height: 12rem;
+            object-fit: cover;
+        }
+
+        .use-case-content {
+            padding: 2rem;
+        }
+
+        .use-case-content h3 {
+            font-size: 1.5rem;
+            color: #0f172a;
+            margin-bottom: 0.75rem;
+        }
+
+        .use-case-location {
+            color: #10b981;
+            font-size: 0.875rem;
+            margin-bottom: 1rem;
+        }
+
+        .use-case-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #64748b;
+            margin: 1rem 0 0.5rem;
+            font-weight: 600;
+        }
+
+        .use-case-text {
+            color: #475569;
+            line-height: 1.7;
+        }
+
+        .common-thread {
+            background: linear-gradient(to bottom right, #0f172a, #1e293b);
+            color: white;
+            border-radius: 1rem;
+            padding: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .common-thread h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .common-thread p {
+            font-size: 1.125rem;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        /* Limitations */
+        .limitations-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .limitation-item {
+            background: white;
+            border-left: 4px solid #ef4444;
+            border-radius: 0 0.75rem 0.75rem 0;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .limitation-item h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            color: #0f172a;
+        }
+
+        .limitation-item p {
+            color: #475569;
+        }
+
+        .limitation-sidebar {
+            position: sticky;
+            top: 2rem;
+        }
+
+        .limitation-image {
+            width: 100%;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            margin-bottom: 1.5rem;
+        }
+
+        .limitation-note {
+            background: #0f172a;
+            color: white;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+        }
+
+        .limitation-note p {
+            font-size: 1.125rem;
+            color: #cbd5e1;
+        }
+
+        .who-its-for {
+            background: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 0.75rem;
+            padding: 2rem;
+        }
+
+        .who-its-for h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #0f172a;
+        }
+
+        .who-its-for p {
+            color: #475569;
+            margin-bottom: 1rem;
+        }
+
+        .who-its-for ul {
+            list-style: none;
+        }
+
+        .who-its-for li {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 0.5rem;
+            color: #475569;
+        }
+
+        .who-its-for .check-icon {
+            color: #3b82f6;
+            margin-top: 0.25rem;
+        }
+
+        /* Brand Section */
+        .brand-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .brand-image {
+            width: 100%;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand-content h3 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-subtitle {
+            font-size: 1.25rem;
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-quote {
+            background: #1e293b;
+            padding: 2rem;
+            border-radius: 0.75rem;
+        }
+
+        .brand-quote-text {
+            font-size: 1.5rem;
+            font-style: italic;
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+        }
+
+        .brand-quote-note {
+            color: #94a3b8;
+        }
+
+        /* Footer */
+        .footer {
+            background: #020617;
+            color: #94a3b8;
+            padding: 4rem 0;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer h3 {
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-subtitle {
+            font-size: 1.125rem;
+            color: #cbd5e1;
+            margin-bottom: 1.5rem;
+        }
+
+        .footer-text {
+            color: #94a3b8;
+        }
+
+        .footer h4 {
+            font-size: 1.125rem;
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .footer-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            color: #cbd5e1;
+        }
+
+        .footer-icon {
+            width: 1.25rem;
+            height: 1.25rem;
+        }
+
+        .footer-link {
+            color: #10b981;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-link:hover {
+            color: #34d399;
+        }
+
+        .footer-link-blue {
+            color: #60a5fa;
+        }
+
+        .footer-link-blue:hover {
+            color: #93c5fd;
+        }
+
+        .footer-link-gray {
+            color: #94a3b8;
+        }
+
+        .footer-link-gray:hover {
+            color: #cbd5e1;
+        }
+
+        .footer-bottom {
+            padding-top: 2rem;
+            border-top: 1px solid #1e293b;
+            text-align: center;
+        }
+
+        .footer-bottom p {
+            font-size: 0.875rem;
+            color: #64748b;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 1rem;
+            }
+
+            .logo {
+                font-size: 1.5em;
+            }
+
+            .logo-icon {
+                width: 40px;
+                height: 40px;
+                font-size: 1em;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                flex: 1;
+                text-align: center;
+            }
+
+            .hero {
+                padding-top: 120px !important;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-btn {
+                width: 100%;
+            }
+
+            .hero-stats {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline-container {
+                grid-template-columns: 1fr;
+            }
+
+            .comparison-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .limitations-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .brand-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn.primary {
+            background: #10b981;
+            color: white;
+            border: none;
+        }
+
+        .nav-btn.secondary {
+            background: transparent;
+            color: #10b981;
+            border: 2px solid #10b981;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-btn.primary:hover {
+            background: #059669;
+        }
+
+        /* Hero buttons */
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .hero-btn {
+            padding: 18px 35px;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .hero-btn.primary {
+            background: #10b981;
+            color: white;
+            border: 2px solid #10b981;
+            box-shadow: 0 10px 30px rgba(16, 185, 129, 0.3);
+        }
+
+        .hero-btn.secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-btn.primary:hover {
+            background: #059669;
+            border-color: #059669;
+        }
+
+        .hero-btn.secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Animations */
+        .fade-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Scroll-triggered animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Slide from left */
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Slide from right */
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Stagger animation delays */
+        .delay-100 { transition-delay: 0.1s; }
+        .delay-200 { transition-delay: 0.2s; }
+        .delay-300 { transition-delay: 0.3s; }
+        .delay-400 { transition-delay: 0.4s; }
+
+        /* Enhanced hover effects */
+        .use-case-card,
+        .story-card,
+        .component-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .timeline-step {
+            opacity: 0;
+            transform: translateX(-30px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        .timeline-step.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index_website1.html" class="logo">
+                <img src="logo.png" alt="Regenix Logo" class="logo-img">
+            </a>
+            <div class="nav-buttons">
+                <a href="login.html" class="nav-btn secondary">Login</a>
+                <a href="login.html" class="nav-btn primary">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" style="padding-top: 80px;">
+        <div class="hero-content">
+            <div style="max-width: 64rem;">
+                <h1>Regenix</h1>
+                <p class="hero-subtitle">
+                    A $300 knee exoskeleton that assists movement and tracks progress during rehab exercises at home.
+                </p>
+                <p class="hero-description">
+                    Unlike a normal knee brace, Regenix provides active assistance when your muscles fatigue and measures how you're improving over time—without requiring constant clinic visits.
+                </p>
+
+                <!-- Hero Buttons -->
+                <div class="hero-buttons">
+                    <a href="login.html" class="hero-btn primary">
+                        🚀 Enter System
+                    </a>
+                    <a href="#story" class="hero-btn secondary">
+                        👥 Meet Our Team
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div>
+                        <div class="hero-stat-number">&lt;3 kg</div>
+                        <div class="hero-stat-label">Lightweight enough to wear during 30-minute sessions</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-number">&lt;$300</div>
+                        <div class="hero-stat-label">About 5% the cost of a robotic exoskeleton</div>
+                    </div>
+                    <div>
+                        <div class="hero-stat-number">At home</div>
+                        <div class="hero-stat-label">No clinic required after initial setup</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Story Section -->
+    <section id="story" class="section section-white">
+        <div class="container" style="max-width: 56rem;">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Why We Built This</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="animate-on-scroll delay-100">
+                <p class="story-text">
+                    We were ski teammates at college. Both of us tore our ACLs within six months of each other. During recovery, we spent a lot of time comparing notes—physical therapy bills, how many sessions we could actually afford, and whether the exercises we did at home were even helping.
+                </p>
+
+                <p class="story-text">
+                    One of us had insurance that covered 12 weeks of PT. The other had to stop after four weeks because it was $150 per session out-of-pocket. We both got the same surgery. But our recoveries looked completely different—not because of the injury, but because of cost and access.
+                </p>
+
+                <p class="story-text">
+                    That felt wrong. Recovery shouldn't depend on whether you can afford to keep showing up to a clinic twice a week. So we started asking: what if there was a way to do guided rehab at home, with real feedback, for a fraction of the cost?
+                </p>
+
+                <p class="story-text">
+                    That question became Regenix. A wearable device that assists your knee during exercises and tracks whether you're getting stronger. It's not a replacement for physical therapy—it's a tool to extend what you can do between sessions, or after insurance stops covering visits.
+                </p>
+            </div>
+
+            <div class="story-grid">
+                <div class="story-card animate-on-scroll delay-200">
+                    <h3>What We're Building Toward</h3>
+                    <p>A device that costs less than two PT sessions but can be used for months. Light enough to wear at home. Smart enough to know if exercises are being done correctly.</p>
+                    <p class="note">Target: under $300, under 3 kg, works without an internet connection.</p>
+                </div>
+
+                <div class="story-card animate-on-scroll delay-300">
+                    <h3>Where We Want This to Go</h3>
+                    <p>A world where recovering from a knee injury doesn't require driving to a clinic twice a week for three months—or skipping rehab because it's too expensive.</p>
+                    <p class="note">Fewer missed sessions. Better adherence. More consistent outcomes.</p>
+                </div>
+            </div>
+
+            <div class="principles">
+                <h3>What Guides Our Decisions</h3>
+
+                <div class="principle-item">
+                    <h4>Keep it affordable</h4>
+                    <p>We chose cable-driven actuation over motors because it's lighter and costs 80% less. We use smartphone-grade sensors instead of lab equipment. Every design choice is filtered through the question: "Does this make it cheaper without making it worse?"</p>
+                </div>
+
+                <div class="principle-item blue">
+                    <h4>Design for real bodies</h4>
+                    <p>Rigid exoskeletons hurt when your knee doesn't align perfectly with the hinge. We built a five-bar linkage that follows your knee's natural motion instead of forcing it into a fixed path. It took six prototypes to get the geometry right.</p>
+                </div>
+
+                <div class="principle-item slate">
+                    <h4>Reduce barriers to access</h4>
+                    <p>Regenix works offline after initial setup. It doesn't require a subscription. The battery lasts a week. These aren't features—they're requirements if this is going to work in places where clinics are two hours away or internet is unreliable.</p>
+                </div>
+
+                <div class="principle-item teal">
+                    <h4>Build something that works</h4>
+                    <p>We're not interested in flashy demos. The device has to survive 30-minute sessions, give accurate feedback, and actually help people get stronger. We test every claim with users. If it doesn't work, we change it.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section section-gray">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">How Regenix Works</h2>
+                <div class="title-underline title-underline-blue"></div>
+                <p class="section-subtitle">A semi-rigid exoskeleton that moves with your knee, not against it</p>
+            </div>
+
+            <div class="components-container animate-on-scroll delay-200">
+                <h3>The Key Components</h3>
+                <div class="components-grid">
+                    <div class="component-card">
+                        <div class="component-icon">📐</div>
+                        <h4>Five-bar linkage</h4>
+                        <p>Follows the knee's natural instant center of rotation. Eliminates the pressure points caused by single-axis hinges.</p>
+                    </div>
+
+                    <div class="component-card">
+                        <div class="component-icon emerald">⚡</div>
+                        <h4>Cable-driven assist</h4>
+                        <p>Lightweight tensile cables provide smooth, variable assistance. Motor activates only when needed based on real-time force sensing.</p>
+                    </div>
+
+                    <div class="component-card">
+                        <div class="component-icon slate">📊</div>
+                        <h4>IMU + force sensors</h4>
+                        <p>Inertial measurement units track position and velocity. Force sensor measures leg output to calculate fatigue.</p>
+                    </div>
+
+                    <div class="component-card">
+                        <div class="component-icon">📈</div>
+                        <h4>Embedded algorithm</h4>
+                        <p>Runs locally on the device. Compares current performance to baseline. Flags progress or regression in real time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Rehab Session Section -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">What a Rehab Session Looks Like</h2>
+                <div class="title-underline"></div>
+                <p class="section-subtitle">A realistic walkthrough of a typical 30-minute session at home</p>
+            </div>
+
+            <div class="timeline-container animate-on-scroll delay-100">
+                <div class="timeline-image">
+                    <img src="https://images.unsplash.com/photo-1754258167836-6878c54e316c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" alt="Home rehabilitation">
+                </div>
+
+                <div class="timeline-steps">
+                    <div class="timeline-line"></div>
+
+                    <div class="timeline-step">
+                        <div class="timeline-time">
+                            <span class="timeline-badge">0:00</span>
+                        </div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Put on the device</h3>
+                            <p>Strap the thigh cuff first, then the calf cuff. Tighten until snug but not restrictive. The device should feel secure when you stand up. Takes about 90 seconds once you're used to it.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-step">
+                        <div class="timeline-time">
+                            <span class="timeline-badge">1:30</span>
+                        </div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Calibration check</h3>
+                            <p>The device measures your neutral knee position and maximum comfortable range of motion. Bend and straighten your leg a few times. A small vibration confirms calibration is complete.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-step">
+                        <div class="timeline-time">
+                            <span class="timeline-badge">3:00</span>
+                        </div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Warm-up reps</h3>
+                            <p>Start with assisted range-of-motion exercises. Sit on a chair and extend your leg slowly. The device provides light assistance at the end of the movement to help you reach full extension without straining.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-step">
+                        <div class="timeline-time">
+                            <span class="timeline-badge">8:00</span>
+                        </div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Strengthening exercises</h3>
+                            <p>Move to standing exercises like partial squats or step-ups. The device monitors how much force you're generating and how consistent your form is. If fatigue is detected, assistance increases slightly to maintain range of motion.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-step">
+                        <div class="timeline-time">
+                            <span class="timeline-badge">18:00</span>
+                        </div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Fatigue detected</h3>
+                            <p>The device notices your reps are slowing down and you're relying more on assistance. A gentle buzz suggests taking a 60-second break. This prevents you from compensating with bad form.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-step">
+                        <div class="timeline-time">
+                            <span class="timeline-badge">25:00</span>
+                        </div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Cool-down and summary</h3>
+                            <p>Finish with gentle flexion exercises. The device displays a summary: reps completed, range of motion achieved, assistance level compared to last session. Data is saved locally.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-step">
+                        <div class="timeline-time">
+                            <span class="timeline-badge">28:00</span>
+                        </div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <h3>Remove device</h3>
+                            <p>Loosen straps and slide off. Total session time: about 30 minutes. The device charges via USB-C and lasts about a week between charges.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="session-summary">
+                <h3>After the Session</h3>
+                <p><strong>Progress tracking:</strong> The device shows whether your range of motion increased, whether you needed less assistance, and whether you maintained good form throughout.</p>
+                <p><strong>No internet required:</strong> All data is stored on the device. You can sync to a phone app later to see trends over weeks, but it's not required for the device to work.</p>
+                <p><strong>Recommended frequency:</strong> 3-4 sessions per week. The device will remind you if more than 3 days pass without a session, but it won't nag you.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Differentiation Section -->
+    <section class="section section-dark">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">How Is This Different?</h2>
+                <div class="title-underline"></div>
+                <p class="section-subtitle">Three comparisons that matter</p>
+            </div>
+
+            <!-- vs Knee Brace -->
+            <div class="comparison-card animate-on-scroll delay-100">
+                <div class="comparison-grid">
+                    <div class="comparison-column">
+                        <h3>Traditional Knee Brace</h3>
+                        <ul class="comparison-list">
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>Passive support only—restricts movement but doesn't assist it</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>No feedback on whether exercises are being done correctly</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>Fixed compression—doesn't adapt to fatigue or effort</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>Can cause discomfort if hinge doesn't align with knee's natural motion</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-column highlight">
+                        <h3>Regenix</h3>
+                        <ul class="comparison-list">
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Active assistance—helps complete movements when muscles tire</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Tracks range of motion, force output, and fatigue in real time</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Adaptive support—adjusts based on detected effort and form</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Five-bar linkage follows knee's natural rolling motion</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- vs In-Clinic PT -->
+            <div class="comparison-card animate-on-scroll delay-200">
+                <div class="comparison-grid">
+                    <div class="comparison-column">
+                        <h3>In-Clinic Physical Therapy</h3>
+                        <ul class="comparison-list">
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>$100-200 per session, often 2-3x per week for months</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>Requires transportation, scheduling, and time off work</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>Home exercises often done without feedback or accountability</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>Coverage often limited by insurance—many stop before recovery is complete</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-column highlight-blue">
+                        <h3>Regenix</h3>
+                        <ul class="comparison-list">
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>One-time cost under $300—about the price of 1-2 PT sessions</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Use at home, on your schedule—no travel or appointments needed</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Provides real-time feedback on form, range, and progress during home sessions</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Not a replacement for PT, but extends what you can do between or after sessions</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- vs Robotic Exoskeleton -->
+            <div class="comparison-card animate-on-scroll delay-300">
+                <div class="comparison-grid">
+                    <div class="comparison-column">
+                        <h3>Clinical Robotic Exoskeleton</h3>
+                        <ul class="comparison-list">
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>$5,000-50,000+ per device—clinic-only, not for home use</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>Heavy (5-15 kg), requires setup assistance, tethered to power</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>Often designed for full-body paralysis or severe impairment</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-cross">×</span>
+                                <span>Complex calibration, requires trained operator</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="comparison-column highlight-purple">
+                        <h3>Regenix</h3>
+                        <ul class="comparison-list">
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Under $300—designed for affordability and personal ownership</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Lightweight (&lt;3 kg), battery-powered, put on independently in 90 seconds</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Targeted for post-injury rehab—ACL, meniscus, partial knee replacement</span>
+                            </li>
+                            <li>
+                                <span class="comparison-icon icon-check">✓</span>
+                                <span>Self-calibrating, designed for unsupervised use after initial training</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-box animate-on-scroll delay-400">
+                <p><strong>In short:</strong> Regenix sits between a passive brace and a clinical robot—offering active assistance and objective feedback at a price point that makes sense for home use.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="section section-white">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Where Regenix Gets Used</h2>
+                <div class="title-underline"></div>
+                <p class="section-subtitle">Real scenarios from pilot testing and user interviews</p>
+            </div>
+
+            <div class="use-cases-grid">
+                <div class="use-case-card slide-in-left">
+                    <img src="https://images.unsplash.com/photo-1555412568-12659dc76380?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" alt="Post-surgery recovery" class="use-case-image">
+                    <div class="use-case-content">
+                        <h3>Post-surgery home recovery</h3>
+                        <div class="use-case-location">Suburban home, 30 minutes from clinic</div>
+                        <div class="use-case-label">Context</div>
+                        <p class="use-case-text">Sarah had ACL reconstruction surgery 6 weeks ago. Her insurance covered 8 PT sessions, but she needs to continue strengthening exercises for another 3 months. Driving to the clinic twice a week isn't feasible with work.</p>
+                        <div class="use-case-label">How They Use It</div>
+                        <p class="use-case-text">She uses Regenix at home 3-4 times per week for guided strengthening exercises. The device tracks her range of motion and flags when she's compensating with her other leg. She still sees her PT once every two weeks for manual therapy and progression adjustments.</p>
+                    </div>
+                </div>
+
+                <div class="use-case-card slide-in-right delay-100">
+                    <img src="https://images.unsplash.com/photo-1609113160023-4e31f3765fd7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" alt="Clinic tool" class="use-case-image">
+                    <div class="use-case-content">
+                        <h3>Clinic-based supplemental tool</h3>
+                        <div class="use-case-location">Physical therapy clinic, urban setting</div>
+                        <div class="use-case-label">Context</div>
+                        <p class="use-case-text">A PT clinic has 4 Regenix devices available for patient use during sessions. Patients use them during exercises while therapists supervise other patients, allowing more efficient use of therapist time.</p>
+                        <div class="use-case-label">How They Use It</div>
+                        <p class="use-case-text">Patients strap on the device for specific exercises (e.g., leg extensions, step-ups). The PT reviews the real-time feedback to adjust resistance or form cues. Between clinic visits, some patients rent a device to maintain consistency at home.</p>
+                    </div>
+                </div>
+
+                <div class="use-case-card slide-in-left delay-200">
+                    <img src="https://images.unsplash.com/photo-1724632824319-4b43e74e000c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" alt="Rural area" class="use-case-image">
+                    <div class="use-case-content">
+                        <h3>Remote area with limited PT access</h3>
+                        <div class="use-case-location">Rural community, 90 minutes from nearest clinic</div>
+                        <div class="use-case-label">Context</div>
+                        <p class="use-case-text">Marcus injured his knee playing high school basketball. The nearest physical therapist is an hour and a half away. His family can afford to make the drive once a month, but not weekly.</p>
+                        <div class="use-case-label">How They Use It</div>
+                        <p class="use-case-text">After an initial in-person assessment and device fitting, Marcus does guided rehab at home using Regenix. The device stores session data locally. During monthly check-ins, the PT reviews progress data and adjusts the exercise protocol.</p>
+                    </div>
+                </div>
+
+                <div class="use-case-card slide-in-right delay-300">
+                    <img src="https://images.unsplash.com/photo-1760331840426-027b269d0af2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" alt="Senior fitness" class="use-case-image">
+                    <div class="use-case-content">
+                        <h3>Aging adult managing chronic knee pain</h3>
+                        <div class="use-case-location">Retirement community</div>
+                        <div class="use-case-label">Context</div>
+                        <p class="use-case-text">Helen is 68 and has early-stage osteoarthritis. She's not a candidate for surgery yet, but strengthening her quadriceps would reduce pain and delay progression. She tried home exercises before but had no way to know if she was doing them correctly.</p>
+                        <div class="use-case-label">How They Use It</div>
+                        <p class="use-case-text">She uses Regenix twice a week for low-impact strengthening. The device ensures she maintains proper range of motion and doesn't overextend. It also tracks whether her strength is improving or declining over months, helping her doctor make informed decisions about future treatment.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="common-thread animate-on-scroll delay-400">
+                <h3>Common Thread</h3>
+                <p>In every case, Regenix fills a gap where traditional PT isn't accessible, affordable, or frequent enough—but people still need structured, guided rehab with real feedback.</p>
+                <p>It's not about replacing physical therapists. It's about extending what's possible when you can't be in a clinic.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Limitations Section -->
+    <section class="section section-light-gray">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Who Regenix Is Not For</h2>
+                <div class="title-underline title-underline-slate"></div>
+                <p class="section-subtitle">Being clear about what this device doesn't do</p>
+            </div>
+
+            <div class="limitations-grid">
+                <div>
+                    <div class="limitation-item">
+                        <h3>Complete paralysis or neurological impairment</h3>
+                        <p>Regenix provides assistive force, but it doesn't move your leg for you. If you have no voluntary muscle control in your leg due to spinal cord injury or stroke, this device won't help. It's designed for people who can initiate movement but need help completing it.</p>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h3>Acute injuries or unstable joints</h3>
+                        <p>If you just injured your knee (within the first 48-72 hours) or your joint is unstable, you shouldn't be doing active rehab yet—with or without Regenix. This device is for the rehabilitation phase, not the acute injury phase. Always get medical clearance before starting any rehab protocol.</p>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h3>Permanent mobility replacement</h3>
+                        <p>Regenix is a rehab tool, not a permanent assistive device. It's meant to be used during recovery, not worn all day or used indefinitely. If you need long-term mobility support, you need a different solution—likely a custom orthosis or mobility aid prescribed by a specialist.</p>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h3>Complex multi-joint coordination</h3>
+                        <p>This device only addresses the knee. If your injury or condition affects your hip, ankle, or requires full-leg coordination (e.g., gait retraining after a femur fracture), Regenix won't provide comprehensive support. It's a single-joint rehab tool.</p>
+                    </div>
+
+                    <div class="limitation-item">
+                        <h3>Substitute for professional diagnosis</h3>
+                        <p>The device tracks progress, but it doesn't diagnose problems or replace a physical therapist's assessment. If you're experiencing new pain, swelling, or regression, you need to see a healthcare provider. Regenix is a tool to support a rehab plan, not create one.</p>
+                    </div>
+                </div>
+
+                <div class="limitation-sidebar">
+                    <img src="https://images.unsplash.com/photo-1758691463606-1493d79cc577?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=400" alt="Medical consultation" class="limitation-image">
+                    <div class="limitation-note">
+                        <p>If you're unsure whether Regenix is right for your situation, talk to your physical therapist or orthopedic doctor. We'd rather you get the right tool than try to fit into the wrong one.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="who-its-for">
+                <h3>Who It *Is* For</h3>
+                <p>Regenix is designed for people recovering from common knee injuries or surgeries (ACL reconstruction, meniscus repair, partial knee replacement, patellar tendinopathy) who:</p>
+                <ul>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Have been cleared by a doctor or PT to begin active rehab exercises</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Can voluntarily bend and straighten their knee, even if it's weak or limited in range</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Want structured, guided exercises with feedback between clinic visits</span>
+                    </li>
+                    <li>
+                        <span class="check-icon">✓</span>
+                        <span>Are motivated to do home rehab but want accountability and progress tracking</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Section -->
+    <section class="section section-dark">
+        <div class="container" style="max-width: 56rem;">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">The Name</h2>
+                <div class="title-underline"></div>
+            </div>
+
+            <div class="brand-grid animate-on-scroll delay-200">
+                <div>
+                    <img src="https://images.unsplash.com/photo-1764314138160-5f04f4a50dae?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=600" alt="Recovery" class="brand-image">
+                </div>
+                <div class="brand-content">
+                    <h3>Regenix</h3>
+                    <p class="brand-subtitle">Recovery + Next-Generation Technology</p>
+                    <div class="brand-quote">
+                        <p class="brand-quote-text">"Regenix doesn't just support your knee. It helps you recover."</p>
+                        <p class="brand-quote-note">We wanted a name that signaled regeneration and progress, not just stabilization. This isn't a brace—it's a rehab tool.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <h3>Regenix</h3>
+                    <p class="footer-subtitle">Affordable knee rehabilitation for recovery at home</p>
+                    <p class="footer-text">We're a small team building a device we wish existed when we were recovering from knee injuries. Still in pilot testing. Not yet available for general sale.</p>
+                </div>
+
+                <div>
+                    <h4>Interested in Regenix?</h4>
+                    <div class="footer-contact">
+                        <svg class="footer-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #34d399;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Pilot participants: <a href="mailto:pilot@regenix.dev" class="footer-link">pilot@regenix.dev</a></span>
+                    </div>
+                    <div class="footer-contact">
+                        <svg class="footer-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #60a5fa;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>PT clinics & partnerships: <a href="mailto:clinics@regenix.dev" class="footer-link footer-link-blue">clinics@regenix.dev</a></span>
+                    </div>
+                    <div class="footer-contact">
+                        <svg class="footer-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #94a3b8;">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>General inquiries: <a href="mailto:hello@regenix.dev" class="footer-link footer-link-gray">hello@regenix.dev</a></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>© 2025 Regenix. Currently in development. Not FDA-approved or cleared for medical use.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
+        };
+
+        const animationObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        // Observe all elements with animation classes
+        document.querySelectorAll('.animate-on-scroll, .slide-in-left, .slide-in-right, .timeline-step').forEach(element => {
+            animationObserver.observe(element);
+        });
+
+        // Smooth scroll for sections
+        const sectionObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in');
+                }
+            });
+        }, {
+            threshold: 0.05,
+            rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.section').forEach(section => {
+            sectionObserver.observe(section);
+        });
+
+        // Add stagger effect to timeline steps
+        const timelineSteps = document.querySelectorAll('.timeline-step');
+        timelineSteps.forEach((step, index) => {
+            step.style.transitionDelay = `${index * 0.15}s`;
+        });
+
+        // Enhanced hover effects for cards
+        document.querySelectorAll('.use-case-card, .story-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-8px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+
+        // Image lazy loading optimization
+        document.querySelectorAll('img').forEach(img => {
+            img.loading = 'lazy';
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    const targetPosition = target.offsetTop - navbarHeight - 20;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Navbar scroll effect
+        let lastScroll = 0;
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            const currentScroll = window.pageYOffset;
+
+            if (currentScroll > 100) {
+                navbar.style.background = 'rgba(15, 23, 42, 0.98)';
+                navbar.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.4)';
+            } else {
+                navbar.style.background = 'rgba(15, 23, 42, 0.95)';
+                navbar.style.boxShadow = '0 2px 20px rgba(0, 0, 0, 0.3)';
+            }
+
+            lastScroll = currentScroll;
+        });
+
+        console.log('Regenix - Knee Rehab Exoskeleton - Enhanced with Navigation & Animations');
+    </script>
+</body>
+</html>

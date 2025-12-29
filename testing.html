@@ -1,0 +1,1515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rehabilitation Testing - Regenix</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            padding: 20px;
+            padding-top: 100px;
+            color: #333;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            animation: pulse-logo 2s infinite;
+        }
+
+        @keyframes pulse-logo {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            background: #10b981;
+            color: white;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+            background: #059669;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+            color: white;
+            padding: 30px 40px;
+            text-align: center;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: linear-gradient(90deg, #10b981, #14b8a6, #06b6d4, #0ea5e9);
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            font-weight: 800;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 40px;
+        }
+
+        /* Test Selection */
+        .test-selection {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e6ed;
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #2c3e50;
+            margin-bottom: 25px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5em;
+            color: white;
+        }
+
+        .test-types {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .test-option {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .test-option input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+
+        .test-card {
+            background: #f8f9fa;
+            border: 3px solid #e0e6ed;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .test-option input[type="radio"]:checked + .test-card {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            border-color: #4facfe;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(79, 172, 254, 0.3);
+        }
+
+        .test-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .test-title {
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .test-description {
+            font-size: 1em;
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+
+        /* Test Configuration */
+        .test-config {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .config-group {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid #e0e6ed;
+        }
+
+        .config-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 1.1em;
+        }
+
+        .config-group select,
+        .config-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e6ed;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .config-group select:focus,
+        .config-group input:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e6ed;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 18px 35px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            min-width: 180px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: white;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        /* Test Status */
+        .test-status {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e6ed;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .status-dot {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #dc3545;
+            animation: pulse 2s infinite;
+        }
+
+        .status-dot.active {
+            background: #28a745;
+        }
+
+        .status-dot.testing {
+            background: #ffc107;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(40, 167, 69, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(40, 167, 69, 0); }
+        }
+
+        .progress-container {
+            display: none;
+            margin: 20px 0;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 2em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: #e0e6ed;
+            border-radius: 6px;
+            overflow: hidden;
+            margin-bottom: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4facfe 0%, #00f2fe 100%);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Real-time Data */
+        .realtime-data {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+
+        .data-card {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(240, 147, 251, 0.3);
+        }
+
+        .data-card.force {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .data-card.angle {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ffa726 100%);
+        }
+
+        .data-card.count {
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+        }
+
+        .data-card h3 {
+            margin-bottom: 10px;
+            opacity: 0.9;
+            font-size: 1em;
+        }
+
+        .data-value {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .data-unit {
+            opacity: 0.8;
+            font-size: 0.9em;
+        }
+
+        /* Results Section */
+        .results-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-top: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e6ed;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+            animation: slideIn 0.5s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin: 20px 0;
+            background: #f8f9fa;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px dashed #dee2e6;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chart-placeholder {
+            text-align: center;
+            color: #7f8c8d;
+            font-size: 1.2em;
+        }
+
+        /* AI Recommendations */
+        .recommendations {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 25px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .recommendations h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.6em;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .recommendations-content {
+            color: #34495e;
+            line-height: 1.7;
+            font-size: 1.1em;
+        }
+
+        /* Export Options */
+        .export-options {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        .export-btn {
+            padding: 12px 25px;
+            background: #34495e;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .export-btn:hover {
+            background: #2c3e50;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 73, 94, 0.3);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .back-btn {
+                position: relative;
+                left: auto;
+                top: auto;
+                transform: none;
+                margin-bottom: 20px;
+                display: inline-block;
+            }
+
+            .test-types {
+                grid-template-columns: 1fr;
+            }
+
+            .test-config {
+                grid-template-columns: 1fr;
+            }
+
+            .control-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .realtime-data {
+                grid-template-columns: 1fr;
+            }
+
+            .export-options {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .export-btn {
+                width: 100%;
+                max-width: 250px;
+                justify-content: center;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index_website1.html" class="logo">
+                <img src="logo.png" alt="Regenix Logo" style="height: 50px; width: auto;">
+            </a>
+            <div class="nav-buttons">
+                <a href="Dashboard.html" class="nav-btn">← Dashboard</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Rehabilitation Testing</h1>
+            <p>Advanced sensor-based assessment with AI-powered analysis</p>
+        </div>
+
+        <div class="main-content">
+            <!-- Test Selection -->
+            <div class="test-selection">
+                <h2 class="section-title">
+                    <div class="section-icon">🧪</div>
+                    Select Test Type
+                </h2>
+                
+                <div class="test-types">
+                    <div class="test-option">
+                        <input type="radio" id="force-test" name="testType" value="force test">
+                        <label for="force-test" class="test-card">
+                            <div>
+                                <div class="test-icon">💪</div>
+                                <div class="test-title">Force Test</div>
+                                <div class="test-description">
+                                    Measure muscle strength and force output capacity
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="test-option">
+                        <input type="radio" id="angle-test" name="testType" value="angle test">
+                        <label for="angle-test" class="test-card">
+                            <div>
+                                <div class="test-icon">📐</div>
+                                <div class="test-title">Angle Test</div>
+                                <div class="test-description">
+                                    Assess range of motion and joint flexibility
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <div class="test-option">
+                        <input type="radio" id="combined-test" name="testType" value="force and angle test" checked>
+                        <label for="combined-test" class="test-card">
+                            <div>
+                                <div class="test-icon">🔄</div>
+                                <div class="test-title">Combined Test</div>
+                                <div class="test-description">
+                                    Comprehensive assessment of both force and range of motion
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Test Configuration -->
+                <div class="test-config">
+                    <div class="config-group">
+                        <label for="testDuration">Test Duration</label>
+                        <select id="testDuration">
+                            <option value="30">30 Seconds</option>
+                            <option value="60" selected>60 Seconds</option>
+                            <option value="120">2 Minutes</option>
+                            <option value="300">5 Minutes</option>
+                        </select>
+                    </div>
+                    
+                    <div class="config-group">
+                        <label for="dataInterval">Data Collection Interval</label>
+                        <select id="dataInterval">
+                            <option value="0.1" selected>0.1 Seconds (High Precision)</option>
+                            <option value="0.2">0.2 Seconds (Standard)</option>
+                            <option value="0.5">0.5 Seconds (Basic)</option>
+                            <option value="1">1 Second (Simple)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="config-group">
+                        <label for="testIntensity">Target Intensity</label>
+                        <select id="testIntensity">
+                            <option value="low">Low Intensity (Gentle)</option>
+                            <option value="moderate" selected>Moderate Intensity</option>
+                            <option value="high">High Intensity (Advanced)</option>
+                            <option value="custom">Custom Settings</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Control Panel -->
+            <div class="control-panel">
+                <h2 class="section-title">
+                    <div class="section-icon">⚙️</div>
+                    Test Control
+                </h2>
+                
+                <div class="control-buttons">
+                    <button id="startBtn" class="btn btn-primary">
+                        🚀 Start Test
+                    </button>
+                    <button id="pauseBtn" class="btn btn-success" disabled>
+                        ⏸️ Pause Test
+                    </button>
+                    <button id="stopBtn" class="btn btn-danger" disabled>
+                        ⏹️ Stop Test
+                    </button>
+                </div>
+            </div>
+
+            <!-- Test Status -->
+            <div class="test-status">
+                <h2 class="section-title">
+                    <div class="section-icon">📊</div>
+                    Test Status
+                </h2>
+                
+                <div class="status-indicator">
+                    <div id="statusDot" class="status-dot"></div>
+                    <span id="statusText">Ready to begin testing</span>
+                </div>
+                
+                <div id="progressContainer" class="progress-container">
+                    <div class="timer" id="timer">00:00</div>
+                    <div class="progress-bar">
+                        <div id="progressFill" class="progress-fill"></div>
+                    </div>
+                    <div style="text-align: center; color: #7f8c8d;">
+                        <span id="progressText">Preparing test...</span>
+                    </div>
+                </div>
+
+                <div id="realtimeData" class="realtime-data">
+                    <div class="data-card force">
+                        <h3>Force Sensor</h3>
+                        <div class="data-value" id="forceValue">0.0</div>
+                        <div class="data-unit">Newtons (N)</div>
+                    </div>
+                    <div class="data-card angle">
+                        <h3>Angle Sensor</h3>
+                        <div class="data-value" id="angleValue">0.0</div>
+                        <div class="data-unit">Degrees (°)</div>
+                    </div>
+                    <div class="data-card count">
+                        <h3>Data Points</h3>
+                        <div class="data-value" id="dataCount">0</div>
+                        <div class="data-unit">Collected</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="results-section">
+                <h2 class="section-title">
+                    <div class="section-icon">📈</div>
+                    Test Results & Analysis
+                </h2>
+                
+                <div class="chart-container" id="chartContainer">
+                    <div class="chart-placeholder">
+                        <div style="font-size: 3em; margin-bottom: 15px;">📊</div>
+                        <div>Test results will be displayed here</div>
+                        <div style="font-size: 0.9em; margin-top: 10px; opacity: 0.7;">
+                            Interactive charts and data visualization
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recommendations" id="recommendationsContainer">
+                    <h3>🤖 AI-Powered Recommendations</h3>
+                    <div class="recommendations-content" id="recommendationsText">
+                        <div style="text-align: center; padding: 20px;">
+                            <div style="font-size: 2em; margin-bottom: 10px;">🔄</div>
+                            <div>AI analysis will be generated after test completion...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="export-options">
+                    <button class="export-btn" onclick="exportData()">
+                        📊 Export CSV
+                    </button>
+                    <button class="export-btn" onclick="exportPDF()">
+                        📄 Export PDF
+                    </button>
+                    <button class="export-btn" onclick="shareResults()">
+                        📤 Share Results
+                    </button>
+                    <button class="export-btn" onclick="printReport()">
+                        🖨️ Print Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentUser = null;
+        let currentSession = null;
+        let testTimer = null;
+        let dataUpdateInterval = null;
+        let testStartTime = null;
+        let testData = [];
+        let isTestRunning = false;
+        let isPaused = false;
+
+        // DOM elements
+        const startBtn = document.getElementById('startBtn');
+        const pauseBtn = document.getElementById('pauseBtn');
+        const stopBtn = document.getElementById('stopBtn');
+        const statusDot = document.getElementById('statusDot');
+        const statusText = document.getElementById('statusText');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFill = document.getElementById('progressFill');
+        const timer = document.getElementById('timer');
+        const progressText = document.getElementById('progressText');
+        const realtimeData = document.getElementById('realtimeData');
+        const resultsSection = document.getElementById('resultsSection');
+        const forceValue = document.getElementById('forceValue');
+        const angleValue = document.getElementById('angleValue');
+        const dataCount = document.getElementById('dataCount');
+        const chartContainer = document.getElementById('chartContainer');
+        const recommendationsText = document.getElementById('recommendationsText');
+
+        // Event listeners
+        startBtn.addEventListener('click', startTest);
+        pauseBtn.addEventListener('click', pauseTest);
+        stopBtn.addEventListener('click', stopTest);
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication
+            const userData = localStorage.getItem('rehabtech_user');
+            if (!userData) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            currentUser = JSON.parse(userData);
+            console.log('Testing interface loaded for user:', currentUser.name);
+            
+            // Update UI based on user preferences
+            updateUIForUser();
+        });
+
+        // Update UI based on user preferences
+        function updateUIForUser() {
+            // Could customize based on user's rehabilitation stage
+            if (currentUser.rehabilitation_stage === 'Early') {
+                document.getElementById('testDuration').value = '30';
+                document.getElementById('testIntensity').value = 'low';
+            } else if (currentUser.rehabilitation_stage === 'Late') {
+                document.getElementById('testDuration').value = '120';
+                document.getElementById('testIntensity').value = 'high';
+            }
+        }
+
+        // Start test function
+        async function startTest() {
+            const testType = document.querySelector('input[name="testType"]:checked').value;
+            const duration = parseInt(document.getElementById('testDuration').value);
+            const interval = parseFloat(document.getElementById('dataInterval').value);
+            const intensity = document.getElementById('testIntensity').value;
+
+            if (!testType) {
+                showNotification('Please select a test type', 'error');
+                return;
+            }
+
+            // Send B12 command to sensor
+            sendCommandToSensor('B12');
+
+            try {
+                // Send start request to backend
+                const response = await fetch('/api/testing/start', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentUser.token}`
+                    },
+                    body: JSON.stringify({
+                        test_type: testType,
+                        duration: duration,
+                        data_interval: interval,
+                        intensity: intensity
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    currentSession = {
+                        sessionId: data.session_id,
+                        testType: testType,
+                        duration: duration,
+                        interval: interval,
+                        intensity: intensity,
+                        startTime: new Date()
+                    };
+
+                    // Initialize test state
+                    testData = [];
+                    testStartTime = Date.now();
+                    isTestRunning = true;
+                    isPaused = false;
+
+                    // Update UI
+                    updateTestStatus('testing', 'Test in progress...');
+                    startBtn.disabled = true;
+                    pauseBtn.disabled = false;
+                    stopBtn.disabled = false;
+                    progressContainer.style.display = 'block';
+                    realtimeData.style.display = 'grid';
+                    resultsSection.classList.remove('show');
+
+                    // Start test timer and data collection
+                    startTestTimer(duration);
+                    startDataCollection();
+
+                    showNotification('Test started successfully!', 'success');
+                    console.log('Test started:', data);
+                } else {
+                    showNotification('Failed to start test: ' + (data.error || 'Unknown error'), 'error');
+                }
+            } catch (error) {
+                console.error('Start test error:', error);
+                showNotification('Failed to start test. Check your connection.', 'error');
+            }
+        }
+
+        // Pause test function
+        function pauseTest() {
+            if (isTestRunning && !isPaused) {
+                isPaused = true;
+                clearInterval(dataUpdateInterval);
+                updateTestStatus('active', 'Test paused - Click resume to continue');
+                pauseBtn.textContent = '▶️ Resume Test';
+                showNotification('Test paused', 'warning');
+            } else if (isPaused) {
+                isPaused = false;
+                startDataCollection();
+                updateTestStatus('testing', 'Test resumed...');
+                pauseBtn.textContent = '⏸️ Pause Test';
+                showNotification('Test resumed', 'success');
+            }
+        }
+
+        // Stop test function
+        async function stopTest() {
+            if (!isTestRunning) return;
+
+            if (!confirm('Are you sure you want to stop the test? This will end data collection.')) {
+                return;
+            }
+
+            // Send exit command to sensor
+            sendCommandToSensor('exit');
+
+            isTestRunning = false;
+            isPaused = false;
+
+            // Clear timers
+            if (testTimer) clearTimeout(testTimer);
+            if (dataUpdateInterval) clearInterval(dataUpdateInterval);
+
+            try {
+                // Send stop request to backend
+                const response = await fetch('/api/testing/stop', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${currentUser.token}`
+                    },
+                    body: JSON.stringify({
+                        session_id: currentSession.sessionId
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Update UI
+                    updateTestStatus('active', 'Test completed successfully');
+                    startBtn.disabled = false;
+                    pauseBtn.disabled = true;
+                    stopBtn.disabled = true;
+                    pauseBtn.textContent = '⏸️ Pause Test';
+                    progressContainer.style.display = 'none';
+
+                    // Show results
+                    displayResults(data.analysis_results, data.recommendations);
+
+                    showNotification('Test completed and analyzed!', 'success');
+                    console.log('Test completed:', data);
+                } else {
+                    throw new Error(data.error || 'Failed to stop test');
+                }
+            } catch (error) {
+                console.error('Stop test error:', error);
+                showNotification('Test stopped but analysis may be incomplete', 'warning');
+
+                // Still update UI
+                updateTestStatus('active', 'Test stopped');
+                startBtn.disabled = false;
+                pauseBtn.disabled = true;
+                stopBtn.disabled = true;
+                progressContainer.style.display = 'none';
+
+                // Show basic results
+                displayBasicResults();
+            }
+        }
+
+        // Update test status
+        function updateTestStatus(status, text) {
+            statusDot.className = `status-dot ${status}`;
+            statusText.textContent = text;
+        }
+
+        // Start test timer
+        function startTestTimer(duration) {
+            let elapsedTime = 0;
+            
+            testTimer = setInterval(() => {
+                if (isPaused) return;
+                
+                elapsedTime = (Date.now() - testStartTime) / 1000;
+                
+                // Update progress
+                const progress = Math.min((elapsedTime / duration) * 100, 100);
+                progressFill.style.width = progress + '%';
+                
+                // Update timer display
+                const minutes = Math.floor(elapsedTime / 60);
+                const seconds = Math.floor(elapsedTime % 60);
+                timer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                // Update progress text
+                const remaining = duration - elapsedTime;
+                if (remaining > 0) {
+                    progressText.textContent = `${Math.ceil(remaining)} seconds remaining`;
+                } else {
+                    progressText.textContent = 'Test completed';
+                    stopTest();
+                }
+            }, 100);
+        }
+
+        // Start data collection
+        function startDataCollection() {
+            dataUpdateInterval = setInterval(async () => {
+                if (isPaused || !isTestRunning) return;
+
+                try {
+                    // Get real-time data from backend
+                    const response = await fetch(`/api/testing/realtime/${currentSession.sessionId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${currentUser.token}`
+                        }
+                    });
+
+                    if (response.ok) {
+                        const data = await response.json();
+                        if (data.success && data.data) {
+                            updateRealtimeDisplay(data.data);
+                            
+                            // Store data locally
+                            if (data.data.force_value !== undefined || data.data.angle_value !== undefined) {
+                                testData.push({
+                                    timestamp: data.data.timestamp || new Date().toISOString(),
+                                    force_value: data.data.force_value,
+                                    angle_value: data.data.angle_value,
+                                    time_elapsed: (Date.now() - testStartTime) / 1000
+                                });
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error('Data collection error:', error);
+                    // Generate simulated data for demo
+                    const simulatedData = generateSimulatedData();
+                    updateRealtimeDisplay(simulatedData);
+                    testData.push(simulatedData);
+                }
+            }, 500); // Update every 500ms
+        }
+
+        // Generate simulated data for demo
+        function generateSimulatedData() {
+            const testType = currentSession.testType;
+            const elapsedTime = (Date.now() - testStartTime) / 1000;
+            
+            const data = {
+                timestamp: new Date().toISOString(),
+                data_count: testData.length + 1,
+                time_elapsed: elapsedTime
+            };
+
+            // Generate force data
+            if (testType.includes('force')) {
+                const baseForce = 50;
+                const variation = 20 * Math.sin(elapsedTime * 0.5);
+                const noise = (Math.random() - 0.5) * 10;
+                data.force_value = Math.max(0, baseForce + variation + noise);
+            }
+
+            // Generate angle data
+            if (testType.includes('angle')) {
+                const baseAngle = 90;
+                const variation = 30 * Math.sin(elapsedTime * 0.3);
+                const noise = (Math.random() - 0.5) * 5;
+                data.angle_value = Math.max(0, Math.min(180, baseAngle + variation + noise));
+            }
+
+            return data;
+        }
+
+        // Update realtime display
+        function updateRealtimeDisplay(data) {
+            if (data.force_value !== undefined && data.force_value !== null) {
+                forceValue.textContent = data.force_value.toFixed(1);
+            }
+            if (data.angle_value !== undefined && data.angle_value !== null) {
+                angleValue.textContent = data.angle_value.toFixed(1);
+            }
+            if (data.data_count !== undefined) {
+                dataCount.textContent = data.data_count;
+            }
+        }
+
+        // Display results
+        function displayResults(analysisResults, recommendations) {
+            resultsSection.classList.add('show');
+
+            // Generate chart
+            generateChart();
+
+            // Display AI recommendations
+            if (recommendations && recommendations.recommendations) {
+                displayRecommendations(recommendations.recommendations);
+            } else {
+                generateBasicRecommendations();
+            }
+        }
+
+        // Display basic results when backend is unavailable
+        function displayBasicResults() {
+            resultsSection.classList.add('show');
+            generateChart();
+            generateBasicRecommendations();
+        }
+
+        // Generate chart visualization
+        function generateChart() {
+            if (testData.length === 0) {
+                chartContainer.innerHTML = '<div class="chart-placeholder"><div>No data available for visualization</div></div>';
+                return;
+            }
+
+            // Create canvas for chart
+            const canvas = document.createElement('canvas');
+            canvas.width = chartContainer.offsetWidth - 40;
+            canvas.height = 360;
+            canvas.style.width = '100%';
+            canvas.style.height = '360px';
+            
+            chartContainer.innerHTML = '';
+            chartContainer.appendChild(canvas);
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Draw chart background
+            ctx.fillStyle = '#ffffff';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw grid
+            ctx.strokeStyle = '#e0e6ed';
+            ctx.lineWidth = 1;
+            
+            // Vertical grid lines
+            for (let i = 0; i <= 10; i++) {
+                const x = (canvas.width / 10) * i;
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, canvas.height);
+                ctx.stroke();
+            }
+            
+            // Horizontal grid lines
+            for (let i = 0; i <= 8; i++) {
+                const y = (canvas.height / 8) * i;
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(canvas.width, y);
+                ctx.stroke();
+            }
+
+            // Draw data lines
+            if (testData.length > 1) {
+                const maxTime = Math.max(...testData.map(d => d.time_elapsed));
+                
+                // Draw force data
+                const forceData = testData.filter(d => d.force_value !== undefined);
+                if (forceData.length > 0) {
+                    const maxForce = Math.max(...forceData.map(d => d.force_value));
+                    const minForce = Math.min(...forceData.map(d => d.force_value));
+                    const forceRange = maxForce - minForce || 1;
+                    
+                    ctx.strokeStyle = '#4facfe';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    
+                    forceData.forEach((point, index) => {
+                        const x = (point.time_elapsed / maxTime) * canvas.width;
+                        const y = canvas.height - ((point.force_value - minForce) / forceRange) * canvas.height;
+                        
+                        if (index === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    });
+                    
+                    ctx.stroke();
+                }
+                
+                // Draw angle data
+                const angleData = testData.filter(d => d.angle_value !== undefined);
+                if (angleData.length > 0) {
+                    const maxAngle = Math.max(...angleData.map(d => d.angle_value));
+                    const minAngle = Math.min(...angleData.map(d => d.angle_value));
+                    const angleRange = maxAngle - minAngle || 1;
+                    
+                    ctx.strokeStyle = '#ff6b6b';
+                    ctx.lineWidth = 3;
+                    ctx.beginPath();
+                    
+                    angleData.forEach((point, index) => {
+                        const x = (point.time_elapsed / maxTime) * canvas.width;
+                        const y = canvas.height - ((point.angle_value - minAngle) / angleRange) * canvas.height;
+                        
+                        if (index === 0) {
+                            ctx.moveTo(x, y);
+                        } else {
+                            ctx.lineTo(x, y);
+                        }
+                    });
+                    
+                    ctx.stroke();
+                }
+            }
+
+            // Add legend
+            ctx.font = '16px Arial';
+            let legendY = 25;
+            
+            if (testData.some(d => d.force_value !== undefined)) {
+                ctx.fillStyle = '#4facfe';
+                ctx.fillRect(20, legendY - 12, 25, 4);
+                ctx.fillStyle = '#333';
+                ctx.fillText('Force (N)', 55, legendY);
+                legendY += 25;
+            }
+            
+            if (testData.some(d => d.angle_value !== undefined)) {
+                ctx.fillStyle = '#ff6b6b';
+                ctx.fillRect(20, legendY - 12, 25, 4);
+                ctx.fillStyle = '#333';
+                ctx.fillText('Angle (°)', 55, legendY);
+            }
+        }
+
+        // Display AI recommendations
+        function displayRecommendations(recommendations) {
+            // Format recommendations for better display
+            const formattedRecommendations = recommendations.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            recommendationsText.innerHTML = formattedRecommendations;
+        }
+
+        // Generate basic recommendations when AI is unavailable
+        function generateBasicRecommendations() {
+            if (testData.length === 0) {
+                recommendationsText.innerHTML = '<div style="text-align: center; color: #7f8c8d;">No data available for analysis</div>';
+                return;
+            }
+
+            // Basic analysis
+            const forceData = testData.filter(d => d.force_value !== undefined).map(d => d.force_value);
+            const angleData = testData.filter(d => d.angle_value !== undefined).map(d => d.angle_value);
+            
+            let recommendations = '<div style="line-height: 1.8;">';
+            recommendations += `<strong>🎯 Test Summary</strong><br>`;
+            recommendations += `• Duration: ${currentSession.duration} seconds<br>`;
+            recommendations += `• Data points collected: ${testData.length}<br><br>`;
+            
+            if (forceData.length > 0) {
+                const avgForce = forceData.reduce((a, b) => a + b, 0) / forceData.length;
+                const maxForce = Math.max(...forceData);
+                recommendations += `<strong>💪 Force Analysis</strong><br>`;
+                recommendations += `• Average force: ${avgForce.toFixed(1)} N<br>`;
+                recommendations += `• Peak force: ${maxForce.toFixed(1)} N<br>`;
+                recommendations += `• Performance: ${avgForce > 40 ? 'Good' : avgForce > 25 ? 'Moderate' : 'Needs improvement'}<br><br>`;
+            }
+            
+            if (angleData.length > 0) {
+                const avgAngle = angleData.reduce((a, b) => a + b, 0) / angleData.length;
+                const rangeOfMotion = Math.max(...angleData) - Math.min(...angleData);
+                recommendations += `<strong>📐 Range of Motion Analysis</strong><br>`;
+                recommendations += `• Average angle: ${avgAngle.toFixed(1)}°<br>`;
+                recommendations += `• Range of motion: ${rangeOfMotion.toFixed(1)}°<br>`;
+                recommendations += `• Flexibility: ${rangeOfMotion > 60 ? 'Excellent' : rangeOfMotion > 40 ? 'Good' : 'Needs improvement'}<br><br>`;
+            }
+            
+            recommendations += `<strong>📋 Recommendations</strong><br>`;
+            recommendations += `• Continue regular testing to track progress<br>`;
+            recommendations += `• Focus on consistency in performance<br>`;
+            recommendations += `• Consult with your therapist about these results<br>`;
+            recommendations += '</div>';
+            
+            recommendationsText.innerHTML = recommendations;
+        }
+
+        // Export functions
+        function exportData() {
+            if (testData.length === 0) {
+                showNotification('No data to export', 'warning');
+                return;
+            }
+
+            const csvContent = "data:text/csv;charset=utf-8," 
+                + "Timestamp,Force (N),Angle (°),Time Elapsed (s)\n"
+                + testData.map(row => [
+                    row.timestamp,
+                    row.force_value || '',
+                    row.angle_value || '',
+                    row.time_elapsed.toFixed(2)
+                ].join(",")).join("\n");
+
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", `rehabtech_test_${currentSession.sessionId}_${new Date().toISOString().split('T')[0]}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            showNotification('Data exported successfully!', 'success');
+        }
+
+        function exportPDF() {
+            showNotification('PDF export feature coming soon!', 'info');
+        }
+
+        function shareResults() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'Regenix Test Results',
+                    text: `Test completed: ${currentSession.testType}`,
+                    url: window.location.href
+                });
+            } else {
+                showNotification('Sharing feature not supported on this device', 'warning');
+            }
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        // Send command to sensor via WiFi
+        function sendCommandToSensor(command) {
+            // Convert command to lowercase for ESP32 leg.ino compatibility
+            const lowerCommand = command.toLowerCase();
+            console.log('📡 Sending command to sensor:', lowerCommand);
+
+            // Send command to Flask backend API, which forwards to ESP32
+            fetch('http://localhost:5000/api/sensor/command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    command: lowerCommand
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('✅ Command sent successfully:', data);
+                } else {
+                    console.error('❌ Command failed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Error sending command to sensor:', error);
+            });
+        }
+
+        // Notification system
+        function showNotification(message, type = 'info') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                border-radius: 10px;
+                color: white;
+                font-weight: 600;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+                max-width: 300px;
+            `;
+            
+            // Set color based on type
+            switch (type) {
+                case 'success':
+                    notification.style.background = '#27ae60';
+                    break;
+                case 'error':
+                    notification.style.background = '#e74c3c';
+                    break;
+                case 'warning':
+                    notification.style.background = '#f39c12';
+                    break;
+                default:
+                    notification.style.background = '#3498db';
+            }
+            
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            // Auto-remove after 3 seconds
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+
+        // Add CSS animations
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes slideIn {
+                from { transform: translateX(300px); opacity: 0; }
+                to { transform: translateX(0); opacity: 1; }
+            }
+            @keyframes slideOut {
+                from { transform: translateX(0); opacity: 1; }
+                to { transform: translateX(300px); opacity: 0; }
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', function(e) {
+            if (isTestRunning) {
+                e.preventDefault();
+                e.returnValue = 'Test is still running. Are you sure you want to leave?';
+            }
+        });
+
+        // Auto-save functionality
+        setInterval(() => {
+            if (currentSession && testData.length > 0) {
+                localStorage.setItem('rehabtech_test_backup', JSON.stringify({
+                    session: currentSession,
+                    data: testData,
+                    timestamp: new Date().toISOString()
+                }));
+            }
+        }, 10000); // Auto-save every 10 seconds
+    </script>
+</body>
+</html>

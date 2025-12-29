@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rehabilitation Training - Regenix</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .header {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .navbar {
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #10b981 0%, #14b8a6 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+            animation: pulse-logo 2s infinite;
+        }
+
+        @keyframes pulse-logo {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .brand-text {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover, .nav-menu a.active {
+            color: #10b981;
+        }
+
+        .main-content {
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .page-subtitle {
+            font-size: 1.2rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 2rem;
+        }
+
+        .training-control-panel {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        .training-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .control-section {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .control-section:last-of-type {
+            border-bottom: none;
+            margin-bottom: 2rem;
+        }
+
+        .control-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .control-title i {
+            color: #10b981;
+        }
+
+        .mode-selector {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .mode-btn {
+            background: white;
+            border: 3px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            text-align: center;
+        }
+
+        .mode-btn i {
+            font-size: 2rem;
+            color: #718096;
+            margin-bottom: 0.5rem;
+        }
+
+        .mode-btn span {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .mode-btn small {
+            font-size: 0.85rem;
+            color: #718096;
+        }
+
+        .mode-btn:hover {
+            border-color: #10b981;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .mode-btn.active {
+            background: linear-gradient(135deg, #10b981, #14b8a6);
+            border-color: #10b981;
+            color: white;
+        }
+
+        .mode-btn.active i,
+        .mode-btn.active span,
+        .mode-btn.active small {
+            color: white;
+        }
+
+        .slider-container {
+            padding: 1rem;
+            background: #f7fafc;
+            border-radius: 10px;
+        }
+
+        .slider {
+            width: 100%;
+            height: 8px;
+            border-radius: 5px;
+            background: #e2e8f0;
+            outline: none;
+            -webkit-appearance: none;
+            margin-bottom: 1rem;
+        }
+
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #14b8a6);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 3px 12px rgba(102, 126, 234, 0.6);
+        }
+
+        .slider::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981, #14b8a6);
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 3px 12px rgba(102, 126, 234, 0.6);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+
+        .slider-label {
+            font-size: 0.9rem;
+            color: #4a5568;
+            font-weight: 500;
+        }
+
+        .slider-value {
+            text-align: center;
+            font-size: 1.1rem;
+            color: #2d3748;
+            padding: 0.5rem;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .slider-value strong {
+            color: #10b981;
+            font-size: 1.3rem;
+        }
+
+        .training-data {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .data-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        .data-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .data-title i {
+            color: #10b981;
+        }
+
+        .stop-training-btn {
+            padding: 0.8rem 1.5rem;
+            background: linear-gradient(135deg, #f56565, #c53030);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .stop-training-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 101, 101, 0.4);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .chart-card {
+            background: #f7fafc;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .chart-title i {
+            color: #10b981;
+        }
+
+        .training-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            color: white;
+        }
+
+        .stat-info {
+            flex: 1;
+        }
+
+        .stat-label {
+            font-size: 0.85rem;
+            color: #718096;
+            margin-bottom: 0.3rem;
+        }
+
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2d3748;
+        }
+
+        .test-type {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .test-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .force-test { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+        .angle-test { background: linear-gradient(135deg, #4ecdc4, #44a08d); }
+        .combined-test { background: linear-gradient(135deg, #a8edea, #fed6e3); }
+
+        .test-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .test-description {
+            color: #718096;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .test-features {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+
+        .test-features li {
+            padding: 0.5rem 0;
+            color: #4a5568;
+            position: relative;
+            padding-left: 1.5rem;
+        }
+
+        .test-features li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #48bb78;
+            font-weight: bold;
+        }
+
+        .start-test-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, #10b981, #14b8a6);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .start-test-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .test-results {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+            display: none;
+        }
+
+        .results-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .results-title {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 1rem;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 400px;
+            margin-bottom: 2rem;
+            background: #f7fafc;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #718096;
+            font-size: 1.1rem;
+        }
+
+        .ai-report {
+            background: linear-gradient(135deg, #e3f2fd, #f3e5f5);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .ai-report-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .ai-report-content {
+            color: #4a5568;
+            line-height: 1.6;
+        }
+
+        .back-btn {
+            position: fixed;
+            top: 120px;
+            left: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            color: #10b981;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 25px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .back-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Virtual Leg Demonstration Styles */
+        .leg-demo-container {
+            max-width: 400px;
+            margin: 0 auto 3rem;
+        }
+
+        .demo-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .demo-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .demo-title i {
+            color: #10b981;
+        }
+
+        .demo-subtitle {
+            color: #718096;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .demo-subtitle strong {
+            color: #10b981;
+            font-size: 1.1rem;
+        }
+
+        .leg-visualization {
+            background: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+        }
+
+        #legSVG {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .mode-info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .info-item {
+            background: #f7fafc;
+            padding: 1rem;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .info-item i {
+            color: #10b981;
+            font-size: 1.2rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .info-label {
+            font-size: 0.85rem;
+            color: #718096;
+            font-weight: 500;
+        }
+
+        .info-value {
+            font-size: 1rem;
+            color: #2d3748;
+            font-weight: bold;
+        }
+
+        /* Leg Animation Keyframes */
+        /* a11: Fast (0.4s), Small (10deg) */
+        @keyframes knee-a11 {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-10deg); }
+        }
+
+        /* a12: Fast (0.4s), Large (30deg) */
+        @keyframes knee-a12 {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-30deg); }
+        }
+
+        /* b11: Slow (1.6s), Small (10deg) */
+        @keyframes knee-b11 {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-10deg); }
+        }
+
+        /* b12: Slow (1.6s), Large (30deg) */
+        @keyframes knee-b12 {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-30deg); }
+        }
+
+        /* Apply animations */
+        #lowerLeg.mode-a11 {
+            animation: knee-a11 0.4s ease-in-out infinite;
+        }
+
+        #lowerLeg.mode-a12 {
+            animation: knee-a12 0.4s ease-in-out infinite;
+        }
+
+        #lowerLeg.mode-b11 {
+            animation: knee-b11 1.6s ease-in-out infinite;
+        }
+
+        #lowerLeg.mode-b12 {
+            animation: knee-b12 1.6s ease-in-out infinite;
+        }
+
+        /* Knee joint pulse effect during animation */
+        @keyframes knee-pulse {
+            0%, 100% { r: 12; }
+            50% { r: 14; }
+        }
+
+        #lowerLeg.mode-a11 ~ #kneeJoint,
+        #lowerLeg.mode-a12 ~ #kneeJoint,
+        #lowerLeg.mode-b11 ~ #kneeJoint,
+        #lowerLeg.mode-b12 ~ #kneeJoint {
+            animation: knee-pulse 0.8s ease-in-out infinite;
+        }
+
+        @media (max-width: 768px) {
+            .training-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .nav-container {
+                padding: 0 1rem;
+            }
+
+            .leg-demo-container {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <a href="index_website1.html" class="logo">
+                    <img src="logo.png" alt="Regenix Logo" style="height: 50px; width: auto;">
+                </a>
+                <ul class="nav-menu">
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                    <li><a href="personal-info.html">Personal Info</a></li>
+                    <li><a href="training.html" class="active">Training</a></li>
+                    <li><a href="testing.html">Testing</a></li>
+                    <li><a href="reports.html">Reports</a></li>
+                    <li><a href="login.html">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <a href="dashboard.html" class="back-btn">
+        <i class="fas fa-arrow-left"></i> Back to Dashboard
+    </a>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h1 class="page-title">Rehabilitation Training</h1>
+                <p class="page-subtitle">Select your training type to begin rehabilitation testing</p>
+            </div>
+
+            <!-- Virtual Leg Demonstration -->
+            <div class="leg-demo-container">
+                <div class="demo-card">
+                    <h3 class="demo-title">
+                        <i class="fas fa-eye"></i> Training Mode Visualization
+                    </h3>
+                    <p class="demo-subtitle">Current Mode: <strong id="currentModeDisplay">a11</strong> - Active, Fast, Small Amplitude</p>
+
+                    <div class="leg-visualization">
+                        <svg id="legSVG" width="300" height="450" viewBox="0 0 300 450">
+                            <!-- Background -->
+                            <rect x="0" y="0" width="300" height="450" fill="#f7fafc" rx="10"/>
+
+                            <!-- Reference Lines -->
+                            <line x1="150" y1="50" x2="150" y2="400" stroke="#e2e8f0" stroke-width="2" stroke-dasharray="5,5"/>
+
+                            <!-- Hip Joint (fixed reference point) -->
+                            <circle cx="150" cy="80" r="8" fill="#4a5568"/>
+
+                            <!-- Thigh (Upper Leg) - Fixed -->
+                            <g id="thigh">
+                                <!-- Thigh bone -->
+                                <line x1="150" y1="80" x2="150" y2="220" stroke="#2d3748" stroke-width="8" stroke-linecap="round"/>
+
+                                <!-- Thigh muscle (front) -->
+                                <path d="M 155 90 Q 175 150 165 210" fill="none" stroke="#10b981" stroke-width="12" opacity="0.3"/>
+
+                                <!-- Thigh muscle (back) -->
+                                <path d="M 145 90 Q 125 150 135 210" fill="none" stroke="#10b981" stroke-width="12" opacity="0.3"/>
+
+                                <!-- Quadriceps detail -->
+                                <ellipse cx="160" cy="150" rx="15" ry="40" fill="#10b981" opacity="0.15"/>
+                            </g>
+
+                            <!-- Knee Joint (rotation center) -->
+                            <circle id="kneeJoint" cx="150" cy="220" r="12" fill="#f56565" stroke="#c53030" stroke-width="2"/>
+                            <circle cx="150" cy="220" r="6" fill="#fff" opacity="0.3"/>
+
+                            <!-- Lower Leg Group (rotates around knee) -->
+                            <g id="lowerLeg" style="transform-origin: 150px 220px;">
+                                <!-- Shin bone -->
+                                <line x1="150" y1="220" x2="150" y2="370" stroke="#2d3748" stroke-width="7" stroke-linecap="round"/>
+
+                                <!-- Calf muscle -->
+                                <path d="M 155 230 Q 170 280 160 340" fill="none" stroke="#4ecdc4" stroke-width="14" opacity="0.3"/>
+                                <ellipse cx="163" cy="280" rx="12" ry="35" fill="#4ecdc4" opacity="0.15"/>
+
+                                <!-- Shin front -->
+                                <path d="M 145 230 Q 135 300 142 360" fill="none" stroke="#4ecdc4" stroke-width="8" opacity="0.2"/>
+
+                                <!-- Foot -->
+                                <g id="foot">
+                                    <!-- Ankle joint -->
+                                    <circle cx="150" cy="370" r="8" fill="#718096"/>
+
+                                    <!-- Foot outline -->
+                                    <path d="M 150 370 L 145 385 Q 140 395 155 395 L 200 395 Q 210 395 208 388 L 205 378 Q 203 372 195 372 L 150 370"
+                                          fill="#2d3748" stroke="#1a202c" stroke-width="2"/>
+
+                                    <!-- Shoe detail -->
+                                    <ellipse cx="175" cy="390" rx="20" ry="4" fill="#1a202c" opacity="0.3"/>
+                                </g>
+                            </g>
+
+                            <!-- Angle indicator arc -->
+                            <path id="angleArc" d="" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.6"/>
+
+                            <!-- Labels -->
+                            <text x="20" y="150" fill="#4a5568" font-size="12" font-weight="bold">Thigh</text>
+                            <text x="20" y="300" fill="#4a5568" font-size="12" font-weight="bold">Calf</text>
+                            <text x="200" y="220" fill="#f56565" font-size="11" font-weight="bold">Knee</text>
+                        </svg>
+                    </div>
+
+                    <div class="mode-info-grid">
+                        <div class="info-item">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span class="info-label">Speed:</span>
+                            <span class="info-value" id="speedInfo">Fast (100ms)</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-expand-arrows-alt"></i>
+                            <span class="info-label">Amplitude:</span>
+                            <span class="info-value" id="amplitudeInfo">Small (±10°)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Training Control Panel -->
+            <div class="training-control-panel">
+                <div class="training-card">
+                    <!-- Training Mode Selection -->
+                    <div class="control-section">
+                        <h3 class="control-title">
+                            <i class="fas fa-cog"></i> Select Training Mode
+                        </h3>
+                        <div class="mode-selector" style="grid-template-columns: repeat(3, 1fr);">
+                            <button class="mode-btn active" data-mode="A11" onclick="selectTrainingMode('A11', this)">
+                                <i class="fas fa-walking"></i>
+                                <span>Free Training</span>
+                                <small>Unrestricted movement</small>
+                            </button>
+                            <button class="mode-btn" data-mode="A12" onclick="selectTrainingMode('A12', this)">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Protective Training</span>
+                                <small>Assisted & protected</small>
+                            </button>
+                            <button class="mode-btn" data-mode="B11" onclick="selectTrainingMode('B11', this)">
+                                <i class="fas fa-dumbbell"></i>
+                                <span>Resistive Training</span>
+                                <small>With resistance</small>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Control Buttons -->
+            <div class="training-control-panel" style="margin-top: 3rem;">
+                <div class="training-card">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
+                        <button class="start-test-btn" onclick="endTraining()" style="background: linear-gradient(135deg, #f56565, #c53030);">
+                            <i class="fas fa-stop-circle"></i> stop training
+                        </button>
+                        <button class="start-test-btn" onclick="goToTesting()" style="background: linear-gradient(135deg, #10b981, #059669);">
+                            <i class="fas fa-flask"></i> start training
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Real-time Training Data -->
+            <div class="training-data" id="trainingData" style="display: none;">
+                <div class="data-header">
+                    <h2 class="data-title">
+                        <i class="fas fa-chart-line"></i> Real-time Training Data
+                    </h2>
+                    <button class="stop-training-btn" onclick="stopTraining()">
+                        <i class="fas fa-stop-circle"></i> Stop Training
+                    </button>
+                </div>
+
+                <div class="charts-grid">
+                    <!-- Force Chart -->
+                    <div class="chart-card">
+                        <h3 class="chart-title">
+                            <i class="fas fa-dumbbell"></i> Force vs Time
+                        </h3>
+                        <canvas id="forceChart"></canvas>
+                    </div>
+
+                    <!-- Angle Chart -->
+                    <div class="chart-card">
+                        <h3 class="chart-title">
+                            <i class="fas fa-angle-double-right"></i> Angle vs Time
+                        </h3>
+                        <canvas id="angleChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Training Statistics -->
+                <div class="training-stats">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #ff6b6b, #ee5a24);">
+                            <i class="fas fa-dumbbell"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Current Force</div>
+                            <div class="stat-value" id="currentForce">0 N</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #4ecdc4, #44a08d);">
+                            <i class="fas fa-angle-double-right"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Current Angle</div>
+                            <div class="stat-value" id="currentAngle">0°</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Training Duration</div>
+                            <div class="stat-value" id="trainingDuration">0:00</div>
+                        </div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background: linear-gradient(135deg, #a8edea, #fed6e3);">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="stat-info">
+                            <div class="stat-label">Data Points</div>
+                            <div class="stat-value" id="dataPoints">0</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Global state for training parameters
+        let trainingState = {
+            mode: 'A11'  // A11, A12, B11, B12
+        };
+
+        // Training session state
+        let sessionState = {
+            isTraining: false,
+            startTime: null,
+            dataPoints: 0,
+            durationInterval: null
+        };
+
+        // Chart instances
+        let forceChart = null;
+        let angleChart = null;
+
+        // Chart data
+        let chartData = {
+            time: [],
+            force: [],
+            angle: []
+        };
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeCharts();
+            updateLegAnimation(); // Initialize leg animation
+        });
+
+        // Select training mode and send command to sensor
+        function selectTrainingMode(mode, button) {
+            // Update state
+            trainingState.mode = mode;
+
+            // Update UI - remove active class from all buttons
+            document.querySelectorAll('.mode-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+
+            // Add active class to clicked button
+            button.classList.add('active');
+
+            // Send command to sensor
+            sendCommandToSensor(mode);
+
+            // Update leg animation
+            updateLegAnimation();
+
+            console.log('Training mode selected:', mode);
+        }
+
+        // End training and send exit command
+        function endTraining() {
+            if (confirm('Are you sure?')) {
+                // Send exit command to sensor
+                sendCommandToSensor('exit');
+
+                // Stop any ongoing training
+                if (sessionState.isTraining) {
+                    stopTraining();
+                }
+
+                console.log('Training ended, exit command sent');
+
+                // Optional: Show notification
+                alert('Training had finished');
+            }
+        }
+
+        // Go to testing page and send B12 command
+        function goToTesting() {
+            // Send B12 command to sensor
+            sendCommandToSensor('B12');
+
+            console.log('Going to testing page, B12 command sent');
+
+            // Navigate to testing page
+            setTimeout(() => {
+                window.location.href = 'testing.html';
+            }, 500);
+        }
+
+        // Update virtual leg animation based on training parameters
+        function updateLegAnimation() {
+            const lowerLeg = document.getElementById('lowerLeg');
+            const currentModeDisplay = document.getElementById('currentModeDisplay');
+            const speedInfo = document.getElementById('speedInfo');
+            const amplitudeInfo = document.getElementById('amplitudeInfo');
+
+            if (!lowerLeg) return;
+
+            const mode = trainingState.mode.toLowerCase();
+
+            // Remove all existing animation classes
+            lowerLeg.classList.remove('mode-a11', 'mode-a12', 'mode-b11', 'mode-b12');
+
+            // Apply animation based on mode
+            lowerLeg.classList.add('mode-' + mode);
+
+            // Update display information
+            const modeDescriptions = {
+                'A11': 'Free Training - Unrestricted movement',
+                'A12': 'Protective Training - Assisted & protected',
+                'B11': 'Resistive Training - With resistance',
+                'B12': 'Testing Mode - Performance testing'
+            };
+
+            const speedDescriptions = {
+                'A11': 'Fast (100ms interval)',
+                'A12': 'Fast (100ms interval)',
+                'B11': 'Slow (500ms interval)',
+                'B12': 'Slow (500ms interval)'
+            };
+
+            const amplitudeDescriptions = {
+                'A11': 'Small (±10°)',
+                'A12': 'Large (±30°)',
+                'B11': 'Small (±10°)',
+                'B12': 'Large (±30°)'
+            };
+
+            // Update mode display
+            currentModeDisplay.textContent = trainingState.mode;
+            document.querySelector('.demo-subtitle').innerHTML = `Current Mode: <strong>${trainingState.mode}</strong> - ${modeDescriptions[trainingState.mode]}`;
+
+            // Update speed info
+            speedInfo.textContent = speedDescriptions[trainingState.mode];
+
+            // Update amplitude info
+            amplitudeInfo.textContent = amplitudeDescriptions[trainingState.mode];
+
+            console.log('🦵 Leg animation updated to mode:', trainingState.mode);
+        }
+
+        // Send command to sensor via WiFi
+        function sendCommandToSensor(command) {
+            // Convert command to lowercase for ESP32 leg.ino compatibility
+            const lowerCommand = command.toLowerCase();
+            console.log('📡 Sending command to sensor:', lowerCommand);
+
+            // Send command to Flask backend API, which forwards to ESP32
+            fetch('http://localhost:5000/api/sensor/command', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    command: lowerCommand
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('✅ Command sent successfully:', data);
+                } else {
+                    console.error('❌ Command failed:', data.message);
+                }
+            })
+            .catch(error => {
+                console.error('❌ Error sending command to sensor:', error);
+            });
+        }
+
+        // Initialize charts
+        function initializeCharts() {
+            const forceCtx = document.getElementById('forceChart');
+            const angleCtx = document.getElementById('angleChart');
+
+            if (!forceCtx || !angleCtx) return;
+
+            // Force Chart
+            forceChart = new Chart(forceCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Force (N)',
+                        data: [],
+                        borderColor: '#ff6b6b',
+                        backgroundColor: 'rgba(255, 107, 107, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time (s)'
+                            },
+                            grid: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Force (N)'
+                            },
+                            beginAtZero: true,
+                            grid: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 300
+                    }
+                }
+            });
+
+            // Angle Chart
+            angleChart = new Chart(angleCtx, {
+                type: 'line',
+                data: {
+                    labels: [],
+                    datasets: [{
+                        label: 'Angle (°)',
+                        data: [],
+                        borderColor: '#4ecdc4',
+                        backgroundColor: 'rgba(78, 205, 196, 0.1)',
+                        borderWidth: 2,
+                        tension: 0.4,
+                        fill: true,
+                        pointRadius: 3,
+                        pointHoverRadius: 5
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    aspectRatio: 2,
+                    plugins: {
+                        legend: {
+                            display: true,
+                            position: 'top'
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: 'Time (s)'
+                            },
+                            grid: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: 'Angle (°)'
+                            },
+                            beginAtZero: true,
+                            grid: {
+                                display: true,
+                                color: 'rgba(0, 0, 0, 0.05)'
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 300
+                    }
+                }
+            });
+        }
+
+
+        // Receive data from sensor and update charts
+        function receiveSensorData(data) {
+            // Expected data format: { force: number, angle: number, timestamp: number }
+            if (!sessionState.isTraining) return;
+
+            const elapsedTime = ((Date.now() - sessionState.startTime) / 1000).toFixed(1);
+
+            // Add data to arrays
+            chartData.time.push(parseFloat(elapsedTime));
+            chartData.force.push(data.force);
+            chartData.angle.push(data.angle);
+
+            // Update charts
+            updateChart(forceChart, chartData.time, chartData.force);
+            updateChart(angleChart, chartData.time, chartData.angle);
+
+            // Update statistics
+            sessionState.dataPoints++;
+            document.getElementById('currentForce').textContent = data.force.toFixed(1) + ' N';
+            document.getElementById('currentAngle').textContent = data.angle.toFixed(1) + '°';
+            document.getElementById('dataPoints').textContent = sessionState.dataPoints;
+        }
+
+        // Update chart with new data
+        function updateChart(chart, labels, data) {
+            const maxDataPoints = 50; // Keep last 50 points for performance
+
+            // Limit data points
+            if (labels.length > maxDataPoints) {
+                labels.shift();
+                data.shift();
+            }
+
+            chart.data.labels = labels;
+            chart.data.datasets[0].data = data;
+            chart.update('none'); // Update without animation for smoother real-time updates
+        }
+
+        // Update training duration display
+        function updateDuration() {
+            if (!sessionState.isTraining) return;
+
+            const elapsed = Math.floor((Date.now() - sessionState.startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            document.getElementById('trainingDuration').textContent =
+                `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        // Start training (monitoring data)
+        function startTraining() {
+            // Training mode is already selected, just start monitoring
+            // The command was already sent when mode was selected
+
+            // Initialize session
+            sessionState.isTraining = true;
+            sessionState.startTime = Date.now();
+            sessionState.dataPoints = 0;
+
+            // Reset chart data
+            chartData.time = [];
+            chartData.force = [];
+            chartData.angle = [];
+
+            // Clear charts
+            if (forceChart) {
+                forceChart.data.labels = [];
+                forceChart.data.datasets[0].data = [];
+                forceChart.update();
+            }
+            if (angleChart) {
+                angleChart.data.labels = [];
+                angleChart.data.datasets[0].data = [];
+                angleChart.update();
+            }
+
+            // Show training data section
+            document.getElementById('trainingData').style.display = 'block';
+            document.getElementById('trainingData').scrollIntoView({ behavior: 'smooth' });
+
+            // Start duration timer
+            sessionState.durationInterval = setInterval(updateDuration, 1000);
+
+            // Start WiFi sensor data polling
+            startWiFiSensorPolling();
+
+            console.log('Training monitoring started for mode:', trainingState.mode);
+        }
+
+        // Stop training
+        function stopTraining() {
+            sessionState.isTraining = false;
+
+            // Clear interval
+            if (sessionState.durationInterval) {
+                clearInterval(sessionState.durationInterval);
+                sessionState.durationInterval = null;
+            }
+
+            // Stop WiFi sensor polling
+            if (window.sensorPollingInterval) {
+                clearInterval(window.sensorPollingInterval);
+                window.sensorPollingInterval = null;
+            }
+
+            // Reset button
+            const button = document.querySelector('.start-test-btn');
+            button.innerHTML = '<i class="fas fa-play-circle"></i> Start Training';
+            button.disabled = false;
+
+            console.log('📡 WiFi training stopped');
+            console.log('Total data points:', sessionState.dataPoints);
+        }
+
+        // Start WiFi sensor data polling
+        function startWiFiSensorPolling() {
+            console.log('📡 Starting WiFi sensor data polling...');
+
+            // Poll sensor data every 200ms (5 Hz)
+            window.sensorPollingInterval = setInterval(async () => {
+                if (!sessionState.isTraining) {
+                    clearInterval(window.sensorPollingInterval);
+                    return;
+                }
+
+                try {
+                    // Fetch data from Flask backend API
+                    const response = await fetch('http://localhost:5000/api/sensor/data');
+                    const result = await response.json();
+
+                    if (result.success && result.data) {
+                        // Receive and process sensor data
+                        receiveSensorData(result.data);
+                    } else {
+                        console.warn('⚠️ No sensor data available');
+                    }
+                } catch (error) {
+                    console.error('❌ Error fetching WiFi sensor data:', error);
+                }
+            }, 200); // Update every 200ms
+        }
+
+    </script>
+</body>
+</html>

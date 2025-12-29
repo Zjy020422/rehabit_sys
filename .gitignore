@@ -1,0 +1,19 @@
+# Exclude specific folders
+index/
+index1/
+
+# Node modules
+node_modules/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE files
+.vscode/
+.idea/
+
+# System files
+.DS_Store
+Thumbs.db

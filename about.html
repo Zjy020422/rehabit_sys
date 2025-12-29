@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Regenix Team</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+
+        .logo-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.2em;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            padding: 120px 0 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            text-align: center;
+            color: white;
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .hero p {
+            font-size: 1.3em;
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* System Overview */
+        .system-overview {
+            padding: 100px 0;
+            background: #f8f9fa;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .section-title h2 {
+            font-size: 3em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .section-title p {
+            font-size: 1.3em;
+            color: #7f8c8d;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        .overview-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .overview-card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid transparent;
+        }
+
+        .overview-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .overview-card.data-collection {
+            border-left-color: #3498db;
+        }
+
+        .overview-card.ai-analysis {
+            border-left-color: #e74c3c;
+        }
+
+        .overview-card.reporting {
+            border-left-color: #2ecc71;
+        }
+
+        .overview-card h3 {
+            font-size: 1.6em;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .overview-card p {
+            color: #7f8c8d;
+            line-height: 1.7;
+            margin-bottom: 20px;
+        }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .feature-list li {
+            padding: 8px 0;
+            color: #5a6c7d;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .feature-list li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #2ecc71;
+            font-weight: bold;
+        }
+
+        /* Team Section */
+        .team-section {
+            padding: 100px 0;
+            background: white;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .team-member {
+            background: white;
+            border-radius: 20px;
+            padding: 40px 30px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border: 1px solid #e0e6ed;
+        }
+
+        .team-member:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .member-photo {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            margin: 0 auto 25px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            color: white;
+            border: 5px solid #f8f9fa;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .member-photo::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .team-member:hover .member-photo::before {
+            left: 100%;
+        }
+
+        .member-info h3 {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .member-role {
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .member-description {
+            color: #7f8c8d;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+
+        .member-skills {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .skill-tag {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        /* Technology Stack */
+        .tech-stack {
+            padding: 100px 0;
+            background: #f8f9fa;
+        }
+
+        .tech-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 60px;
+        }
+
+        .tech-item {
+            background: white;
+            padding: 30px 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .tech-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        .tech-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .tech-item h4 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .tech-item p {
+            color: #7f8c8d;
+            font-size: 0.9em;
+        }
+
+        /* CTA Section */
+        .cta {
+            padding: 100px 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            text-align: center;
+            color: white;
+        }
+
+        .cta h2 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .cta p {
+            font-size: 1.3em;
+            margin-bottom: 40px;
+            opacity: 0.9;
+        }
+
+        .cta-btn {
+            padding: 18px 35px;
+            border: 2px solid white;
+            border-radius: 30px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .cta-btn:hover {
+            background: white;
+            color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 40px 0;
+            text-align: center;
+        }
+
+        .footer p {
+            color: #bdc3c7;
+        }
+
+        /* Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease;
+        }
+
+        .animate-on-scroll.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5em;
+            }
+
+            .section-title h2 {
+                font-size: 2.2em;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .tech-grid {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <div class="logo-icon">🏥</div>
+                <span>Regenix</span>
+            </div>
+            <a href="index.html" class="nav-btn">Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <h1>About Regenix</h1>
+            <p>Meet the innovative team behind the future of rehabilitation technology and discover our comprehensive platform designed to revolutionize physiotherapy and patient care.</p>
+        </div>
+    </section>
+
+    <!-- System Overview -->
+    <section class="system-overview">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Comprehensive System</h2>
+                <p>Regenix combines cutting-edge sensor technology, artificial intelligence, and user-centered design to create the most advanced rehabilitation analytics platform available today.</p>
+            </div>
+            <div class="overview-grid">
+                <div class="overview-card data-collection animate-on-scroll">
+                    <h3>🔬 Advanced Data Collection</h3>
+                    <p>Our system utilizes state-of-the-art sensors and IoT devices to capture precise biomechanical data in real-time, providing unprecedented insights into patient progress.</p>
+                    <ul class="feature-list">
+                        <li>High-precision force sensors (±0.1N accuracy)</li>
+                        <li>Multi-axis angle measurement (±0.5° precision)</li>
+                        <li>Real-time data streaming at 100Hz</li>
+                        <li>Wireless connectivity and cloud synchronization</li>
+                        <li>Multi-device integration support</li>
+                    </ul>
+                </div>
+                <div class="overview-card ai-analysis animate-on-scroll">
+                    <h3>🤖 AI-Powered Analysis</h3>
+                    <p>Machine learning algorithms analyze patient data to identify patterns, predict outcomes, and generate personalized rehabilitation recommendations.</p>
+                    <ul class="feature-list">
+                        <li>Deep learning pattern recognition</li>
+                        <li>Predictive analytics for recovery timelines</li>
+                        <li>Personalized exercise recommendations</li>
+                        <li>Risk assessment and injury prevention</li>
+                        <li>Adaptive training program optimization</li>
+                    </ul>
+                </div>
+                <div class="overview-card reporting animate-on-scroll">
+                    <h3>📊 Comprehensive Reporting</h3>
+                    <p>Generate detailed reports for patients, therapists, and healthcare providers with actionable insights and progress tracking capabilities.</p>
+                    <ul class="feature-list">
+                        <li>Daily, weekly, and monthly progress reports</li>
+                        <li>Interactive data visualizations</li>
+                        <li>Comparative analysis and benchmarking</li>
+                        <li>Export capabilities (PDF, CSV, JSON)</li>
+                        <li>Healthcare provider integration</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Team Section -->
+    <section class="team-section">
+        <div class="container">
+            <div class="section-title">
+                <h2>Meet Our Expert Team</h2>
+                <p>Our diverse team of engineers, healthcare professionals, and data scientists work together to create innovative solutions for the rehabilitation industry.</p>
+            </div>
+            <div class="team-grid">
+                <div class="team-member animate-on-scroll">
+                    <div class="member-photo">👨‍💼</div>
+                    <div class="member-info">
+                        <h3>Dr. Michael Chen</h3>
+                        <div class="member-role">CEO & Co-Founder</div>
+                        <p class="member-description">Biomedical engineer with 15+ years in rehabilitation technology. PhD from MIT, former head of R&D at MedTech Solutions.</p>
+                        <div class="member-skills">
+                            <span class="skill-tag">Leadership</span>
+                            <span class="skill-tag">Biomedical Engineering</span>
+                            <span class="skill-tag">Product Strategy</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member animate-on-scroll">
+                    <div class="member-photo">👩‍💻</div>
+                    <div class="member-info">
+                        <h3>Dr. Sarah Johnson</h3>
+                        <div class="member-role">CTO & Co-Founder</div>
+                        <p class="member-description">AI/ML expert specializing in healthcare applications. Former senior scientist at Google Health, Stanford PhD in Computer Science.</p>
+                        <div class="member-skills">
+                            <span class="skill-tag">AI/ML</span>
+                            <span class="skill-tag">Cloud Architecture</span>
+                            <span class="skill-tag">Data Science</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member animate-on-scroll">
+                    <div class="member-photo">👨‍⚕️</div>
+                    <div class="member-info">
+                        <h3>Dr. James Rodriguez</h3>
+                        <div class="member-role">Chief Medical Officer</div>
+                        <p class="member-description">Licensed physiotherapist and sports medicine specialist. 20+ years clinical experience, published researcher in rehabilitation science.</p>
+                        <div class="member-skills">
+                            <span class="skill-tag">Physiotherapy</span>
+                            <span class="skill-tag">Sports Medicine</span>
+                            <span class="skill-tag">Clinical Research</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member animate-on-scroll">
+                    <div class="member-photo">👩‍🔬</div>
+                    <div class="member-info">
+                        <h3>Dr. Emily Zhang</h3>
+                        <div class="member-role">Head of Data Science</div>
+                        <p class="member-description">Statistical modeling expert with focus on healthcare analytics. Former lead data scientist at Johns Hopkins, PhD in Statistics.</p>
+                        <div class="member-skills">
+                            <span class="skill-tag">Statistics</span>
+                            <span class="skill-tag">Machine Learning</span>
+                            <span class="skill-tag">Healthcare Analytics</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member animate-on-scroll">
+                    <div class="member-photo">👨‍💻</div>
+                    <div class="member-info">
+                        <h3>Alex Thompson</h3>
+                        <div class="member-role">Lead Software Engineer</div>
+                        <p class="member-description">Full-stack developer with expertise in real-time systems and IoT. 12+ years experience in medical device software development.</p>
+                        <div class="member-skills">
+                            <span class="skill-tag">Full-Stack Development</span>
+                            <span class="skill-tag">IoT Systems</span>
+                            <span class="skill-tag">Real-time Processing</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-member animate-on-scroll">
+                    <div class="member-photo">👩‍🎨</div>
+                    <div class="member-info">
+                        <h3>Maria Santos</h3>
+                        <div class="member-role">UX/UI Design Director</div>
+                        <p class="member-description">Human-centered design expert specializing in healthcare interfaces. Former design lead at Apple Health, master's in HCI.</p>
+                        <div class="member-skills">
+                            <span class="skill-tag">UX/UI Design</span>
+                            <span class="skill-tag">Healthcare UX</span>
+                            <span class="skill-tag">User Research</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Stack -->
+    <section class="tech-stack">
+        <div class="container">
+            <div class="section-title">
+                <h2>Our Technology Stack</h2>
+                <p>Built with industry-leading technologies to ensure reliability, scalability, and security</p>
+            </div>
+            <div class="tech-grid">
+                <div class="tech-item animate-on-scroll">
+                    <div class="tech-icon">☁️</div>
+                    <h4>Cloud Infrastructure</h4>
+                    <p>AWS, Azure, Docker</p>
+                </div>
+                <div class="tech-item animate-on-scroll">
+                    <div class="tech-icon">🧠</div>
+                    <h4>AI/ML Framework</h4>
+                    <p>TensorFlow, PyTorch</p>
+                </div>
+                <div class="tech-item animate-on-scroll">
+                    <div class="tech-icon">📱</div>
+                    <h4>Frontend</h4>
+                    <p>React, Vue.js, D3.js</p>
+                </div>
+                <div class="tech-item animate-on-scroll">
+                    <div class="tech-icon">⚙️</div>
+                    <h4>Backend</h4>
+                    <p>Node.js, Python, FastAPI</p>
+                </div>
+                <div class="tech-item animate-on-scroll">
+                    <div class="tech-icon">🗄️</div>
+                    <h4>Database</h4>
+                    <p>PostgreSQL, MongoDB</p>
+                </div>
+                <div class="tech-item animate-on-scroll">
+                    <div class="tech-icon">🔐</div>
+                    <h4>Security</h4>
+                    <p>HIPAA Compliant</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Join the Future?</h2>
+            <p>Experience the next generation of rehabilitation technology with our expert team</p>
+            <a href="login.html" class="cta-btn">Get Started Today</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Regenix. All rights reserved. | Revolutionizing Rehabilitation Technology</p>
+        </div>
+    </footer>
+
+    <script>
+        // Animate elements on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Team member photo rotation effect
+        const memberPhotos = document.querySelectorAll('.member-photo');
+        const photoIcons = ['👨‍💼', '👩‍💻', '👨‍⚕️', '👩‍🔬', '👨‍💻', '👩‍🎨'];
+        
+        memberPhotos.forEach((photo, index) => {
+            photo.addEventListener('mouseenter', () => {
+                photo.style.transform = 'scale(1.1) rotate(360deg)';
+                photo.style.transition = 'transform 0.6s ease';
+            });
+            
+            photo.addEventListener('mouseleave', () => {
+                photo.style.transform = 'scale(1) rotate(0deg)';
+            });
+        });
+
+        // Tech stack hover effects
+        document.querySelectorAll('.tech-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateY(-10px) scale(1.05)';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateY(-5px) scale(1)';
+            });
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Regenix About Page Loaded');
+        });
+    </script>
+</body>
+</html>
