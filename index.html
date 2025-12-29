@@ -1,1756 +1,1457 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>心理健康评估系统</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <title>Regenix - Knee Rehabilitation Exoskeleton</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-/* 基础CSS变量和通用样式 */
-:root {
-    --primary-color: #667eea;
-    --secondary-color: #764ba2;
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-secondary: linear-gradient(135deg,#ced5f8 0%,#ffffff 100%);
-    --white: #ffffff;
-    --gray-50: #f9fafb;
-    --gray-600: #6b7280;
-    --gray-900: #111827;
-    --success-color: #10b981;
-    --transition-normal: all 0.3s ease;
-    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.1);
-    --shadow-2xl: 0 25px 50px rgba(0, 0, 0, 0.15);
-    --radius-2xl: 1rem;
-}
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-    line-height: 1.6;
-    color: var(--gray-900);
-}
-
-.container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-}
-
-/* 导航栏样式 */
-.navbar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    z-index: 1000;
-    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
-    transition: var(--transition-normal);
-}
-
-.nav-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 1rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: 800;
-    color: var(--primary-color);
-}
-
-.nav-menu {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-}
-
-.nav-link {
-    text-decoration: none;
-    color: var(--gray-600);
-    font-weight: 500;
-    transition: var(--transition-normal);
-    position: relative;
-}
-
-.nav-link:hover,
-.nav-link.active {
-    color: var(--primary-color);
-}
-
-.nav-link.active::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 0;
-    right: 0;
-    height: 2px;
-    background: var(--primary-color);
-    border-radius: 1px;
-}
-
-.nav-btn {
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    font-weight: 600;
-    transition: var(--transition-normal);
-}
-
-.nav-btn.primary {
-    background: var(--gradient-primary);
-    color: var(--white);
-}
-
-.nav-btn.primary:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.nav-toggle {
-    display: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-/* 按钮样式 */
-.btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 1rem 2rem;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    font-weight: 600;
-    transition: var(--transition-normal);
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-.btn-primary {
-    background: var(--gradient-primary);
-    color: var(--white);
-}
-
-.btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg);
-}
-
-.btn-outline {
-    background: transparent;
-    color: var(--white);
-    border: 2px solid rgba(255, 255, 255, 0.3);
-}
-
-.btn-outline:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.5);
-}
-
-/* 节标题样式 */
-.section-header {
-    text-align: center;
-    margin-bottom: 3rem;
-}
-
-.section-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-    background: var(--gradient-primary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.section-subtitle {
-    font-size: 1.25rem;
-    color: var(--gray-600);
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.gradient-text {
-    background: var(--gradient-secondary);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* 页脚样式 */
-.footer {
-    background: var(--gray-900);
-    color: var(--white);
-    padding: 3rem 0 1rem;
-    text-align: center;
-}
-
-.footer-content {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 2rem;
-    margin-bottom: 2rem;
-    text-align: center;
-}
-
-.footer-section h4 {
-    margin-bottom: 1rem;
-    font-size: 1.125rem;
-    font-weight: 600;
-}
-
-.footer-section ul {
-    list-style: none;
-}
-
-.footer-section ul li {
-    margin-bottom: 0.5rem;
-}
-
-.footer-section ul li a {
-    color: var(--gray-400);
-    text-decoration: none;
-    transition: var(--transition-normal);
-}
-
-.footer-section ul li a:hover {
-    color: var(--white);
-}
-
-.footer-logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    font-size: 1.5rem;
-    font-weight: 800;
-    margin-bottom: 1rem;
-}
-
-.social-links {
-    display: flex;
-    gap: 1rem;
-    margin-top: 1rem;
-}
-
-.social-links a {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--white);
-    text-decoration: none;
-    transition: var(--transition-normal);
-}
-
-.social-links a:hover {
-    background: var(--primary-color);
-}
-
-.footer-bottom {
-    text-align: center;
-    padding-top: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    color: var(--gray-400);
-}
-
-/* 首页专用样式 */
-/* 英雄区域 */
-.hero {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    position: relative;
-    background: var(--gradient-primary);
-    overflow: hidden;
-}
-
-.hero-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 1;
-}
-
-.particle {
-    position: absolute;
-    width: 20px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
-    animation: float var(--duration, 10s) ease-in-out infinite;
-    left: var(--x, 50%);
-    top: var(--y, 50%);
-}
-
-@keyframes float {
-    0%, 100% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 0.7;
-    }
-    50% {
-        transform: translateY(-30px) rotate(180deg);
-        opacity: 1;
-    }
-}
-
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.hero-content {
-    position: relative;
-    z-index: 2;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 4rem;
-    align-items: center;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 2rem;
-    color: var(--white);
-}
-
-.hero-text {
-    animation: fadeInUp 1s ease-out;
-}
-
-.hero-title {
-    font-size: 3.5rem;
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 1.5rem;
-}
-
-.hero-subtitle {
-    font-size: 1.25rem;
-    opacity: 0.9;
-    margin-bottom: 2rem;
-    line-height: 1.6;
-}
-
-.hero-buttons {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.hero-visual {
-    display: flex;
-    justify-content: center;
-    animation: fadeInUp 1s ease-out 0.3s both;
-}
-
-/* 图片滚动展示 */
-.image-gallery {
-    min-height: 100vh;
-    min-width: 1200px;
-    position: relative;
-    border-radius: var(--radius-2xl);
-    overflow: hidden;
-    box-shadow: var(--shadow-2xl);
-    background: var(--white);
-}
-
-.gallery-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.gallery-track {
-    display: flex;
-    width: 300%;
-    height: 100%;
-    animation: scroll 12s infinite linear;
-}
-
-.gallery-item {
-    flex: 0 0 33.333%;
-    height: 100%;
-    position: relative;
-    overflow: hidden;
-}
-
-.gallery-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: var(--radius-2xl);
-}
-
-.gallery-overlay {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: linear-gradient(transparent, rgba(0,0,0,0.7));
-    color: var(--white);
-    padding: 2rem 1.5rem 1.5rem;
-    text-align: center;
-}
-
-.gallery-overlay h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-}
-
-.gallery-overlay p {
-    font-size: 0.9rem;
-    opacity: 0.9;
-}
-
-@keyframes scroll {
-    0% {
-        transform: translateX(0);
-    }
-    33.333% {
-        transform: translateX(0);
-    }
-    36.666% {
-        transform: translateX(-33.333%);
-    }
-    66.666% {
-        transform: translateX(-33.333%);
-    }
-    70% {
-        transform: translateX(-66.666%);
-    }
-    100% {
-        transform: translateX(-66.666%);
-    }
-}
-
-.gallery-container:hover .gallery-track {
-    animation-play-state: paused;
-}
-
-/* 功能特色 */
-.features {
-    padding: 6rem 0;
-    background: var(--gray-50);
-}
-
-.features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-    gap: 2rem;
-    margin-top: 3rem;
-}
-
-.feature-card {
-    background: var(--white);
-    padding: 2.5rem;
-    border-radius: var(--radius-2xl);
-    box-shadow: var(--shadow-lg);
-    transition: var(--transition-normal);
-    position: relative;
-    overflow: hidden;
-}
-
-.feature-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: var(--gradient-primary);
-}
-
-.feature-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-2xl);
-}
-
-.feature-icon {
-    width: 80px;
-    height: 80px;
-    background: var(--gradient-primary);
-    border-radius: var(--radius-2xl);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-    color: var(--white);
-    font-size: 2rem;
-}
-
-.feature-card h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
-    color: var(--gray-900);
-    margin-bottom: 1rem;
-}
-
-.feature-card p {
-    color: var(--gray-600);
-    line-height: 1.6;
-    margin-bottom: 1.5rem;
-}
-
-.feature-list {
-    list-style: none;
-}
-
-.feature-list li {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--gray-600);
-    margin-bottom: 0.5rem;
-    font-size: 0.9rem;
-}
-
-.feature-list li::before {
-    content: '✓';
-    color: var(--success-color);
-    font-weight: bold;
-    width: 16px;
-    height: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: rgba(16, 185, 129, 0.1);
-    border-radius: 50%;
-    flex-shrink: 0;
-}
-
-/* 工作流程 */
-.process {
-    padding: 6rem 0;
-    background: var(--white);
-}
-
-.process-timeline {
-    max-width: 800px;
-    margin: 0 auto;
-    position: relative;
-}
-
-.process-timeline::before {
-    content: '';
-    position: absolute;
-    left: 50%;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--gradient-primary);
-    transform: translateX(-50%);
-}
-
-.process-step {
-    display: flex;
-    align-items: center;
-    margin-bottom: 4rem;
-    position: relative;
-}
-
-.process-step:nth-child(even) {
-    flex-direction: row-reverse;
-}
-
-.process-step:nth-child(even) .step-content {
-    text-align: right;
-}
-
-.step-number {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 60px;
-    height: 60px;
-    background: var(--gradient-primary);
-    color: var(--white);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    font-weight: bold;
-    z-index: 2;
-    box-shadow: var(--shadow-lg);
-}
-
-.step-content {
-    flex: 1;
-    max-width: 300px;
-    padding: 0 2rem;
-}
-
-.step-content h3 {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: var(--gray-900);
-    margin-bottom: 0.5rem;
-}
-
-.step-content p {
-    color: var(--gray-600);
-    line-height: 1.6;
-}
-
-.step-icon {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0 2rem;
-}
-
-.step-icon i {
-    font-size: 4rem;
-    color: var(--primary-color);
-    opacity: 0.3;
-}
-
-/* 统计数据 */
-.stats {
-    padding: 4rem 0;
-    background: var(--gradient-primary);
-    color: var(--white);
-}
-
-.stats-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 2rem;
-}
-
-.stat-item {
-    text-align: center;
-    padding: 2rem;
-}
-
-.stat-number {
-    font-size: 3rem;
-    font-weight: 800;
-    display: block;
-    margin-bottom: 0.5rem;
-    background: rgba(255, 255, 255, 0.2);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-.stat-label {
-    font-size: 1.125rem;
-    opacity: 0.9;
-    font-weight: 500;
-}
-
-/* AOS 动画 */
-[data-aos] {
-    opacity: 0;
-    transition: opacity 0.8s ease, transform 0.8s ease;
-}
-
-[data-aos].aos-animate {
-    opacity: 1;
-}
-
-[data-aos="fade-up"] {
-    transform: translateY(30px);
-}
-
-[data-aos="fade-up"].aos-animate {
-    transform: translateY(0);
-}
-
-[data-aos="fade-left"] {
-    transform: translateX(-30px);
-}
-
-[data-aos="fade-left"].aos-animate {
-    transform: translateX(0);
-}
-
-[data-aos="fade-right"] {
-    transform: translateX(30px);
-}
-
-[data-aos="fade-right"].aos-animate {
-    transform: translateX(0);
-}
-
-[data-aos="zoom-in"] {
-    transform: scale(0.8);
-}
-
-[data-aos="zoom-in"].aos-animate {
-    transform: scale(1);
-}
-
-/* 响应式设计 */
-@media (max-width: 1024px) {
-    .hero-content {
-        grid-template-columns: 1fr;
-        gap: 3rem;
-        text-align: center;
-    }
-    
-    .hero-title {
-        font-size: 2.5rem;
-    }
-    
-    .image-gallery {
-        width: 350px;
-        height: 300px;
-    }
-    
-    .features-grid {
-        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    }
-}
-
-@media (max-width: 768px) {
-    .nav-menu {
-        display: none;
-    }
-    
-    .nav-toggle {
-        display: block;
-    }
-    
-    .hero {
-        padding: 2rem 0;
-    }
-    
-    .hero-title {
-        font-size: 2rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1.125rem;
-    }
-    
-    .hero-buttons {
-        justify-content: center;
-    }
-    
-    .image-gallery {
-        width: 280px;
-        height: 250px;
-    }
-    
-    .features {
-        padding: 4rem 0;
-    }
-    
-    .features-grid {
-        grid-template-columns: 1fr;
-        gap: 1.5rem;
-    }
-    
-    .feature-card {
-        padding: 2rem;
-    }
-    
-    .process {
-        padding: 4rem 0;
-    }
-    
-    .process-timeline::before {
-        left: 30px;
-    }
-    
-    .process-step {
-        flex-direction: row !important;
-        margin-bottom: 3rem;
-    }
-    
-    .process-step:nth-child(even) .step-content {
-        text-align: left;
-    }
-    
-    .step-number {
-        left: 30px;
-    }
-    
-    .step-content {
-        margin-left: 80px;
-        padding: 0;
-        max-width: none;
-    }
-    
-    .step-icon {
-        display: none;
-    }
-    
-    .stats-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-    
-    .stat-item {
-        padding: 1.5rem;
-    }
-    
-    .stat-number {
-        font-size: 2rem;
-    }
-}
-
-@media (max-width: 480px) {
-    .hero-content {
-        padding: 0 1rem;
-    }
-    
-    .hero-title {
-        font-size: 1.75rem;
-    }
-    
-    .hero-subtitle {
-        font-size: 1rem;
-    }
-    
-    .image-gallery {
-        width: 250px;
-        height: 220px;
-    }
-    
-    .feature-card {
-        padding: 1.5rem;
-    }
-    
-    .feature-icon {
-        width: 60px;
-        height: 60px;
-        font-size: 1.5rem;
-    }
-    
-    .stats-grid {
-        grid-template-columns: 1fr;
-    }
-}
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes fadeInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(30px);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 0.3;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        @keyframes scaleUp {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .animate-fade-in-up {
+            animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in-left {
+            animation: fadeInLeft 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in-right {
+            animation: fadeInRight 0.8s ease-out forwards;
+        }
+
+        .animate-float {
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .animate-pulse-slow {
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        .animate-scale-up {
+            animation: scaleUp 1s ease-out forwards;
+        }
+
+        /* Scroll animations */
+        .scroll-animate {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .scroll-animate.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Custom styles */
+        .hero-gradient {
+            background: linear-gradient(to bottom right, rgb(2, 6, 23), rgb(15, 23, 42), rgb(6, 78, 59));
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            padding: 15px 0;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1.5rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 50px;
+            width: auto;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .nav-btn.primary {
+            background: #10b981;
+            color: white;
+            border: none;
+        }
+
+        .nav-btn.secondary {
+            background: transparent;
+            color: #10b981;
+            border: 2px solid #10b981;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .nav-btn.primary:hover {
+            background: #059669;
+        }
+
+        @media (max-width: 768px) {
+            .nav-container {
+                flex-direction: column;
+                gap: 15px;
+                padding: 15px 1rem;
+            }
+
+            .logo {
+                font-size: 1.5em;
+            }
+
+            .nav-buttons {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.9em;
+            }
+        }
     </style>
 </head>
-<body>
-    <!-- 导航栏 -->
+<body class="min-h-screen relative overflow-x-hidden">
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <div class="nav-logo">
-                <i class="fas fa-brain"></i>
-                <span>MindCare</span>
-            </div>
-            <div class="nav-menu">
-                <a href="#home" class="nav-link active">Home Page</a>
-                <a href="#features" class="nav-link">Function</a>
-                <a href="about.html" class="nav-link">Mental Disorders</a>
-                <a href="team.html" class="nav-link">Team</a>
-                <a href="login.html" class="nav-btn primary">Enter The System</a>
-            </div>
-            <div class="nav-toggle">
-                <i class="fas fa-bars"></i>
+            <a href="index.html" class="logo">
+                <img src="assets/3771302c333636b32d7e848576ca15e212f526be.png" alt="Regenix Logo" class="logo-img">
+            </a>
+            <div class="nav-buttons">
+                <a href="#team" class="nav-btn secondary">About Us</a>
+                <a href="login.html" class="nav-btn primary">Enter System</a>
             </div>
         </div>
     </nav>
 
-    <!-- 主要内容 -->
-    <main>
-        <!-- 英雄区域 -->
-        <section id="home" class="hero">
-            <div class="hero-background">
-                <div class="image-gallery">
-                    <div class="gallery-container">
-                        <div class="gallery-track">
-                            <div class="gallery-item">
-                                <img src="image/index1.jpg">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="image/index2.jpg">
-                            </div>
-                            <div class="gallery-item">
-                                <img src="image/index3.jpg">
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-10 bg-gradient-to-br from-slate-50 via-white to-slate-50"></div>
+
+    <!-- Hero Section -->
+    <section class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <!-- Gradient background -->
+        <div class="absolute inset-0 hero-gradient"></div>
+
+        <!-- Radial glow effect -->
+        <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[800px] bg-emerald-500/10 rounded-full blur-3xl"></div>
+
+        <!-- Floating orbs -->
+        <div class="absolute top-20 right-20 w-72 h-72 bg-emerald-500/5 rounded-full blur-2xl animate-float"></div>
+        <div class="absolute bottom-40 left-20 w-96 h-96 bg-blue-500/5 rounded-full blur-2xl animate-float" style="animation-delay: 1s; animation-duration: 10s;"></div>
+
+        <div class="relative max-w-7xl mx-auto px-6 py-32 z-10">
+            <div class="max-w-4xl mx-auto">
+                <!-- Logo -->
+                <div class="mb-20 text-center animate-scale-up">
+                    <div class="relative inline-block">
+                        <!-- Outer glow ring -->
+                        <div class="absolute inset-0 -m-8 rounded-3xl bg-gradient-to-r from-emerald-500/30 via-blue-500/20 to-purple-500/30 blur-3xl animate-pulse-slow"></div>
+
+                        <!-- Glass card background -->
+                        <div class="relative bg-slate-800/40 backdrop-blur-xl border border-slate-700/50 rounded-2xl p-12 shadow-2xl">
+                            <!-- Corner accents -->
+                            <div class="absolute top-0 left-0 w-20 h-20 border-t-2 border-l-2 border-emerald-400/50 rounded-tl-2xl"></div>
+                            <div class="absolute top-0 right-0 w-20 h-20 border-t-2 border-r-2 border-emerald-400/50 rounded-tr-2xl"></div>
+                            <div class="absolute bottom-0 left-0 w-20 h-20 border-b-2 border-l-2 border-emerald-400/50 rounded-bl-2xl"></div>
+                            <div class="absolute bottom-0 right-0 w-20 h-20 border-b-2 border-r-2 border-emerald-400/50 rounded-br-2xl"></div>
+
+                            <!-- Inner glow -->
+                            <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-emerald-500/10 via-transparent to-blue-500/10"></div>
+
+                            <div class="relative text-white text-center">
+                                <img src="assets/3771302c333636b32d7e848576ca15e212f526be.png" alt="Regenix - Knee Rehab Exoskeleton" class="h-44 md:h-56 w-auto mx-auto drop-shadow-2xl object-contain" style="filter: brightness(0.9) contrast(1.2);">
                             </div>
                         </div>
                     </div>
+
+                    <!-- Tagline under logo -->
+                    <div class="mt-8">
+                        <p class="text-emerald-400 tracking-wider uppercase text-sm">
+                            Knee Rehabilitation Exoskeleton
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <div class="hero-content">
-                <div class="hero-text">
-                    <h1 class="hero-title">
-                        <span class="gradient-text">Care for mental health</span>
-                        <br>Start with scientific assessment
-                    </h1>
-                    <p class="hero-subtitle">
-                        Combining AI technology with professional psychological theories, we provide you with personalized mental health assessment and advice
+
+                <!-- Main tagline -->
+                <div class="text-center animate-fade-in-up" style="animation-delay: 0.3s;">
+                    <p class="text-2xl md:text-3xl text-slate-100 mb-6 max-w-3xl mx-auto leading-relaxed">
+                        A $250 knee exoskeleton that assists movement and tracks progress during rehab exercises at home.
                     </p>
-                    <div class="hero-buttons">
-                        <a href="login.html" class="btn btn-primary">
-                            <i class="fas fa-rocket"></i>
-                            Start evaluation
+                </div>
+
+                <div class="text-center animate-fade-in-up" style="animation-delay: 0.5s;">
+                    <p class="text-xl text-slate-300 mb-10 max-w-3xl mx-auto leading-relaxed">
+                        Unlike a normal knee brace, Regenix provides active assistance when your muscles fatigue and measures how you're improving over time—without requiring constant clinic visits.
+                    </p>
+                </div>
+
+                <!-- Stats cards -->
+                <div class="mt-16 grid sm:grid-cols-3 gap-6 max-w-3xl mx-auto animate-fade-in-up" style="animation-delay: 0.7s;">
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-emerald-600/10 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                        <div class="relative bg-slate-800/60 backdrop-blur-sm border border-emerald-500/20 rounded-xl p-6 hover:border-emerald-500/40 transition-all duration-300">
+                            <div class="text-4xl font-bold text-emerald-400 mb-3">&lt;3 kg</div>
+                            <div class="text-slate-300 leading-snug">Lightweight enough to wear during 30-minute sessions</div>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-blue-500/20 to-blue-600/10 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                        <div class="relative bg-slate-800/60 backdrop-blur-sm border border-blue-500/20 rounded-xl p-6 hover:border-blue-500/40 transition-all duration-300">
+                            <div class="text-4xl font-bold text-blue-400 mb-3">$250</div>
+                            <div class="text-slate-300 leading-snug">About 5% the cost of a robotic exoskeleton</div>
+                        </div>
+                    </div>
+
+                    <div class="relative group">
+                        <div class="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-purple-600/10 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300"></div>
+                        <div class="relative bg-slate-800/60 backdrop-blur-sm border border-purple-500/20 rounded-xl p-6 hover:border-purple-500/40 transition-all duration-300">
+                            <div class="text-4xl font-bold text-purple-400 mb-3">At home</div>
+                            <div class="text-slate-300 leading-snug">No clinic required after initial setup</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Shop CTA -->
+                <div class="mt-12 text-center animate-fade-in-up" style="animation-delay: 0.9s;">
+                    <a href="#shop" class="inline-flex items-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white px-8 py-6 text-lg rounded-xl shadow-lg hover:shadow-xl transition-all group">
+                        Pre-Order Now
+                        <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                        </svg>
+                    </a>
+                    <p class="mt-4 text-slate-400 text-sm">Early adopter pricing • Expected Q2 2026</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom fade -->
+        <div class="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent"></div>
+    </section>
+
+    <!-- Team Section -->
+    <section id="team" class="py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl md:text-5xl mb-4 text-slate-900">Our Team</h2>
+                <div class="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Built by people who've lived the problem we're solving
+                </p>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-8 md:p-12 mb-12 scroll-animate">
+                <h3 class="text-2xl mb-6 text-slate-900">How We Formed</h3>
+                <div class="space-y-4 text-lg text-slate-700">
+                    <p>
+                        Our team formed as teammates on the ski team, where we both experienced knee injuries that forced us into long and expensive recovery processes. While rehabbing, we spent hours comparing physical therapy bills, recovery timelines, and the frustration of inconsistent access to effective rehabilitation tools.
+                    </p>
+                    <p>
+                        Those conversations made the problem personal: we realized that recovery quality often depends more on cost and access than medical need. That shared experience motivated us to build a solution that could make high-quality knee rehabilitation affordable and accessible to others facing the same challenges.
+                    </p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-12">
+                <div class="bg-white border-2 border-slate-200 rounded-2xl overflow-hidden scroll-animate">
+                    <div class="aspect-square bg-slate-100">
+                        <img src="assets/ad74d1acbde1ad07cf727f8bb912fdd120a568f9.png" alt="Anthony - Engineering Lead" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl mb-2 text-slate-900">Anthony</h3>
+                        <p class="text-emerald-600 mb-4">Biomechanics & Mechanical Design</p>
+                        <p class="text-slate-700 mb-4">
+                            Leads the engineering side of the project, focusing on biomechanics, mechanical design, prototyping, and validating the semi-rigid, cable-driven system that assists movement.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="bg-white border-2 border-slate-200 rounded-2xl overflow-hidden scroll-animate">
+                    <div class="aspect-square bg-slate-100">
+                        <img src="assets/d9be8429cfd49f15d98f5b49342c822ea53c27b4.png" alt="Leo - Business Lead" class="w-full h-full object-cover">
+                    </div>
+                    <div class="p-8">
+                        <h3 class="text-2xl mb-2 text-slate-900">Leo</h3>
+                        <p class="text-blue-600 mb-4">Business & Strategy</p>
+                        <p class="text-slate-700 mb-4">
+                            Leads the business and strategy side, including market analysis, customer discovery, pricing, and go-to-market planning. Ensures the solution is commercially viable and reaches the people who need it.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="relative overflow-hidden bg-gradient-to-br from-emerald-900 via-slate-900 to-slate-950 rounded-3xl p-12 md:p-16 scroll-animate">
+                <!-- Animated background effect -->
+                <div class="absolute inset-0 opacity-10">
+                    <div class="absolute top-0 right-0 w-96 h-96 bg-emerald-500 rounded-full blur-3xl animate-pulse"></div>
+                    <div class="absolute bottom-0 left-0 w-96 h-96 bg-blue-500 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+                </div>
+
+                <div class="relative z-10">
+                    <div class="text-center mb-12">
+                        <h3 class="text-4xl md:text-5xl mb-4 text-white">
+                            Regenix
+                        </h3>
+                        <div class="h-1 w-24 bg-gradient-to-r from-emerald-400 to-blue-400 mx-auto mb-6 rounded-full"></div>
+                        <p class="text-xl md:text-2xl text-emerald-300">
+                            Recovery + Next-Generation Technology
+                        </p>
+                    </div>
+
+                    <div class="bg-white/10 backdrop-blur-md border border-white/20 p-8 md:p-10 rounded-2xl">
+                        <p class="text-2xl md:text-3xl italic text-white mb-6 leading-relaxed">
+                            "Regenix doesn't just support your knee. It helps you recover."
+                        </p>
+                        <p class="text-lg md:text-xl text-slate-300 leading-relaxed">
+                            We wanted a name that signaled regeneration and progress, not just stabilization. This isn't a brace—it's a rehab tool.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-24 bg-gradient-to-b from-slate-50 to-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl md:text-5xl mb-4 text-slate-900">How Regenix Works</h2>
+                <div class="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    A semi-rigid exoskeleton that moves with your knee, not against it
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-start mb-20">
+                <div class="scroll-animate">
+                    <div class="space-y-4 mb-6">
+                        <img src="assets/a27742e3a210a6c0c0fa2baa1e13c05f7cc40168.png" alt="Regenix knee exoskeleton device - front view" class="rounded-2xl shadow-xl w-full">
+                        <img src="assets/eac26b97fc5abdac6a29fb1bcbc363be4249a630.png" alt="Regenix knee exoskeleton device - side view" class="rounded-2xl shadow-xl w-full">
+                    </div>
+                    <p class="text-slate-600 italic">
+                        The device attaches to your thigh and calf with adjustable straps. The linkage follows your knee's natural arc during movement.
+                    </p>
+                </div>
+
+                <div class="space-y-8 scroll-animate">
+                    <div>
+                        <h3 class="text-2xl mb-4 text-slate-900">What Happens Mechanically</h3>
+                        <div class="space-y-4 text-slate-700">
+                            <p>
+                                When you bend or straighten your knee, a five-bar linkage system moves with you. Unlike a rigid brace with a single hinge, this linkage tracks the combined rolling and sliding motion your knee naturally does.
+                            </p>
+                            <p>
+                                A cable system connected to the linkage can pull gently to assist extension (straightening) or flexion (bending). The assistance is controlled by a small motor, but most of the work is still done by your muscles. Think of it like training wheels—support when you need it, not a replacement for pedaling.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl mb-4 text-slate-900">What Happens Digitally</h3>
+                        <div class="space-y-4 text-slate-700">
+                            <p>
+                                Sensors measure three things: knee angle, movement speed, and the force being applied by your leg. Every time you do a repetition, the device records whether you completed the full range of motion and how much assistance was needed.
+                            </p>
+                            <p>
+                                An onboard algorithm compares today's session to previous ones. If you're completing reps with less assistance or moving through a wider range, the device flags that as progress. If fatigue is detected (slower reps, more assistance needed), it suggests stopping before form breaks down.
+                            </p>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3 class="text-2xl mb-4 text-slate-900">What You Feel</h3>
+                        <div class="space-y-4 text-slate-700">
+                            <p>
+                                At first, the device feels snug but not restrictive. When you start an exercise, it moves smoothly with your leg—there's no fighting against a rigid hinge.
+                            </p>
+                            <p>
+                                When your muscles start to tire, you'll feel a gentle pull helping you complete the movement. It's not dramatic—more like someone placing a hand under your knee and giving a small boost. As you get stronger, you'll notice the device assisting less over time.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-white border-2 border-slate-200 rounded-2xl p-10 scroll-animate">
+                <h3 class="text-3xl mb-8 text-center text-slate-900">The Key Components</h3>
+                <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="mb-2 text-slate-900 font-semibold">Five-bar linkage</h4>
+                        <p class="text-slate-600">Follows the knee's natural instant center of rotation. Eliminates the pressure points caused by single-axis hinges.</p>
+                    </div>
+
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="mb-2 text-slate-900 font-semibold">Cable-driven assist</h4>
+                        <p class="text-slate-600">Lightweight tensile cables provide smooth, variable assistance. Motor activates only when needed based on real-time force sensing.</p>
+                    </div>
+
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="mb-2 text-slate-900 font-semibold">IMU + force sensors</h4>
+                        <p class="text-slate-600">Inertial measurement units track position and velocity. Force sensor measures leg output to calculate fatigue.</p>
+                    </div>
+
+                    <div>
+                        <div class="w-14 h-14 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                            </svg>
+                        </div>
+                        <h4 class="mb-2 text-slate-900 font-semibold">Embedded algorithm</h4>
+                        <p class="text-slate-600">Runs locally on the device. Compares current performance to baseline. Flags progress or regression in real time.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Training Modes Section -->
+    <section class="py-24 bg-gradient-to-b from-white to-slate-50">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl md:text-5xl mb-4 text-slate-900">Four Adaptive Training Modes</h2>
+                <div class="w-24 h-1 bg-blue-600 mx-auto mb-6"></div>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Regenix adapts to different recovery phases with intelligent assistance that responds to patient effort
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="bg-white border-2 border-slate-200 rounded-xl p-8 hover:shadow-xl transition-shadow scroll-animate">
+                    <div class="w-14 h-14 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl mb-3 text-slate-900">Assistive Training</h3>
+                    <p class="text-slate-700 mb-4">
+                        Provides continuous motor support to help patients initiate and complete movements when strength is limited.
+                    </p>
+                    <p class="text-slate-600 mb-6">
+                        The motor actively assists throughout the entire range of motion, making it ideal for early-stage recovery when patients struggle to complete basic movements on their own.
+                    </p>
+                    <div class="aspect-video w-full rounded-xl overflow-hidden mb-4">
+                        <iframe class="w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1WqBrBXEUN&page=1&high_quality=1&autoplay=0" title="Assistive Training demonstration" scrolling="no" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <div class="bg-white border-2 border-slate-200 rounded-xl p-8 hover:shadow-xl transition-shadow scroll-animate">
+                    <div class="w-14 h-14 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl mb-3 text-slate-900">Protective Training</h3>
+                    <p class="text-slate-700 mb-4">
+                        Requires active user effort—the motor only engages once the patient applies a minimum force threshold.
+                    </p>
+                    <p class="text-slate-600 mb-6">
+                        This ensures assistance is given only when the user is genuinely attempting the movement, preventing passive reliance and encouraging active muscle engagement.
+                    </p>
+                    <div class="aspect-video w-full rounded-xl overflow-hidden mb-4">
+                        <iframe class="w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1e6vHBMEWP&page=1&high_quality=1&autoplay=0" title="Protective Training demonstration" scrolling="no" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <div class="bg-white border-2 border-slate-200 rounded-xl p-8 hover:shadow-xl transition-shadow scroll-animate">
+                    <div class="w-14 h-14 rounded-xl bg-slate-100 text-slate-600 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl mb-3 text-slate-900">Resistive Training</h3>
+                    <p class="text-slate-700 mb-4">
+                        Scales resistance based on the patient's own force input: the harder they push, the more resistance the system applies.
+                    </p>
+                    <p class="text-slate-600 mb-6">
+                        This enables controlled strength development by automatically adjusting difficulty to match the user's current output, creating an adaptive challenge.
+                    </p>
+                    <div class="aspect-video w-full rounded-xl overflow-hidden mb-4">
+                        <iframe class="w-full h-full" src="https://player.bilibili.com/player.html?bvid=BV1e6vHBMEZU&page=1&high_quality=1&autoplay=0" title="Resistive Training demonstration" scrolling="no" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                </div>
+
+                <div class="bg-white border-2 border-slate-200 rounded-xl p-8 hover:shadow-xl transition-shadow scroll-animate">
+                    <div class="w-14 h-14 rounded-xl bg-violet-100 text-violet-600 flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl mb-3 text-slate-900">Testing Mode</h3>
+                    <p class="text-slate-700 mb-4">
+                        Runs standardized movements to measure force and joint angle, generating objective data to track progress.
+                    </p>
+                    <p class="text-slate-600 mb-6">
+                        These measurements provide quantifiable metrics that help personalize training protocols and identify when patients are ready to advance to more challenging exercises.
+                    </p>
+                    <div class="mt-4 space-y-4">
+                        <img src="assets/4d71609c7b80e74483a0746a727819c9e68d804f.png" alt="Regenix Advanced Rehabilitation Analytics Platform dashboard" class="rounded-xl w-full shadow-lg border border-slate-200">
+                        <div class="pt-4 border-t border-slate-200">
+                            <a href="login.html" class="inline-flex items-center gap-2 text-violet-600 hover:text-violet-700 hover:underline transition-colors">
+                                Log in to the system to use Testing Mode →
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-10 scroll-animate">
+                <h3 class="text-2xl mb-4">Progressive Recovery Path</h3>
+                <p class="text-lg text-slate-200">
+                    Patients typically start with Assistive Training when strength is lowest, progress to Protective Training as they regain voluntary control, then advance to Resistive Training for strength building. Testing Mode is used periodically throughout to objectively measure progress and inform when to increase difficulty.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- RENA AI Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl md:text-5xl mb-4 text-slate-900">Meet RENA</h2>
+                <div class="w-24 h-1 bg-violet-600 mx-auto mb-6"></div>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Regenerative Exoskeleton Network Assistant—the AI that guides your recovery
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 items-center mb-16">
+                <div class="space-y-6 scroll-animate">
+                    <div class="bg-gradient-to-br from-violet-50 to-blue-50 rounded-2xl p-8 border border-violet-200">
+                        <div class="flex items-start gap-4 mb-4">
+                            <div class="w-12 h-12 rounded-xl bg-violet-600 text-white flex items-center justify-center flex-shrink-0">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <h3 class="text-2xl mb-2 text-slate-900">What RENA Does</h3>
+                                <p class="text-slate-700">
+                                    RENA is the embedded software that runs on the Regenix device. It processes sensor data in real time, adjusts training modes based on your performance, and provides verbal or visual cues to guide you through exercises.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4 text-slate-700">
+                        <p>
+                            During a session, RENA monitors your knee angle, movement velocity, and force output. If you're struggling to complete a rep, it switches from Protective to Assistive mode. If you're breezing through sets, it increases resistance automatically.
+                        </p>
+                        <p>
+                            RENA also tracks fatigue patterns. If your movement speed drops or you start compensating with your hip instead of your knee, it suggests taking a break or ending the session early to prevent injury.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="space-y-6 scroll-animate">
+                    <div class="bg-white border-2 border-slate-200 rounded-xl p-6">
+                        <div class="flex items-start gap-3 mb-3">
+                            <svg class="w-6 h-6 text-blue-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                            </svg>
+                            <div>
+                                <h4 class="text-lg mb-2 text-slate-900 font-semibold">Real-Time Feedback</h4>
+                                <p class="text-slate-600">
+                                    Simple audio cues like "good rep," "increase range," or "slow down" help you adjust form without staring at a screen. Visual progress bars show how close you are to completing a set.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border-2 border-slate-200 rounded-xl p-6">
+                        <div class="flex items-start gap-3 mb-3">
+                            <svg class="w-6 h-6 text-emerald-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+                            </svg>
+                            <div>
+                                <h4 class="text-lg mb-2 text-slate-900 font-semibold">Adaptive Progression</h4>
+                                <p class="text-slate-600">
+                                    RENA compares your current session to previous ones and automatically adjusts difficulty. If you've hit the same performance metrics three sessions in a row, it suggests increasing resistance or range of motion.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white border-2 border-slate-200 rounded-xl p-6">
+                        <div class="flex items-start gap-3 mb-3">
+                            <svg class="w-6 h-6 text-slate-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                            </svg>
+                            <div>
+                                <h4 class="text-lg mb-2 text-slate-900 font-semibold">Safety Guardrails</h4>
+                                <p class="text-slate-600">
+                                    RENA has built-in limits based on clinical protocols. It won't let you progress to Resistive Training until you've demonstrated consistent performance in Protective mode. It stops sessions if it detects compensation patterns that could cause secondary injuries.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-slate-900 to-slate-800 text-white rounded-2xl p-10 scroll-animate">
+                <h3 class="text-2xl mb-4">Not a Replacement for Clinical Judgment</h3>
+                <p class="text-lg text-slate-200 mb-4">
+                    RENA handles the repetitive work—counting reps, monitoring form, adjusting resistance—but it doesn't replace a physical therapist's expertise. Complex decisions about when to progress to new exercises, how to address pain, or when surgical intervention is needed still require human clinical judgment.
+                </p>
+                <p class="text-slate-300">
+                    Think of RENA as the assistant that keeps you on track between PT visits, not the one making diagnostic decisions.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Differentiation Section -->
+    <section class="py-24 bg-slate-900 text-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl md:text-5xl mb-4">How Are We Different?</h2>
+                <div class="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
+                <p class="text-xl text-slate-300">
+                    Three comparisons that matter
+                </p>
+            </div>
+
+            <div class="space-y-6">
+                <!-- vs Knee Brace -->
+                <div class="bg-slate-800 rounded-xl overflow-hidden scroll-animate">
+                    <div class="grid md:grid-cols-2 gap-px bg-slate-700">
+                        <div class="bg-slate-800 p-8">
+                            <div class="mb-6">
+                                <img src="assets/2b910ab1de01dcc548f030853623db48fe0b22c7.png" alt="Traditional knee brace" class="w-full h-64 object-cover rounded-lg">
+                            </div>
+                            <h3 class="text-2xl mb-4 text-slate-300">Traditional Knee Brace</h3>
+                            <ul class="space-y-3 text-slate-400">
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>Passive support only—restricts movement but doesn't assist it</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>No feedback on whether exercises are being done correctly</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>Fixed compression—doesn't adapt to fatigue or effort</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>Can cause discomfort if hinge doesn't align with knee's natural motion</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-800 p-8 border-l-4 border-emerald-500 flex flex-col justify-center">
+                            <div class="mb-6 text-center">
+                                <div class="inline-block bg-emerald-500/10 rounded-full p-6 mb-4">
+                                    <svg class="w-20 h-20 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-4xl font-bold text-emerald-400 mb-2">Regenix</div>
+                                <div class="text-sm text-emerald-300/70">Active Assistance</div>
+                            </div>
+                            <ul class="space-y-3 text-slate-200">
+                                <li class="flex items-start gap-3">
+                                    <span class="text-emerald-400 mt-1">✓</span>
+                                    <span>Active assistance—helps complete movements when muscles tire</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-emerald-400 mt-1">✓</span>
+                                    <span>Tracks range of motion, force output, and fatigue in real time</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-emerald-400 mt-1">✓</span>
+                                    <span>Adaptive support—adjusts based on detected effort and form</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-emerald-400 mt-1">✓</span>
+                                    <span>Five-bar linkage follows knee's natural rolling motion</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- vs PT -->
+                <div class="bg-slate-800 rounded-xl overflow-hidden scroll-animate">
+                    <div class="grid md:grid-cols-2 gap-px bg-slate-700">
+                        <div class="bg-slate-800 p-8">
+                            <div class="mb-6">
+                                <img src="assets/04acb7e203b23dc131426a66687855efa51c36fe.png" alt="Physical therapy session" class="w-full h-64 object-cover rounded-lg">
+                            </div>
+                            <h3 class="text-2xl mb-4 text-slate-300">In-Clinic Physical Therapy</h3>
+                            <ul class="space-y-3 text-slate-400">
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>$100-200 per session, often 2-3x per week for months</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>Requires transportation, scheduling, and time off work</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>Home exercises often done without feedback or accountability</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>Coverage often limited by insurance—many stop before recovery is complete</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-800 p-8 border-l-4 border-blue-500 flex flex-col justify-center">
+                            <div class="mb-6 text-center">
+                                <div class="inline-block bg-blue-500/10 rounded-full p-6 mb-4">
+                                    <svg class="w-20 h-20 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-4xl font-bold text-blue-400 mb-2">Regenix</div>
+                                <div class="text-sm text-blue-300/70">Home-Based Rehab</div>
+                            </div>
+                            <ul class="space-y-3 text-slate-200">
+                                <li class="flex items-start gap-3">
+                                    <span class="text-blue-400 mt-1">✓</span>
+                                    <span>One-time cost of $250—about the price of 1-2 PT sessions</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-blue-400 mt-1">✓</span>
+                                    <span>Use at home, on your schedule—no travel or appointments needed</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-blue-400 mt-1">✓</span>
+                                    <span>Provides real-time feedback on form, range, and progress during home sessions</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-blue-400 mt-1">✓</span>
+                                    <span>Not a replacement for PT, but extends what you can do between or after sessions</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- vs Robotic Exo -->
+                <div class="bg-slate-800 rounded-xl overflow-hidden scroll-animate">
+                    <div class="grid md:grid-cols-2 gap-px bg-slate-700">
+                        <div class="bg-slate-800 p-8">
+                            <div class="mb-6">
+                                <img src="assets/5cb16ec832da283e81a3e7390bc0cdb611ef37d6.png" alt="Clinical robotic exoskeleton" class="w-full h-64 object-cover rounded-lg">
+                            </div>
+                            <h3 class="text-2xl mb-4 text-slate-300">Clinical Robotic Exoskeleton</h3>
+                            <ul class="space-y-3 text-slate-400">
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>$5,000-50,000+ per device—clinic-only, not for home use</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>Heavy (5-15 kg), requires setup assistance, tethered to power</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>Often designed for full-body paralysis or severe impairment</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-red-400 mt-1">×</span>
+                                    <span>Complex calibration, requires trained operator</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-slate-800 p-8 border-l-4 border-purple-500 flex flex-col justify-center">
+                            <div class="mb-6 text-center">
+                                <div class="inline-block bg-purple-500/10 rounded-full p-6 mb-4">
+                                    <svg class="w-20 h-20 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-4xl font-bold text-purple-400 mb-2">Regenix</div>
+                                <div class="text-sm text-purple-300/70">Personal Device</div>
+                            </div>
+                            <ul class="space-y-3 text-slate-200">
+                                <li class="flex items-start gap-3">
+                                    <span class="text-purple-400 mt-1">✓</span>
+                                    <span>$250—designed for affordability and personal ownership</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-purple-400 mt-1">✓</span>
+                                    <span>Lightweight (&lt;3 kg), battery-powered, put on independently in 90 seconds</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-purple-400 mt-1">✓</span>
+                                    <span>Targeted for post-injury rehab—ACL, meniscus, partial knee replacement</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <span class="text-purple-400 mt-1">✓</span>
+                                    <span>Self-calibrating, designed for unsupervised use after initial training</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12 bg-slate-800 border-2 border-slate-700 rounded-xl p-8 text-center scroll-animate">
+                <p class="text-xl text-slate-300">
+                    <strong class="text-white">In short:</strong> Regenix sits between a passive brace and a clinical robot—offering active assistance and objective feedback at a price point that makes sense for home use.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section -->
+    <section class="py-24 bg-white">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16 scroll-animate">
+                <h2 class="text-4xl md:text-5xl mb-4 text-slate-900">Where Regenix Gets Used</h2>
+                <div class="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
+                <p class="text-xl text-slate-600">
+                    Real scenarios from pilot testing and user interviews
+                </p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8 mb-16">
+                <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden scroll-animate">
+                    <img src="https://images.unsplash.com/photo-1555412568-12659dc76380?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxhdGhsZXRlJTIwcmVjb3ZlcnklMjB0cmFpbmluZ3xlbnwxfHx8fDE3NjYxODk4MzF8MA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Post-surgery home recovery" class="w-full h-48 object-cover">
+                    <div class="p-8">
+                        <h3 class="text-2xl mb-3 text-slate-900">Post-surgery home recovery</h3>
+                        <p class="text-sm text-emerald-600 mb-4">Suburban home, 30 minutes from clinic</p>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 mb-2">Context</h4>
+                            <p class="text-slate-700">Sarah had ACL reconstruction surgery 6 weeks ago. Her insurance covered 8 PT sessions, but she needs to continue strengthening exercises for another 3 months. Driving to the clinic twice a week isn't feasible with work.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 mb-2">How They Use It</h4>
+                            <p class="text-slate-700">She uses Regenix at home 3-4 times per week for guided strengthening exercises. The device tracks her range of motion and flags when she's compensating with her other leg. She still sees her PT once every two weeks for manual therapy and progression adjustments.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden scroll-animate">
+                    <img src="https://images.unsplash.com/photo-1609113160023-4e31f3765fd7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwaHlzaWNhbCUyMHRoZXJhcHklMjBrbmVlfGVufDF8fHx8MTc2NjI4NDEyOXww&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral" alt="Clinic-based supplemental tool" class="w-full h-48 object-cover">
+                    <div class="p-8">
+                        <h3 class="text-2xl mb-3 text-slate-900">Clinic-based supplemental tool</h3>
+                        <p class="text-sm text-emerald-600 mb-4">Physical therapy clinic, urban setting</p>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 mb-2">Context</h4>
+                            <p class="text-slate-700">A PT clinic has 4 Regenix devices available for patient use during sessions. Patients use them during exercises while therapists supervise other patients, allowing more efficient use of therapist time.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 mb-2">How They Use It</h4>
+                            <p class="text-slate-700">Patients strap on the device for specific exercises (e.g., leg extensions, step-ups). The PT reviews the real-time feedback to adjust resistance or form cues. Between clinic visits, some patients rent a device to maintain consistency at home.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden scroll-animate">
+                    <img src="assets/6fe20ee9c5d3389c00c03003a693774374d92924.png" alt="Remote area with limited PT access" class="w-full h-48 object-cover">
+                    <div class="p-8">
+                        <h3 class="text-2xl mb-3 text-slate-900">Remote area with limited PT access</h3>
+                        <p class="text-sm text-emerald-600 mb-4">Rural community, 90 minutes from nearest clinic</p>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 mb-2">Context</h4>
+                            <p class="text-slate-700">Marcus injured his knee playing high school basketball. The nearest physical therapist is an hour and a half away. His family can afford to make the drive once a month, but not weekly.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 mb-2">How They Use It</h4>
+                            <p class="text-slate-700">After an initial in-person assessment and device fitting, Marcus does guided rehab at home using Regenix. The device stores session data locally. During monthly check-ins, the PT reviews progress data and adjusts the exercise protocol.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 border border-slate-200 rounded-xl overflow-hidden scroll-animate">
+                    <img src="assets/517db3c45f88633858666a120439b17936d491a0.png" alt="Aging adult managing chronic knee pain" class="w-full h-48 object-cover">
+                    <div class="p-8">
+                        <h3 class="text-2xl mb-3 text-slate-900">Aging adult managing chronic knee pain</h3>
+                        <p class="text-sm text-emerald-600 mb-4">Retirement community</p>
+
+                        <div class="mb-4">
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 mb-2">Context</h4>
+                            <p class="text-slate-700">Helen is 68 and has early-stage osteoarthritis. She's not a candidate for surgery yet, but strengthening her quadriceps would reduce pain and delay progression. She tried home exercises before but had no way to know if she was doing them correctly.</p>
+                        </div>
+
+                        <div>
+                            <h4 class="text-sm uppercase tracking-wide text-slate-500 mb-2">How They Use It</h4>
+                            <p class="text-slate-700">She uses Regenix twice a week for low-impact strengthening. The device ensures she maintains proper range of motion and doesn't overextend. It also tracks whether her strength is improving or declining over months, helping her doctor make informed decisions about future treatment.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shop Section -->
+    <section id="shop" class="py-24 bg-gradient-to-b from-white via-slate-50 to-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <!-- Header -->
+            <div class="text-center mb-16 scroll-animate">
+                <h1 class="text-5xl md:text-6xl mb-4 text-slate-900">Get Regenix</h1>
+                <div class="w-24 h-1 bg-emerald-500 mx-auto mb-6"></div>
+                <p class="text-xl text-slate-600 max-w-3xl mx-auto">
+                    Start your recovery journey with affordable, at-home knee rehabilitation technology
+                </p>
+            </div>
+
+            <div class="grid lg:grid-cols-2 gap-12 mb-16">
+                <!-- Product Image -->
+                <div class="scroll-animate">
+                    <div class="bg-slate-50 rounded-3xl p-12 mb-6">
+                        <div class="max-w-lg mx-auto relative">
+                            <!-- Image Carousel -->
+                            <div class="carousel-container relative overflow-hidden rounded-2xl">
+                                <div class="carousel-images flex transition-transform duration-500 ease-in-out" id="carousel">
+                                    <img src="assets/ee4c0a34ba79f6f9e52646bbe3919f0e1482bdfe.png" alt="Regenix Knee Exoskeleton - Main" class="w-full h-96 object-contain flex-shrink-0">
+                                    <img src="assets/eac26b97fc5abdac6a29fb1bcbc363be4249a630.png" alt="Regenix Knee Exoskeleton - Side View" class="w-full h-96 object-contain flex-shrink-0">
+                                    <img src="assets/7914ca85c5ef455e879ec5ceadb3db8f13dd06c7.png" alt="Regenix Knee Exoskeleton - Detail" class="w-full h-96 object-contain flex-shrink-0">
+                                </div>
+                                <!-- Navigation Arrows -->
+                                <button onclick="prevSlide()" class="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 z-10">
+                                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                    </svg>
+                                </button>
+                                <button onclick="nextSlide()" class="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-white/90 hover:bg-white rounded-full shadow-lg flex items-center justify-center transition-all hover:scale-110 z-10">
+                                    <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </button>
+                                <!-- Dots -->
+                                <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-10">
+                                    <button onclick="goToSlide(0)" class="carousel-dot w-2 h-2 rounded-full bg-white/50 hover:bg-white transition-colors"></button>
+                                    <button onclick="goToSlide(1)" class="carousel-dot w-2 h-2 rounded-full bg-white/50 hover:bg-white transition-colors"></button>
+                                    <button onclick="goToSlide(2)" class="carousel-dot w-2 h-2 rounded-full bg-white/50 hover:bg-white transition-colors"></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- What's Included -->
+                    <div class="bg-white border border-slate-200 rounded-2xl p-8">
+                        <h3 class="text-2xl mb-6 text-slate-900">What's Included</h3>
+                        <div class="grid sm:grid-cols-2 gap-4">
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-slate-700 leading-tight pt-1.5">Regenix exoskeleton device</div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-slate-700 leading-tight pt-1.5">Charging cable & adapter</div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-slate-700 leading-tight pt-1.5">Quick start guide</div>
+                            </div>
+                            <div class="flex items-start gap-3">
+                                <div class="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                    </svg>
+                                </div>
+                                <div class="text-slate-700 leading-tight pt-1.5">Adjustment tools & straps</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Order Form -->
+                <div class="scroll-animate">
+                    <div class="bg-white border-2 border-slate-200 rounded-3xl p-8 sticky top-8">
+                        <!-- Pricing -->
+                        <div class="mb-8">
+                            <div class="flex items-baseline gap-3">
+                                <span class="text-5xl text-slate-900 font-bold">$250</span>
+                            </div>
+                        </div>
+
+                        <!-- Size Selection -->
+                        <div class="mb-8">
+                            <label class="block text-lg mb-4 text-slate-900 font-semibold">Select Size</label>
+                            <div class="grid grid-cols-3 gap-3 mb-4">
+                                <button class="size-btn py-3 px-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 transition-all">
+                                    <div class="font-semibold">S</div>
+                                </button>
+                                <button class="size-btn py-3 px-4 rounded-xl border-2 border-slate-200 bg-white text-slate-700 hover:border-slate-300 transition-all">
+                                    <div class="font-semibold">M</div>
+                                </button>
+                                <button class="size-btn py-3 px-4 rounded-xl border-2 border-slate-200 bg-white text-slate-700 hover:border-slate-300 transition-all">
+                                    <div class="font-semibold">L</div>
+                                </button>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 rounded-xl p-4">
+                                <div class="text-sm text-slate-600 space-y-1" id="size-details">
+                                    <p><span class="font-semibold">Thigh:</span> 16-19"</p>
+                                    <p><span class="font-semibold">Calf:</span> 12-14"</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Quantity -->
+                        <div class="mb-8">
+                            <label class="block text-lg mb-4 text-slate-900 font-semibold">Quantity</label>
+                            <div class="flex items-center gap-4">
+                                <button id="qty-minus" class="w-12 h-12 border-2 border-slate-200 rounded-xl hover:border-slate-300 transition-all text-xl font-bold">
+                                    −
+                                </button>
+                                <div id="qty-display" class="text-2xl w-16 text-center text-slate-900 font-semibold">1</div>
+                                <button id="qty-plus" class="w-12 h-12 border-2 border-slate-200 rounded-xl hover:border-slate-300 transition-all text-xl font-bold">
+                                    +
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Total -->
+                        <div class="mb-8 pb-8 border-b border-slate-200">
+                            <div class="flex justify-between items-center text-xl">
+                                <span class="text-slate-600">Total</span>
+                                <span id="total-price" class="text-slate-900 font-bold">$250</span>
+                            </div>
+                        </div>
+
+                        <!-- CTA Button -->
+                        <a href="mailto:regenixknee@gmail.com?subject=Regenix Order&body=I would like to order Regenix device(s)."
+                           class="block w-full h-14 text-lg bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl mb-4 flex items-center justify-center font-semibold transition-colors">
+                            Pre-Order Now
                         </a>
-                        <a href="#features" class="btn btn-outline">
-                            <i class="fas fa-info-circle"></i>
-                            Learn more
+
+                        <div class="flex items-center justify-center gap-2 text-sm text-slate-500 mb-6">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                            </svg>
+                            <span>Free shipping • Expected Q2 2026</span>
+                        </div>
+
+                        <!-- Trust badges -->
+                        <div class="grid grid-cols-3 gap-3 text-center text-xs text-slate-600">
+                            <div class="flex flex-col items-center gap-1">
+                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+                                </svg>
+                                <span>30-day return</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1">
+                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"></path>
+                                </svg>
+                                <span>2-year warranty</span>
+                            </div>
+                            <div class="flex flex-col items-center gap-1">
+                                <svg class="w-5 h-5 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                                <span>Global support</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Features List -->
+            <div class="bg-white border border-slate-200 rounded-3xl p-8 md:p-12 mb-16 scroll-animate">
+                <h3 class="text-3xl mb-8 text-slate-900">Everything You Need</h3>
+                <div class="grid md:grid-cols-2 gap-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg text-slate-700">Cable-driven assistance system</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg text-slate-700">Real-time motion tracking sensors</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg text-slate-700">RENA AI adaptive training</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg text-slate-700">Progress monitoring dashboard</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg text-slate-700">Adjustable support levels</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg text-slate-700">Rechargeable battery (8+ hours)</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg text-slate-700">Mobile app connectivity</span>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <div class="w-6 h-6 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                            </svg>
+                        </div>
+                        <span class="text-lg text-slate-700">Home rehab protocols</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Important Notice -->
+            <div class="bg-amber-50 border border-amber-200 rounded-2xl p-8 scroll-animate">
+                <div class="flex gap-4">
+                    <svg class="w-6 h-6 text-amber-600 flex-shrink-0 mt-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                    <div>
+                        <h4 class="text-xl mb-2 text-amber-900 font-bold">Important Information</h4>
+                        <div class="text-amber-800 space-y-2">
+                            <p>
+                                Regenix is currently in development and not FDA-approved or cleared for medical use. Pre-orders are for early adopters participating in our development program.
+                            </p>
+                            <p>
+                                By pre-ordering, you acknowledge this is a developmental device. Expected delivery Q2 2026. We'll keep you updated on progress.
+                            </p>
+                            <p class="font-semibold">
+                                This device is not intended to diagnose, treat, cure, or prevent any disease. Consult your healthcare provider before starting any rehabilitation program.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 text-slate-400 py-16">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid md:grid-cols-3 gap-12 mb-12">
+                <div>
+                    <h3 class="text-2xl text-white mb-4">Regenix</h3>
+                    <p class="text-lg text-slate-300 mb-6">
+                        Affordable knee rehabilitation for recovery at home
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-lg text-white mb-4">Quick Links</h4>
+                    <div class="space-y-2">
+                        <a href="#shop" class="flex items-center gap-2 text-slate-300 hover:text-emerald-400 transition-colors">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                            </svg>
+                            <span>Shop</span>
                         </a>
                     </div>
                 </div>
-            </div>
-        </section>
 
-        <!-- 功能特色 -->
-        <section id="features" class="features">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Main Function</h2>
-                    <p class="section-subtitle">A comprehensive mental health assessment solution</p>
-                </div>
-                <div class="features-grid">
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="0">
-                        <div class="feature-icon">
-                            <i class="fas fa-clipboard-list"></i>
-                        </div>
-                        <h3>Scientific questionnaire</h3>
-                        <p>Based on authoritative psychological scales, multi-dimensional assessment of psychological states is conducted to ensure the scientific and accurate nature of the results</p>
-                        <ul class="feature-list">
-                            <li>Emotional state assessment</li>
-                            <li>Pressure level measurement</li>
-                            <li>Analysis of sleep quality</li>
-                        </ul>
-                    </div>
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="100">
-                        <div class="feature-icon">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <h3>Brain image analysis</h3>
-                        <p>Supports brain images in NII and JPG formats, uses AI technology for in-depth analysis and feature extraction</p>
-                        <ul class="feature-list">
-                            <li>Structural anomaly detection</li>
-                            <li>Automatic feature extraction</li>
-                            <li>Intelligent classification diagnosis</li>
-                        </ul>
-                    </div>
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="200">
-                        <div class="feature-icon">
-                            <i class="fas fa-robot"></i>
-                        </div>
-                        <h3>Artifical intelligent suggestions</h3>
-                        <p>Based on the assessment results, advanced AI technology is utilized to generate personalized suggestions for mental health improvement</p>
-                        <ul class="feature-list">
-                            <li>Personalized solution</li>
-                            <li>Professional guidance and suggestions</li>
-                            <li>Continuous tracking and optimization</li>
-                        </ul>
-                    </div>
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="300">
-                        <div class="feature-icon">
-                            <i class="fas fa-chart-area"></i>
-                        </div>
-                        <h3>Trend analysis</h3>
-                        <p>Record historical assessment data, generate trend charts, and help users understand changes in their psychological states</p>
-                        <ul class="feature-list">
-                            <li>Comparison of historical data</li>
-                            <li>Improvement effect tracking</li>
-                            <li>Visualization report</li>
-                        </ul>
-                    </div>
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="400">
-                        <div class="feature-icon">
-                            <i class="fas fa-shield-alt"></i>
-                        </div>
-                        <h3>Privacy protection</h3>
-                        <p>Strictly adhere to data security norms to ensure that users' private information is protected at the highest level</p>
-                        <ul class="feature-list">
-                            <li>Encrypted data storage</li>
-                            <li>Anonymization processing</li>
-                            <li>Secure Transmission Protocol</li>
-                        </ul>
-                    </div>
-                    <div class="feature-card" data-aos="fade-up" data-aos-delay="500">
-                        <div class="feature-icon">
-                            <i class="fas fa-mobile-alt"></i>
-                        </div>
-                        <h3>Multi-terminal support</h3>
-                        <p>Responsive design, supporting multiple devices such as computers, tablets and mobile phones, allowing you to keep track of your mental health anytime and anywhere</p>
-                        <ul class="feature-list">
-                            <li>Cross-platform compatibility</li>
-                            <li>Real-time synchronization</li>
-                            <li>Offline functions</li>
-                        </ul>
+                <div>
+                    <h4 class="text-lg text-white mb-4">Contact Us</h4>
+                    <div class="space-y-3 text-slate-300">
+                        <p class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                            </svg>
+                            <a href="mailto:regenixknee@gmail.com" class="text-emerald-400 hover:text-emerald-300">
+                                regenixknee@gmail.com
+                            </a>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path>
+                            </svg>
+                            <a href="tel:+14133992182" class="text-emerald-400 hover:text-emerald-300">
+                                +1 (413) 399-2182
+                            </a>
+                        </p>
+                        <p class="flex items-start gap-2">
+                            <svg class="w-5 h-5 text-emerald-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            <span>106 Centre St<br>Milton, MA 02186</span>
+                        </p>
                     </div>
                 </div>
             </div>
-        </section>
 
-        <!-- 工作流程 -->
-        <section id="process" class="process">
-            <div class="container">
-                <div class="section-header">
-                    <h2 class="section-title">Evaluation process</h2>
-                    <p class="section-subtitle">Four simple steps to complete a professional mental health assessment</p>
-                </div>
-                <div class="process-timeline">
-                    <div class="process-step" data-aos="fade-right">
-                        <div class="step-number">1</div>
-                        <div class="step-content">
-                            <h3>Register & Login</h3>
-                            <p>Create your own dedicated account to ensure data security</p>
-                        </div>
-                        <div class="step-icon">
-                            <i class="fas fa-user-plus"></i>
-                        </div>
-                    </div>
-                    <div class="process-step" data-aos="fade-left">
-                        <div class="step-number">2</div>
-                        <div class="step-content">
-                            <h3>Fill out the questionnaire</h3>
-                            <p>Complete a scientific mental health assessment questionnaire</p>
-                        </div>
-                        <div class="step-icon">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                    </div>
-                    <div class="process-step" data-aos="fade-right">
-                        <div class="step-number">3</div>
-                        <div class="step-content">
-                            <h3>Upload the images</h3>
-                            <p>You can choose to upload brain images for in-depth analysis</p>
-                        </div>
-                        <div class="step-icon">
-                            <i class="fas fa-upload"></i>
-                        </div>
-                    </div>
-                    <div class="process-step" data-aos="fade-left">
-                        <div class="step-number">4</div>
-                        <div class="step-content">
-                            <h3>Get the report</h3>
-                            <p>Receive personalized assessment reports and improvement suggestions</p>
-                        </div>
-                        <div class="step-icon">
-                            <i class="fas fa-file-alt"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- 统计数据 -->
-        <section id="stats" class="stats">
-            <div class="container">
-                <div class="stats-grid">
-                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="100">
-                        <div class="stat-number" data-target="50000">0</div>
-                        <div class="stat-label">The capacity for users</div>
-                    </div>
-                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="200">
-                        <div class="stat-number" data-target="80">0</div>
-                        <div class="stat-label">Accuracy%</div>
-                    </div>
-                    <div class="stat-item" data-aos="zoom-in" data-aos-delay="300">
-                        <div class="stat-number" data-target="24">0</div>
-                        <div class="stat-label">hour service</div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 页脚 -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <div class="footer-logo">
-                        <i class="fas fa-brain"></i>
-                        <span>MindCare</span>
-                    </div>
-                    <p>A professional mental health assessment platform, safeguarding mental health with technology</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Menu</h4>
-                    <ul>
-                        <li><a href="#home">Home page</a></li>
-                        <li><a href="#features">Functions</a></li>
-                        <li><a href="team.html">Team introduction</a></li>
-                        <li><a href="login.html">Login</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h4>Contact information</h4>
-                    <ul>
-                        <li><i class="fas fa-envelope"></i> lyf0234abby@gmail.com</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 MindCare. All rights reserved.</p>
+            <div class="pt-8 border-t border-slate-800 text-center">
+                <p class="text-sm text-slate-500">
+                    © <span id="year"></span> Regenix. Currently in development. Not FDA-approved or cleared for medical use.
+                </p>
             </div>
         </div>
     </footer>
 
     <script>
-// 工具函数库
-const Utils = {
-    // 节流函数
-    throttle: function(func, limit) {
-        let inThrottle;
-        return function() {
-            const args = arguments;
-            const context = this;
-            if (!inThrottle) {
-                func.apply(context, args);
-                inThrottle = true;
-                setTimeout(() => inThrottle = false, limit);
-            }
-        }
-    },
+        // Set current year
+        document.getElementById('year').textContent = new Date().getFullYear();
 
-    // 防抖函数
-    debounce: function(func, delay) {
-        let timeoutId;
-        return function() {
-            const args = arguments;
-            const context = this;
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(() => func.apply(context, args), delay);
-        }
-    },
-
-    // 生成随机ID
-    generateId: function(length = 8) {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-        let result = '';
-        for (let i = 0; i < length; i++) {
-            result += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-        return result;
-    },
-
-    // 格式化数字
-    formatNumber: function(num) {
-        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
-    },
-
-    // 动画数字计数
-    animateNumber: function(element, target, duration = 2000) {
-        const start = parseInt(element.textContent) || 0;
-        const increment = (target - start) / (duration / 16);
-        let current = start;
-        
-        const timer = setInterval(() => {
-            current += increment;
-            if ((increment > 0 && current >= target) || (increment < 0 && current <= target)) {
-                current = target;
-                clearInterval(timer);
-            }
-            element.textContent = Math.floor(current);
-        }, 16);
-    }
-};
-
-// 简单的消息提示组件
-const toast = {
-    show: function(message, type = 'info', duration = 3000) {
-        const toast = document.createElement('div');
-        toast.className = `toast toast-${type}`;
-        toast.textContent = message;
-        toast.style.cssText = `
-            position: fixed;
-            top: 2rem;
-            right: 2rem;
-            padding: 1rem 1.5rem;
-            background: var(--white);
-            border-radius: 0.5rem;
-            box-shadow: var(--shadow-lg);
-            z-index: 10000;
-            opacity: 0;
-            transform: translateX(100%);
-            transition: all 0.3s ease;
-        `;
-
-        if (type === 'success') {
-            toast.style.borderLeft = '4px solid var(--success-color)';
-        } else if (type === 'error') {
-            toast.style.borderLeft = '4px solid #ef4444';
-        } else {
-            toast.style.borderLeft = '4px solid var(--primary-color)';
-        }
-
-        document.body.appendChild(toast);
-
-        // 显示动画
-        setTimeout(() => {
-            toast.style.opacity = '1';
-            toast.style.transform = 'translateX(0)';
-        }, 10);
-
-        // 自动隐藏
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateX(100%)';
-            setTimeout(() => {
-                document.body.removeChild(toast);
-            }, 300);
-        }, duration);
-    },
-
-    success: function(message) {
-        this.show(message, 'success');
-    },
-
-    error: function(message) {
-        this.show(message, 'error');
-    },
-
-    info: function(message) {
-        this.show(message, 'info');
-    }
-};
-
-// 图像画廊组件
-class ImageGallery {
-    constructor(selector) {
-        this.gallery = document.querySelector(selector);
-        if (!this.gallery) return;
-        
-        this.track = this.gallery.querySelector('.gallery-track');
-        this.items = this.gallery.querySelectorAll('.gallery-item');
-        this.isPaused = false;
-        
-        this.init();
-    }
-
-    init() {
-        this.addEventListeners();
-    }
-
-    addEventListeners() {
-        // 鼠标悬停时暂停动画
-        this.gallery.addEventListener('mouseenter', () => {
-            this.track.style.animationPlayState = 'paused';
-            this.isPaused = true;
-        });
-
-        this.gallery.addEventListener('mouseleave', () => {
-            this.track.style.animationPlayState = 'running';
-            this.isPaused = false;
-        });
-
-        // 点击切换暂停/播放
-        this.gallery.addEventListener('click', () => {
-            if (this.isPaused) {
-                this.track.style.animationPlayState = 'running';
-                this.isPaused = false;
-                toast.info('The image scrolling has continued');
-            } else {
-                this.track.style.animationPlayState = 'paused';
-                this.isPaused = true;
-                toast.info('The image scrolling has been paused');
-            }
-        });
-
-        // 键盘控制
-        document.addEventListener('keydown', (e) => {
-            if (e.key === ' ') { // 空格键暂停/播放
-                e.preventDefault();
-                if (this.isPaused) {
-                    this.track.style.animationPlayState = 'running';
-                    this.isPaused = false;
-                    toast.info('The image scrolling has continued');
-                } else {
-                    this.track.style.animationPlayState = 'paused';
-                    this.isPaused = true;
-                    toast.info('The image scrolling has been paused');
-                }
-            }
-        });
-
-        // 图片加载错误处理
-        this.items.forEach((item, index) => {
-            const img = item.querySelector('img');
-            if (img) {
-                img.addEventListener('error', () => {
-                    console.warn(`The image loading ${index + 1} failed. `);
-                    // 使用默认渐变背景
-                    item.style.background = 'var(--gradient-primary)';
-                    img.style.display = 'none';
-                    
-                    // 添加默认内容
-                    const overlay = item.querySelector('.gallery-overlay');
-                    if (overlay) {
-                        overlay.style.background = 'rgba(102, 126, 234, 0.8)';
-                    }
-                });
-            }
-        });
-    }
-
-    destroy() {
-        // 清理事件监听器
-        if (this.gallery) {
-            this.gallery.removeEventListener('mouseenter', null);
-            this.gallery.removeEventListener('mouseleave', null);
-            this.gallery.removeEventListener('click', null);
-        }
-    }
-}
-
-// 特色功能卡片动画
-class FeatureCards {
-    constructor() {
-        this.cards = document.querySelectorAll('.feature-card');
-        this.init();
-    }
-
-    init() {
-        this.cards.forEach((card, index) => {
-            // 鼠标悬停效果
-            card.addEventListener('mouseenter', () => {
-                this.animateCard(card, 'enter');
-            });
-
-            card.addEventListener('mouseleave', () => {
-                this.animateCard(card, 'leave');
-            });
-
-            // 添加延迟动画
-            card.style.animationDelay = `${index * 0.1}s`;
-        });
-    }
-
-    animateCard(card, action) {
-        const icon = card.querySelector('.feature-icon');
-        const title = card.querySelector('h3');
-        
-        if (action === 'enter') {
-            card.style.transform = 'translateY(-8px) scale(1.02)';
-            if (icon) {
-                icon.style.transform = 'rotate(5deg) scale(1.1)';
-            }
-            if (title) {
-                title.style.color = 'var(--primary-color)';
-            }
-        } else {
-            card.style.transform = '';
-            if (icon) {
-                icon.style.transform = '';
-            }
-            if (title) {
-                title.style.color = '';
-            }
-        }
-    }
-}
-
-// 平滑滚动导航
-class SmoothNavigation {
-    constructor() {
-        this.navLinks = document.querySelectorAll('.nav-link[href^="#"]');
-        this.sections = document.querySelectorAll('section[id]');
-        this.init();
-    }
-
-    init() {
-        this.setupClickHandlers();
-        this.setupScrollSpy();
-    }
-
-    setupClickHandlers() {
-        this.navLinks.forEach(link => {
-            link.addEventListener('click', (e) => {
-                const href = link.getAttribute('href');
-                if (href === '#') return;
-
-                const target = document.querySelector(href);
-                if (target) {
-                    e.preventDefault();
-                    this.scrollToSection(target);
-                }
-            });
-        });
-    }
-
-    scrollToSection(target) {
-        const headerOffset = 80;
-        const elementPosition = target.getBoundingClientRect().top;
-        const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
-
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: 'smooth'
-        });
-    }
-
-    setupScrollSpy() {
-        const options = {
-            threshold: 0.3,
-            rootMargin: '-80px 0px -80px 0px'
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    this.updateActiveNavLink(entry.target.id);
+                    entry.target.classList.add('visible');
                 }
             });
-        }, options);
+        }, observerOptions);
 
-        this.sections.forEach(section => {
-            observer.observe(section);
+        document.querySelectorAll('.scroll-animate').forEach(el => {
+            observer.observe(el);
         });
-    }
 
-    updateActiveNavLink(activeId) {
-        this.navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${activeId}`) {
-                link.classList.add('active');
+        // Size selection
+        const sizeData = {
+            'S': { thigh: '16-19"', calf: '12-14"' },
+            'M': { thigh: '19-23"', calf: '14-16"' },
+            'L': { thigh: '23-27"', calf: '16-18"' }
+        };
+
+        let selectedSize = 'S';
+
+        document.querySelectorAll('.size-btn').forEach((btn, index) => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.size-btn').forEach(b => {
+                    b.className = 'size-btn py-3 px-4 rounded-xl border-2 border-slate-200 bg-white text-slate-700 hover:border-slate-300 transition-all';
+                });
+                btn.className = 'size-btn py-3 px-4 rounded-xl border-2 border-emerald-500 bg-emerald-50 text-emerald-900 transition-all';
+
+                const sizes = ['S', 'M', 'L'];
+                selectedSize = sizes[index];
+
+                document.getElementById('size-details').innerHTML = `
+                    <p><span class="font-semibold">Thigh:</span> ${sizeData[selectedSize].thigh}</p>
+                    <p><span class="font-semibold">Calf:</span> ${sizeData[selectedSize].calf}</p>
+                `;
+            });
+        });
+
+        // Quantity controls
+        let quantity = 1;
+
+        document.getElementById('qty-minus').addEventListener('click', () => {
+            if (quantity > 1) {
+                quantity--;
+                updateQuantity();
             }
         });
-    }
-}
 
-// 视差滚动效果
-class ParallaxEffects {
-    constructor() {
-        this.elements = document.querySelectorAll('.particle');
-        this.init();
-    }
-
-    init() {
-        if (this.elements.length === 0) return;
-
-        window.addEventListener('scroll', Utils.throttle(() => {
-            this.updateParallax();
-        }, 16));
-    }
-
-    updateParallax() {
-        const scrolled = window.pageYOffset;
-
-        this.elements.forEach((element, index) => {
-            const speed = (index + 1) * 0.1;
-            const yPos = -(scrolled * speed);
-            element.style.transform = `translateY(${yPos}px)`;
+        document.getElementById('qty-plus').addEventListener('click', () => {
+            quantity++;
+            updateQuantity();
         });
-    }
-}
 
-// 数字计数动画
-class CounterAnimation {
-    constructor() {
-        this.counters = document.querySelectorAll('.stat-number');
-        this.init();
-    }
+        function updateQuantity() {
+            document.getElementById('qty-display').textContent = quantity;
+            document.getElementById('total-price').textContent = '$' + (250 * quantity);
+        }
 
-    init() {
-        if ('IntersectionObserver' in window) {
-            this.observer = new IntersectionObserver(
-                this.handleIntersection.bind(this),
-                {
-                    threshold: 0.5
+        // Image Carousel
+        let currentSlide = 0;
+        const totalSlides = 3;
+        const carousel = document.getElementById('carousel');
+        const dots = document.querySelectorAll('.carousel-dot');
+
+        function updateCarousel() {
+            carousel.style.transform = `translateX(-${currentSlide * 100}%)`;
+            dots.forEach((dot, index) => {
+                if (index === currentSlide) {
+                    dot.classList.remove('bg-white/50');
+                    dot.classList.add('bg-white');
+                } else {
+                    dot.classList.remove('bg-white');
+                    dot.classList.add('bg-white/50');
                 }
-            );
-
-            this.counters.forEach(counter => {
-                this.observer.observe(counter);
             });
         }
-    }
 
-    handleIntersection(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
-                const target = parseInt(entry.target.dataset.target) || 0;
-                this.animateCounter(entry.target, target);
-                entry.target.classList.add('counted');
-            }
-        });
-    }
-
-    animateCounter(element, target) {
-        const duration = 2000;
-        const increment = target / (duration / 16);
-        let current = 0;
-        
-        const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-                current = target;
-                clearInterval(timer);
-            }
-            element.textContent = Math.floor(current);
-        }, 16);
-    }
-}
-
-// AOS动画观察器
-class AOSAnimations {
-    constructor() {
-        this.elements = document.querySelectorAll('[data-aos]');
-        this.init();
-    }
-
-    init() {
-        if ('IntersectionObserver' in window) {
-            this.observer = new IntersectionObserver(
-                this.handleIntersection.bind(this),
-                {
-                    threshold: 0.1,
-                    rootMargin: '0px 0px -10% 0px'
-                }
-            );
-
-            this.elements.forEach(element => {
-                this.observer.observe(element);
-            });
-        } else {
-            // 降级处理 - 直接显示所有元素
-            this.elements.forEach(element => {
-                element.classList.add('aos-animate');
-            });
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % totalSlides;
+            updateCarousel();
         }
-    }
 
-    handleIntersection(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const delay = entry.target.dataset.aosDelay || 0;
-                setTimeout(() => {
-                    entry.target.classList.add('aos-animate');
-                }, delay);
-                this.observer.unobserve(entry.target);
-            }
-        });
-    }
-}
-
-// 移动端导航处理
-class MobileNavigation {
-    constructor() {
-        this.navToggle = document.querySelector('.nav-toggle');
-        this.navMenu = document.querySelector('.nav-menu');
-        this.init();
-    }
-
-    init() {
-        if (!this.navToggle || !this.navMenu) return;
-
-        this.navToggle.addEventListener('click', () => {
-            this.toggleMenu();
-        });
-
-        // 点击导航链接时关闭菜单
-        const navLinks = this.navMenu.querySelectorAll('.nav-link');
-        navLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                this.closeMenu();
-            });
-        });
-
-        // 点击外部区域关闭菜单
-        document.addEventListener('click', (e) => {
-            if (!this.navToggle.contains(e.target) && !this.navMenu.contains(e.target)) {
-                this.closeMenu();
-            }
-        });
-    }
-
-    toggleMenu() {
-        this.navMenu.classList.toggle('active');
-        const icon = this.navToggle.querySelector('i');
-        
-        if (this.navMenu.classList.contains('active')) {
-            icon.className = 'fas fa-times';
-            this.showMobileMenu();
-        } else {
-            icon.className = 'fas fa-bars';
-            this.hideMobileMenu();
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+            updateCarousel();
         }
-    }
 
-    showMobileMenu() {
-        this.navMenu.style.display = 'flex';
-        this.navMenu.style.flexDirection = 'column';
-        this.navMenu.style.position = 'absolute';
-        this.navMenu.style.top = '100%';
-        this.navMenu.style.left = '0';
-        this.navMenu.style.right = '0';
-        this.navMenu.style.background = 'var(--white)';
-        this.navMenu.style.boxShadow = 'var(--shadow-lg)';
-        this.navMenu.style.padding = '1rem';
-        this.navMenu.style.gap = '1rem';
-    }
-
-    hideMobileMenu() {
-        this.navMenu.style.display = '';
-        this.navMenu.style.flexDirection = '';
-        this.navMenu.style.position = '';
-        this.navMenu.style.top = '';
-        this.navMenu.style.left = '';
-        this.navMenu.style.right = '';
-        this.navMenu.style.background = '';
-        this.navMenu.style.boxShadow = '';
-        this.navMenu.style.padding = '';
-        this.navMenu.style.gap = '';
-    }
-
-    closeMenu() {
-        this.navMenu.classList.remove('active');
-        const icon = this.navToggle.querySelector('i');
-        icon.className = 'fas fa-bars';
-        this.hideMobileMenu();
-    }
-}
-
-// 页面初始化
-document.addEventListener('DOMContentLoaded', function() {
-    // 初始化所有功能模块
-    const gallery = new ImageGallery('.image-gallery');
-    const featureCards = new FeatureCards();
-    const smoothNav = new SmoothNavigation();
-    const parallax = new ParallaxEffects();
-    const counter = new CounterAnimation();
-    const aos = new AOSAnimations();
-    const mobileNav = new MobileNavigation();
-
-    // 页面特定的事件处理
-    setupPageSpecificEvents();
-    
-    // 添加页面加载完成的动画
-    setTimeout(() => {
-        document.body.classList.add('page-loaded');
-    }, 100);
-
-    // 保存gallery实例以便后续清理
-    window.imageGallery = gallery;
-});
-
-function setupPageSpecificEvents() {
-    // CTA按钮点击追踪
-    const ctaButtons = document.querySelectorAll('.btn-primary');
-    ctaButtons.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const buttonText = btn.textContent.trim();
-            console.log('CTA clicked:', buttonText);
-            
-            // 添加点击动画
-            btn.style.transform = 'scale(0.95)';
-            setTimeout(() => {
-                btn.style.transform = '';
-            }, 150);
-        });
-    });
-
-    // 特色功能卡片点击
-    const featureCards = document.querySelectorAll('.feature-card');
-    featureCards.forEach(card => {
-        card.addEventListener('click', () => {
-            const title = card.querySelector('h3').textContent;
-            toast.info(`learn more about"${title}"`);
-        });
-    });
-
-    // 流程步骤点击
-    const processSteps = document.querySelectorAll('.process-step');
-    processSteps.forEach((step, index) => {
-        step.addEventListener('click', () => {
-            const stepTitle = step.querySelector('h3').textContent;
-            toast.info(`step ${index + 1}: ${stepTitle}`);
-        });
-    });
-
-    // 画廊图片点击
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    galleryItems.forEach((item, index) => {
-        item.addEventListener('click', (e) => {
-            e.stopPropagation(); // 防止触发画廊的暂停/播放
-            const title = item.querySelector('h3').textContent;
-            toast.success(`view details of ${title}`);
-        });
-    });
-
-    // 键盘快捷键提示
-    document.addEventListener('keydown', (e) => {
-        if (e.key === '?' || (e.shiftKey && e.key === '/')) {
-            e.preventDefault();
-            toast.info('Shortcut keys: Space bar - Pause/play image scrolling');
+        function goToSlide(index) {
+            currentSlide = index;
+            updateCarousel();
         }
-    });
 
-    // 导航栏滚动效果
-    let lastScrollTop = 0;
-    const navbar = document.querySelector('.navbar');
-    
-    window.addEventListener('scroll', Utils.throttle(() => {
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-        
-        if (scrollTop > lastScrollTop && scrollTop > 100) {
-            // 向下滚动，隐藏导航栏
-            navbar.style.transform = 'translateY(-100%)';
-        } else {
-            // 向上滚动，显示导航栏
-            navbar.style.transform = 'translateY(0)';
-        }
-        
-        // 改变导航栏透明度
-        if (scrollTop > 50) {
-            navbar.style.background = 'rgba(255, 255, 255, 0.98)';
-        } else {
-            navbar.style.background = 'rgba(255, 255, 255, 0.95)';
-        }
-        
-        lastScrollTop = scrollTop;
-    }, 100));
-}
+        // Auto-play carousel
+        setInterval(nextSlide, 3000);
 
-// 页面卸载时清理
-window.addEventListener('beforeunload', function() {
-    // 清理定时器和事件监听器
-    if (window.imageGallery) {
-        window.imageGallery.destroy();
-    }
-});
-
-// 错误处理
-window.addEventListener('error', function(e) {
-    console.error('page error:', e.error);
-    if (e.target.tagName === 'IMG') {
-        console.warn('The image loading failed:', e.target.src);
-    }
-});
-
-// 页面性能监控
-window.addEventListener('load', function() {
-    if ('performance' in window) {
-        setTimeout(() => {
-            const perfData = performance.timing;
-            const loadTime = perfData.loadEventEnd - perfData.navigationStart;
-            console.log('Homepage loading time:', loadTime + 'ms');
-        }, 100);
-    }
-});
+        // Initialize carousel
+        updateCarousel();
     </script>
 </body>
 </html>
