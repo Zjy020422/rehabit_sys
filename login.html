@@ -713,8 +713,12 @@
             loginBtn.textContent = '🔄 Logging in...';
 
             try {
-                // Simulate API call to backend
-                const response = await fetch('/api/login', {
+                // API endpoint - use localhost:5000 for development
+                const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                    ? `http://localhost:5000`
+                    : '';  // Use relative path if accessing from same origin
+
+                const response = await fetch(`${API_BASE}/api/login`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -725,7 +729,9 @@
                     })
                 });
 
+                console.log('Login response status:', response.status);
                 const data = await response.json();
+                console.log('Login response data:', data);
 
                 if (data.success && data.user) {
                     showSuccess('Login successful! Redirecting...');
@@ -753,7 +759,14 @@
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                showError('Unable to connect to server. Please check your connection and try again.');
+                console.error('Error details:', error.message);
+
+                // Check if it's a network error
+                if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
+                    showError('Cannot connect to server. Please make sure:\n1. The Flask server is running (python app.py)\n2. Server is accessible at http://localhost:5000');
+                } else {
+                    showError('Login failed: ' + error.message);
+                }
             } finally {
                 // Re-enable button
                 loginBtn.disabled = false;
@@ -789,8 +802,12 @@
             registerBtn.textContent = '🔄 Creating Account...';
 
             try {
-                // Simulate API call to backend
-                const response = await fetch('/api/register', {
+                // API endpoint - use localhost:5000 for development
+                const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                    ? `http://localhost:5000`
+                    : '';  // Use relative path if accessing from same origin
+
+                const response = await fetch(`${API_BASE}/api/register`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -803,11 +820,13 @@
                     })
                 });
 
+                console.log('Register response status:', response.status);
                 const data = await response.json();
+                console.log('Register response data:', data);
 
                 if (data.success) {
                     showSuccess('Account created successfully! Please login.');
-                    
+
                     // Switch to login tab after 2 seconds
                     setTimeout(() => {
                         switchTab('login');
@@ -818,14 +837,7 @@
                 }
             } catch (error) {
                 console.error('Registration error:', error);
-                
-                // For demo purposes, simulate successful registration
-                showSuccess('Account created successfully! Please login with your credentials.');
-                
-                setTimeout(() => {
-                    switchTab('login');
-                    document.getElementById('loginEmail').value = email;
-                }, 2000);
+                showError('Unable to connect to server. Please make sure the server is running on http://localhost:5000');
             } finally {
                 // Re-enable button
                 registerBtn.disabled = false;
@@ -907,8 +919,38 @@
             document.getElementById('successMessage').style.display = 'none';
         }
 
+        // Check server status on page load
+        async function checkServerStatus() {
+            try {
+                const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                    ? `http://localhost:5000`
+                    : '';
+
+                const response = await fetch(`${API_BASE}/api/system/health`, {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log('✅ Server is running:', data);
+                    return true;
+                } else {
+                    console.warn('⚠️ Server responded with status:', response.status);
+                    return false;
+                }
+            } catch (error) {
+                console.error('❌ Cannot connect to server:', error.message);
+                console.warn('⚠️ Please start the Flask server by running: python app.py');
+                return false;
+            }
+        }
+
         // Add input validation
         document.addEventListener('DOMContentLoaded', function() {
+            // Check server status
+            checkServerStatus();
+
             // Email validation
             const emailInputs = document.querySelectorAll('input[type="email"]');
             emailInputs.forEach(input => {
