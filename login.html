@@ -713,12 +713,8 @@
             loginBtn.textContent = '🔄 Logging in...';
 
             try {
-                // API endpoint - use localhost:5000 for development
-                const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                    ? `http://localhost:5000`
-                    : '';  // Use relative path if accessing from same origin
-
-                const response = await fetch(`${API_BASE}/api/login`, {
+                // Use relative path for API calls (works with Railway deployment)
+                const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -760,13 +756,7 @@
             } catch (error) {
                 console.error('Login error:', error);
                 console.error('Error details:', error.message);
-
-                // Check if it's a network error
-                if (error.message.includes('Failed to fetch') || error.name === 'TypeError') {
-                    showError('Cannot connect to server. Please make sure:\n1. The Flask server is running (python app.py)\n2. Server is accessible at http://localhost:5000');
-                } else {
-                    showError('Login failed: ' + error.message);
-                }
+                showError('Unable to connect to server. Please check your connection and try again.');
             } finally {
                 // Re-enable button
                 loginBtn.disabled = false;
@@ -802,12 +792,8 @@
             registerBtn.textContent = '🔄 Creating Account...';
 
             try {
-                // API endpoint - use localhost:5000 for development
-                const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                    ? `http://localhost:5000`
-                    : '';  // Use relative path if accessing from same origin
-
-                const response = await fetch(`${API_BASE}/api/register`, {
+                // Use relative path for API calls (works with Railway deployment)
+                const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -837,7 +823,7 @@
                 }
             } catch (error) {
                 console.error('Registration error:', error);
-                showError('Unable to connect to server. Please make sure the server is running on http://localhost:5000');
+                showError('Unable to connect to server. Please check your connection and try again.');
             } finally {
                 // Re-enable button
                 registerBtn.disabled = false;
@@ -919,38 +905,8 @@
             document.getElementById('successMessage').style.display = 'none';
         }
 
-        // Check server status on page load
-        async function checkServerStatus() {
-            try {
-                const API_BASE = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-                    ? `http://localhost:5000`
-                    : '';
-
-                const response = await fetch(`${API_BASE}/api/system/health`, {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('✅ Server is running:', data);
-                    return true;
-                } else {
-                    console.warn('⚠️ Server responded with status:', response.status);
-                    return false;
-                }
-            } catch (error) {
-                console.error('❌ Cannot connect to server:', error.message);
-                console.warn('⚠️ Please start the Flask server by running: python app.py');
-                return false;
-            }
-        }
-
         // Add input validation
         document.addEventListener('DOMContentLoaded', function() {
-            // Check server status
-            checkServerStatus();
-
             // Email validation
             const emailInputs = document.querySelectorAll('input[type="email"]');
             emailInputs.forEach(input => {
