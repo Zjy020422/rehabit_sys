@@ -269,6 +269,59 @@ def update_user_profile():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+@app.route('/api/user-stats/<user_id>', methods=['GET'])
+def get_user_stats_by_id(user_id):
+    """Get user statistics by user ID (for Dashboard.html compatibility)"""
+    try:
+        # This endpoint doesn't require token since it's called from Dashboard with localStorage data
+        conn = sqlite3.connect("rehabtech_pro.db")
+        cursor = conn.cursor()
+
+        # Get total sessions
+        cursor.execute('SELECT COUNT(*) FROM training_sessions WHERE user_id = ?', (user_id,))
+        total_sessions = cursor.fetchone()[0]
+
+        # Get current streak (consecutive days with training)
+        cursor.execute('''
+            SELECT DISTINCT DATE(start_time) as training_date
+            FROM training_sessions
+            WHERE user_id = ? AND status = 'completed'
+            ORDER BY training_date DESC
+        ''', (user_id,))
+
+        training_dates = [row[0] for row in cursor.fetchall()]
+        current_streak = calculate_streak(training_dates)
+
+        # Get weekly progress (last 7 days)
+        cursor.execute('''
+            SELECT COUNT(*) FROM training_sessions
+            WHERE user_id = ? AND start_time >= date('now', '-7 days')
+        ''', (user_id,))
+        weekly_sessions = cursor.fetchone()[0]
+
+        # Calculate rehabilitation score (average of recent test scores)
+        cursor.execute('''
+            SELECT AVG(overall_score) FROM analysis_results ar
+            JOIN training_sessions ts ON ar.session_id = ts.session_id
+            WHERE ts.user_id = ? AND ar.created_at >= date('now', '-30 days')
+        ''', (user_id,))
+
+        avg_score_result = cursor.fetchone()
+        rehab_score = int(avg_score_result[0]) if avg_score_result[0] else 75
+
+        conn.close()
+
+        return jsonify({
+            'totalSessions': total_sessions,
+            'currentStreak': current_streak,
+            'weeklyProgress': min(100, weekly_sessions * 20),  # 5 sessions = 100%
+            'rehabScore': rehab_score
+        })
+
+    except Exception as e:
+        logging.error(f"Error getting user stats for {user_id}: {e}")
+        return jsonify({'error': str(e)}), 500
+
 @app.route('/api/users/stats', methods=['GET'])
 @token_required
 def get_user_stats():
@@ -915,12 +968,25 @@ def index():
 @app.route('/index-app/<path:filename>')
 def serve_index_app(filename='index.html'):
     """Serve index React app files"""
-    return send_from_directory('./index', filename)
+    # index folder not included in deployment, redirect to main page
+    if filename == 'index.html':
+        return send_from_directory('.', 'index.html')
+    return jsonify({'error': 'Not found'}), 404
 
 @app.route('/<path:filename>')
 def serve_static(filename):
     """Serve static files"""
-    return send_from_directory('.', filename)
+    try:
+        # Check if file exists
+        file_path = os.path.join('.', filename)
+        if os.path.isfile(file_path):
+            return send_from_directory('.', filename)
+        else:
+            # File not found, return 404
+            return jsonify({'error': 'File not found', 'path': filename}), 404
+    except Exception as e:
+        logging.error(f"Error serving static file {filename}: {e}")
+        return jsonify({'error': 'Internal server error', 'message': str(e)}), 500
 
 # =============================================================================
 # HELPER FUNCTIONS

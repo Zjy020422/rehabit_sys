@@ -424,6 +424,40 @@
             background: #059669;
         }
 
+        /* Guest Mode Button */
+        .guest-mode {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+            text-align: center;
+        }
+
+        .guest-mode-text {
+            color: #64748b;
+            font-size: 0.9em;
+            margin-bottom: 15px;
+        }
+
+        .guest-btn {
+            background: transparent;
+            color: #6366f1;
+            border: 2px solid #6366f1;
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .guest-btn:hover {
+            background: #6366f1;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .nav-container {
@@ -569,6 +603,13 @@
                             🏢 Microsoft
                         </button>
                     </div>
+
+                    <div class="guest-mode">
+                        <p class="guest-mode-text">Just want to explore?</p>
+                        <button class="guest-btn" onclick="enterGuestMode()">
+                            👤 Continue as Guest
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Register Form -->
@@ -686,62 +727,33 @@
 
                 const data = await response.json();
 
-                if (data.success) {
+                if (data.success && data.user) {
                     showSuccess('Login successful! Redirecting...');
-                    
-                    // Store user data
+
+                    // Store user data (matching app.py response structure)
                     localStorage.setItem('rehabtech_user', JSON.stringify({
-                        id: data.user_id,
-                        email: email,
-                        name: data.name,
-                        role: data.role,
+                        id: data.user.id,
+                        email: data.user.email,
+                        name: data.user.name,
+                        role: data.user.role,
+                        age: data.user.age,
+                        sex: data.user.sex,
+                        weight: data.user.weight,
+                        hasRehabStage: data.user.has_rehab_stage,
+                        rehabStage: data.user.rehabilitation_stage,
                         token: data.token
                     }));
 
                     // Redirect to dashboard after 1 second
                     setTimeout(() => {
-                        window.location.href = 'dashboard.html';
+                        window.location.href = 'Dashboard.html';
                     }, 1000);
                 } else {
                     showError(data.message || 'Login failed. Please check your credentials.');
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                
-                // For demo purposes, simulate successful login with mock data
-                const mockUsers = {
-                    'demo@rehabtech.com': {
-                        name: 'Demo User',
-                        role: 'patient',
-                        hasRehabStage: true,
-                        rehabStage: 'Early (1-3 months post surgery)'
-                    },
-                    'therapist@rehabtech.com': {
-                        name: 'Dr. Sarah Johnson',
-                        role: 'therapist',
-                        hasRehabStage: false
-                    }
-                };
-
-                if (mockUsers[email] && password === 'demo123') {
-                    showSuccess('Login successful! Redirecting...');
-                    
-                    localStorage.setItem('rehabtech_user', JSON.stringify({
-                        id: Date.now(),
-                        email: email,
-                        name: mockUsers[email].name,
-                        role: mockUsers[email].role,
-                        hasRehabStage: mockUsers[email].hasRehabStage,
-                        rehabStage: mockUsers[email].rehabStage,
-                        token: 'demo_token_' + Date.now()
-                    }));
-
-                    setTimeout(() => {
-                        window.location.href = 'dashboard.html';
-                    }, 1000);
-                } else {
-                    showError('Demo credentials: demo@rehabtech.com / demo123 or therapist@rehabtech.com / demo123');
-                }
+                showError('Unable to connect to server. Please check your connection and try again.');
             } finally {
                 // Re-enable button
                 loginBtn.disabled = false;
@@ -834,6 +846,34 @@
             } else {
                 showError('Please enter your email address first.');
             }
+        }
+
+        // Guest mode - allows browsing without login
+        function enterGuestMode() {
+            showSuccess('Entering as guest... Redirecting to dashboard!');
+
+            // Create guest user data
+            const guestData = {
+                id: 'guest_' + Date.now(),
+                email: 'guest@regenix.local',
+                name: 'Guest User',
+                role: 'guest',
+                age: null,
+                sex: null,
+                weight: null,
+                hasRehabStage: false,
+                rehabStage: null,
+                token: 'guest_token_' + Date.now(),
+                isGuest: true  // Flag to identify guest users
+            };
+
+            // Store guest data in localStorage
+            localStorage.setItem('rehabtech_user', JSON.stringify(guestData));
+
+            // Redirect to dashboard after brief delay
+            setTimeout(() => {
+                window.location.href = 'Dashboard.html';
+            }, 1000);
         }
 
         // Show error message
