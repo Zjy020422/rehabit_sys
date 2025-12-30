@@ -34,28 +34,50 @@ def init_components():
     """Initialize system components"""
     global data_handler, analyzer, advisor
 
-    # Initialize enhanced data handler with WiFi (ESP32 leg.ino)
-    # ESP32 WiFi AP模式配置:
-    # SSID: "ESP32_Server"
-    # 密码: "12345678"
-    # 连接后ESP32默认IP: 192.168.4.1
-    data_handler = EnhancedSensorDataHandler(
-        sensor_ip='192.168.4.207',  # ESP32 AP模式默认IP地址（连接到ESP32_Server后）
-        sensor_port=80            # ESP32 WebServer端口
-    )
-
-    # Try to connect WiFi sensor (ESP32)
-    print("\n[INFO] 正在连接到ESP32传感器...")
-    print("[INFO] 请确保已连接到 'ESP32_Server' WiFi热点")
-    data_handler.connect_wifi()
+    try:
+        # Initialize enhanced data handler with WiFi (ESP32 leg.ino)
+        # Only try to connect to sensor if not in production (Railway)
+        if os.environ.get('RAILWAY_ENVIRONMENT') != 'production':
+            print("\n[INFO] 正在连接到ESP32传感器...")
+            print("[INFO] 请确保已连接到 'ESP32_Server' WiFi热点")
+            data_handler = EnhancedSensorDataHandler(
+                sensor_ip='192.168.4.207',
+                sensor_port=80
+            )
+            data_handler.connect_wifi()
+        else:
+            print("\n[INFO] Running in production mode - sensor connection skipped")
+            # Create a dummy handler for production
+            data_handler = EnhancedSensorDataHandler(
+                sensor_ip='192.168.4.207',
+                sensor_port=80
+            )
+    except Exception as e:
+        print(f"⚠️ Sensor initialization failed (this is OK for web-only deployment): {e}")
+        # Create a dummy handler
+        try:
+            data_handler = EnhancedSensorDataHandler(
+                sensor_ip='192.168.4.207',
+                sensor_port=80
+            )
+        except:
+            data_handler = None
 
     # Initialize enhanced analyzer
-    analyzer = EnhancedRehabilitationAnalyzer(db_path="rehabtech_pro.db")
+    try:
+        analyzer = EnhancedRehabilitationAnalyzer(db_path="rehabtech_pro.db")
+    except Exception as e:
+        print(f"⚠️ Analyzer initialization failed: {e}")
+        analyzer = None
 
     # Initialize enhanced AI advisor
-    advisor = EnhancedGPTRehabilitationAdvisor(db_path="rehabtech_pro.db")
+    try:
+        advisor = EnhancedGPTRehabilitationAdvisor(db_path="rehabtech_pro.db")
+    except Exception as e:
+        print(f"⚠️ AI Advisor initialization failed: {e}")
+        advisor = None
 
-    print("✅ System components initialized successfully")
+    print("✅ System components initialized (web mode)")
 
 def token_required(f):
     """JWT token validation decorator"""
@@ -1103,9 +1125,11 @@ if __name__ == "__main__":
     
     try:
         # Start Flask application
+        # Use PORT environment variable for Railway, default to 5000 for local
+        port = int(os.environ.get('PORT', 5000))
         app.run(
             host='0.0.0.0',  # Allow external access
-            port=5000,
+            port=port,
             debug=True,
             use_reloader=False  # Avoid duplicate initialization
         )

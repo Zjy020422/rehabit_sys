@@ -793,6 +793,9 @@
 
             try {
                 // Use relative path for API calls (works with Railway deployment)
+                console.log('🔄 Attempting to register with:', { name, email, role });
+                console.log('📡 API URL:', window.location.origin + '/api/register');
+
                 const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
@@ -806,9 +809,11 @@
                     })
                 });
 
-                console.log('Register response status:', response.status);
+                console.log('✅ Register response status:', response.status);
+                console.log('📄 Response headers:', [...response.headers.entries()]);
+
                 const data = await response.json();
-                console.log('Register response data:', data);
+                console.log('📦 Register response data:', data);
 
                 if (data.success) {
                     showSuccess('Account created successfully! Please login.');
