@@ -34,50 +34,28 @@ def init_components():
     """Initialize system components"""
     global data_handler, analyzer, advisor
 
-    try:
-        # Initialize enhanced data handler with WiFi (ESP32 leg.ino)
-        # Only try to connect to sensor if not in production (Railway)
-        if os.environ.get('RAILWAY_ENVIRONMENT') != 'production':
-            print("\n[INFO] 正在连接到ESP32传感器...")
-            print("[INFO] 请确保已连接到 'ESP32_Server' WiFi热点")
-            data_handler = EnhancedSensorDataHandler(
-                sensor_ip='192.168.4.207',
-                sensor_port=80
-            )
-            data_handler.connect_wifi()
-        else:
-            print("\n[INFO] Running in production mode - sensor connection skipped")
-            # Create a dummy handler for production
-            data_handler = EnhancedSensorDataHandler(
-                sensor_ip='192.168.4.207',
-                sensor_port=80
-            )
-    except Exception as e:
-        print(f"⚠️ Sensor initialization failed (this is OK for web-only deployment): {e}")
-        # Create a dummy handler
-        try:
-            data_handler = EnhancedSensorDataHandler(
-                sensor_ip='192.168.4.207',
-                sensor_port=80
-            )
-        except:
-            data_handler = None
+    # Initialize enhanced data handler with WiFi (ESP32 leg.ino)
+    # ESP32 WiFi AP模式配置:
+    # SSID: "ESP32_Server"
+    # 密码: "12345678"
+    # 连接后ESP32默认IP: 192.168.4.1
+    data_handler = EnhancedSensorDataHandler(
+        sensor_ip='192.168.4.207',  # ESP32 AP模式默认IP地址（连接到ESP32_Server后）
+        sensor_port=80            # ESP32 WebServer端口
+    )
+
+    # Try to connect WiFi sensor (ESP32)
+    print("\n[INFO] 正在连接到ESP32传感器...")
+    print("[INFO] 请确保已连接到 'ESP32_Server' WiFi热点")
+    data_handler.connect_wifi()
 
     # Initialize enhanced analyzer
-    try:
-        analyzer = EnhancedRehabilitationAnalyzer(db_path="rehabtech_pro.db")
-    except Exception as e:
-        print(f"⚠️ Analyzer initialization failed: {e}")
-        analyzer = None
+    analyzer = EnhancedRehabilitationAnalyzer(db_path="rehabtech_pro.db")
 
     # Initialize enhanced AI advisor
-    try:
-        advisor = EnhancedGPTRehabilitationAdvisor(db_path="rehabtech_pro.db")
-    except Exception as e:
-        print(f"⚠️ AI Advisor initialization failed: {e}")
-        advisor = None
+    advisor = EnhancedGPTRehabilitationAdvisor(db_path="rehabtech_pro.db")
 
-    print("✅ System components initialized (web mode)")
+    print("✅ System components initialized successfully")
 
 def token_required(f):
     """JWT token validation decorator"""
@@ -289,59 +267,6 @@ def update_user_profile():
         return jsonify({'success': True, 'message': 'Profile updated successfully'})
         
     except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
-@app.route('/api/user-stats/<user_id>', methods=['GET'])
-def get_user_stats_by_id(user_id):
-    """Get user statistics by user ID (for Dashboard.html compatibility)"""
-    try:
-        # This endpoint doesn't require token since it's called from Dashboard with localStorage data
-        conn = sqlite3.connect("rehabtech_pro.db")
-        cursor = conn.cursor()
-
-        # Get total sessions
-        cursor.execute('SELECT COUNT(*) FROM training_sessions WHERE user_id = ?', (user_id,))
-        total_sessions = cursor.fetchone()[0]
-
-        # Get current streak (consecutive days with training)
-        cursor.execute('''
-            SELECT DISTINCT DATE(start_time) as training_date
-            FROM training_sessions
-            WHERE user_id = ? AND status = 'completed'
-            ORDER BY training_date DESC
-        ''', (user_id,))
-
-        training_dates = [row[0] for row in cursor.fetchall()]
-        current_streak = calculate_streak(training_dates)
-
-        # Get weekly progress (last 7 days)
-        cursor.execute('''
-            SELECT COUNT(*) FROM training_sessions
-            WHERE user_id = ? AND start_time >= date('now', '-7 days')
-        ''', (user_id,))
-        weekly_sessions = cursor.fetchone()[0]
-
-        # Calculate rehabilitation score (average of recent test scores)
-        cursor.execute('''
-            SELECT AVG(overall_score) FROM analysis_results ar
-            JOIN training_sessions ts ON ar.session_id = ts.session_id
-            WHERE ts.user_id = ? AND ar.created_at >= date('now', '-30 days')
-        ''', (user_id,))
-
-        avg_score_result = cursor.fetchone()
-        rehab_score = int(avg_score_result[0]) if avg_score_result[0] else 75
-
-        conn.close()
-
-        return jsonify({
-            'totalSessions': total_sessions,
-            'currentStreak': current_streak,
-            'weeklyProgress': min(100, weekly_sessions * 20),  # 5 sessions = 100%
-            'rehabScore': rehab_score
-        })
-
-    except Exception as e:
-        logging.error(f"Error getting user stats for {user_id}: {e}")
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/users/stats', methods=['GET'])
@@ -990,25 +915,12 @@ def index():
 @app.route('/index-app/<path:filename>')
 def serve_index_app(filename='index.html'):
     """Serve index React app files"""
-    # index folder not included in deployment, redirect to main page
-    if filename == 'index.html':
-        return send_from_directory('.', 'index.html')
-    return jsonify({'error': 'Not found'}), 404
+    return send_from_directory('./index', filename)
 
 @app.route('/<path:filename>')
 def serve_static(filename):
     """Serve static files"""
-    try:
-        # Check if file exists
-        file_path = os.path.join('.', filename)
-        if os.path.isfile(file_path):
-            return send_from_directory('.', filename)
-        else:
-            # File not found, return 404
-            return jsonify({'error': 'File not found', 'path': filename}), 404
-    except Exception as e:
-        logging.error(f"Error serving static file {filename}: {e}")
-        return jsonify({'error': 'Internal server error', 'message': str(e)}), 500
+    return send_from_directory('.', filename)
 
 # =============================================================================
 # HELPER FUNCTIONS
@@ -1125,11 +1037,9 @@ if __name__ == "__main__":
     
     try:
         # Start Flask application
-        # Use PORT environment variable for Railway, default to 5000 for local
-        port = int(os.environ.get('PORT', 5000))
         app.run(
             host='0.0.0.0',  # Allow external access
-            port=port,
+            port=5000,
             debug=True,
             use_reloader=False  # Avoid duplicate initialization
         )

@@ -424,40 +424,6 @@
             background: #059669;
         }
 
-        /* Guest Mode Button */
-        .guest-mode {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
-            text-align: center;
-        }
-
-        .guest-mode-text {
-            color: #64748b;
-            font-size: 0.9em;
-            margin-bottom: 15px;
-        }
-
-        .guest-btn {
-            background: transparent;
-            color: #6366f1;
-            border: 2px solid #6366f1;
-            padding: 12px 30px;
-            border-radius: 10px;
-            font-size: 1em;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            width: 100%;
-        }
-
-        .guest-btn:hover {
-            background: #6366f1;
-            color: white;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
-        }
-
         /* Responsive Design */
         @media (max-width: 768px) {
             .nav-container {
@@ -539,7 +505,7 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo">
+            <a href="index_website1.html" class="logo">
                 <img src="logo.png" alt="Regenix Logo" class="logo-img" style="height: 50px; width: auto;">
             </a>
             <div class="nav-buttons">
@@ -601,13 +567,6 @@
                         </button>
                         <button class="social-btn" onclick="socialLogin('microsoft')">
                             🏢 Microsoft
-                        </button>
-                    </div>
-
-                    <div class="guest-mode">
-                        <p class="guest-mode-text">Just want to explore?</p>
-                        <button class="guest-btn" onclick="enterGuestMode()">
-                            👤 Continue as Guest
                         </button>
                     </div>
                 </div>
@@ -713,7 +672,7 @@
             loginBtn.textContent = '🔄 Logging in...';
 
             try {
-                // Use relative path for API calls (works with Railway deployment)
+                // Simulate API call to backend
                 const response = await fetch('/api/login', {
                     method: 'POST',
                     headers: {
@@ -725,38 +684,64 @@
                     })
                 });
 
-                console.log('Login response status:', response.status);
                 const data = await response.json();
-                console.log('Login response data:', data);
 
-                if (data.success && data.user) {
+                if (data.success) {
                     showSuccess('Login successful! Redirecting...');
-
-                    // Store user data (matching app.py response structure)
+                    
+                    // Store user data
                     localStorage.setItem('rehabtech_user', JSON.stringify({
-                        id: data.user.id,
-                        email: data.user.email,
-                        name: data.user.name,
-                        role: data.user.role,
-                        age: data.user.age,
-                        sex: data.user.sex,
-                        weight: data.user.weight,
-                        hasRehabStage: data.user.has_rehab_stage,
-                        rehabStage: data.user.rehabilitation_stage,
+                        id: data.user_id,
+                        email: email,
+                        name: data.name,
+                        role: data.role,
                         token: data.token
                     }));
 
                     // Redirect to dashboard after 1 second
                     setTimeout(() => {
-                        window.location.href = 'Dashboard.html';
+                        window.location.href = 'dashboard.html';
                     }, 1000);
                 } else {
                     showError(data.message || 'Login failed. Please check your credentials.');
                 }
             } catch (error) {
                 console.error('Login error:', error);
-                console.error('Error details:', error.message);
-                showError('Unable to connect to server. Please check your connection and try again.');
+                
+                // For demo purposes, simulate successful login with mock data
+                const mockUsers = {
+                    'demo@rehabtech.com': {
+                        name: 'Demo User',
+                        role: 'patient',
+                        hasRehabStage: true,
+                        rehabStage: 'Early (1-3 months post surgery)'
+                    },
+                    'therapist@rehabtech.com': {
+                        name: 'Dr. Sarah Johnson',
+                        role: 'therapist',
+                        hasRehabStage: false
+                    }
+                };
+
+                if (mockUsers[email] && password === 'demo123') {
+                    showSuccess('Login successful! Redirecting...');
+                    
+                    localStorage.setItem('rehabtech_user', JSON.stringify({
+                        id: Date.now(),
+                        email: email,
+                        name: mockUsers[email].name,
+                        role: mockUsers[email].role,
+                        hasRehabStage: mockUsers[email].hasRehabStage,
+                        rehabStage: mockUsers[email].rehabStage,
+                        token: 'demo_token_' + Date.now()
+                    }));
+
+                    setTimeout(() => {
+                        window.location.href = 'dashboard.html';
+                    }, 1000);
+                } else {
+                    showError('Demo credentials: demo@rehabtech.com / demo123 or therapist@rehabtech.com / demo123');
+                }
             } finally {
                 // Re-enable button
                 loginBtn.disabled = false;
@@ -792,10 +777,7 @@
             registerBtn.textContent = '🔄 Creating Account...';
 
             try {
-                // Use relative path for API calls (works with Railway deployment)
-                console.log('🔄 Attempting to register with:', { name, email, role });
-                console.log('📡 API URL:', window.location.origin + '/api/register');
-
+                // Simulate API call to backend
                 const response = await fetch('/api/register', {
                     method: 'POST',
                     headers: {
@@ -809,15 +791,11 @@
                     })
                 });
 
-                console.log('✅ Register response status:', response.status);
-                console.log('📄 Response headers:', [...response.headers.entries()]);
-
                 const data = await response.json();
-                console.log('📦 Register response data:', data);
 
                 if (data.success) {
                     showSuccess('Account created successfully! Please login.');
-
+                    
                     // Switch to login tab after 2 seconds
                     setTimeout(() => {
                         switchTab('login');
@@ -828,7 +806,14 @@
                 }
             } catch (error) {
                 console.error('Registration error:', error);
-                showError('Unable to connect to server. Please check your connection and try again.');
+                
+                // For demo purposes, simulate successful registration
+                showSuccess('Account created successfully! Please login with your credentials.');
+                
+                setTimeout(() => {
+                    switchTab('login');
+                    document.getElementById('loginEmail').value = email;
+                }, 2000);
             } finally {
                 // Re-enable button
                 registerBtn.disabled = false;
@@ -849,34 +834,6 @@
             } else {
                 showError('Please enter your email address first.');
             }
-        }
-
-        // Guest mode - allows browsing without login
-        function enterGuestMode() {
-            showSuccess('Entering as guest... Redirecting to dashboard!');
-
-            // Create guest user data
-            const guestData = {
-                id: 'guest_' + Date.now(),
-                email: 'guest@regenix.local',
-                name: 'Guest User',
-                role: 'guest',
-                age: null,
-                sex: null,
-                weight: null,
-                hasRehabStage: false,
-                rehabStage: null,
-                token: 'guest_token_' + Date.now(),
-                isGuest: true  // Flag to identify guest users
-            };
-
-            // Store guest data in localStorage
-            localStorage.setItem('rehabtech_user', JSON.stringify(guestData));
-
-            // Redirect to dashboard after brief delay
-            setTimeout(() => {
-                window.location.href = 'Dashboard.html';
-            }, 1000);
         }
 
         // Show error message
