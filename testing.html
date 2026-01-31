@@ -910,7 +910,7 @@
 
             try {
                 // Send start request to backend
-                const response = await fetch('/api/testing/start', {
+                const response = await fetch('http://localhost:5000/api/testing/start', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1003,7 +1003,7 @@
 
             try {
                 // Send stop request to backend
-                const response = await fetch('/api/testing/stop', {
+                const response = await fetch('http://localhost:5000/api/testing/stop', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -1091,7 +1091,7 @@
 
                 try {
                     // Get real-time data from backend
-                    const response = await fetch(`/api/testing/realtime/${currentSession.sessionId}`, {
+                    const response = await fetch(`http://localhost:5000/api/testing/realtime/${currentSession.sessionId}`, {
                         headers: {
                             'Authorization': `Bearer ${currentUser.token}`
                         }
