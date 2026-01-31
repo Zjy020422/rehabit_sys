@@ -41,7 +41,7 @@ def init_components():
             print("\n[INFO] 正在连接到ESP32传感器...")
             print("[INFO] 请确保已连接到 'ESP32_Server' WiFi热点")
             data_handler = EnhancedSensorDataHandler(
-                sensor_ip='10.253.68.188',
+                sensor_ip='10.253.68.180',
                 sensor_port=80
             )
             data_handler.connect_wifi()
@@ -49,7 +49,7 @@ def init_components():
             print("\n[INFO] Running in production mode - sensor connection skipped")
             # Create a dummy handler for production
             data_handler = EnhancedSensorDataHandler(
-                sensor_ip='10.253.68.188',
+                sensor_ip='10.253.68.180',
                 sensor_port=80
             )
     except Exception as e:
@@ -57,7 +57,7 @@ def init_components():
         # Create a dummy handler
         try:
             data_handler = EnhancedSensorDataHandler(
-                sensor_ip='10.253.68.188',
+                sensor_ip='10.253.68.180',
                 sensor_port=80
             )
         except:
