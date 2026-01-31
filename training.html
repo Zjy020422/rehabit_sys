@@ -766,32 +766,6 @@
                 <p class="page-subtitle">Select your training type to begin rehabilitation testing</p>
             </div>
 
-            <!-- ESP32 Connection Status -->
-            <div class="training-control-panel" style="max-width: 600px; margin: 0 auto 2rem;">
-                <div class="training-card" style="background: rgba(255, 255, 255, 0.95);">
-                    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem;">
-                        <h3 style="margin: 0; color: #2d3748; font-size: 1.1rem;">
-                            <i class="fas fa-wifi" style="color: #10b981;"></i> ESP32 连接
-                        </h3>
-                        <span id="esp32Status" style="padding: 0.5rem 1rem; background: #fbbf24; color: white; border-radius: 8px; font-size: 0.9rem; font-weight: bold;">
-                            未连接
-                        </span>
-                    </div>
-                    <div style="display: flex; gap: 1rem; align-items: center;">
-                        <input type="text" id="esp32IpInput" placeholder="ESP32 IP地址"
-                               value="10.253.68.180"
-                               style="flex: 1; padding: 0.75rem; border: 2px solid #e2e8f0; border-radius: 8px; font-size: 1rem;">
-                        <button onclick="testESP32Connection()"
-                                style="padding: 0.75rem 1.5rem; background: linear-gradient(135deg, #10b981, #059669); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer;">
-                            <i class="fas fa-plug"></i> 测试连接
-                        </button>
-                    </div>
-                    <p style="margin-top: 0.75rem; font-size: 0.85rem; color: #718096;">
-                        💡 请确保浏览器与ESP32在同一局域网
-                    </p>
-                </div>
-            </div>
-
             <!-- Virtual Leg Demonstration -->
             <div class="leg-demo-container">
                 <div class="demo-card">
@@ -1000,14 +974,8 @@
     </main>
 
     <script>
-        // ESP32 Configuration - 直接连接到局域网ESP32
-        const ESP32_CONFIG = {
-            ip: '10.253.68.180',  // 修改为你的ESP32 IP
-            port: 80,
-            get baseUrl() {
-                return `http://${this.ip}:${this.port}`;
-            }
-        };
+        // 使用Railway后端作为代理访问ESP32
+        // 后端和ESP32在同一局域网，可以直接通信
 
         // Global state for training parameters
         let trainingState = {
@@ -1033,57 +1001,10 @@
             angle: []
         };
 
-        // Test ESP32 connection
-        async function testESP32Connection() {
-            const ipInput = document.getElementById('esp32IpInput');
-            const statusEl = document.getElementById('esp32Status');
-            const newIp = ipInput.value.trim();
-
-            if (!newIp) {
-                alert('请输入ESP32 IP地址');
-                return;
-            }
-
-            // Update config
-            ESP32_CONFIG.ip = newIp;
-
-            // Show testing status
-            statusEl.style.background = '#fbbf24';
-            statusEl.textContent = '测试中...';
-
-            try {
-                console.log(`🔌 Testing connection to ${ESP32_CONFIG.baseUrl}/data`);
-                const response = await fetch(`${ESP32_CONFIG.baseUrl}/data`, {
-                    method: 'GET',
-                    mode: 'cors',
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    console.log('✅ ESP32 connected:', data);
-                    statusEl.style.background = '#10b981';
-                    statusEl.textContent = '已连接';
-                    alert(`✅ 成功连接到ESP32!\n\nIP: ${ESP32_CONFIG.ip}\n角度: ${data.angle}°\n力值: ${data.force}N`);
-                } else {
-                    throw new Error(`HTTP ${response.status}`);
-                }
-            } catch (error) {
-                console.error('❌ ESP32 connection failed:', error);
-                statusEl.style.background = '#ef4444';
-                statusEl.textContent = '连接失败';
-                alert(`❌ 连接失败\n\n错误: ${error.message}\n\n请检查：\n1. ESP32是否开启\n2. IP地址是否正确\n3. 是否在同一局域网\n4. ESP32是否配置了CORS`);
-            }
-        }
-
         // Initialize page
         document.addEventListener('DOMContentLoaded', function() {
             initializeCharts();
             updateLegAnimation(); // Initialize leg animation
-            // Auto test connection on load
-            setTimeout(testESP32Connection, 1000);
         });
 
         // Select training mode and send command to sensor
@@ -1200,15 +1121,14 @@
             console.log('🦵 Leg animation updated to mode:', trainingState.mode);
         }
 
-        // Send command to sensor via WiFi - 直接连接ESP32
+        // Send command to sensor via WiFi - 通过Railway后端代理
         function sendCommandToSensor(command) {
             // Convert command to lowercase for ESP32 leg.ino compatibility
             const lowerCommand = command.toLowerCase();
-            console.log('📡 Sending command to ESP32 directly:', lowerCommand);
-            console.log(`📍 Target: ${ESP32_CONFIG.baseUrl}/command`);
+            console.log('📡 Sending command via backend:', lowerCommand);
 
-            // 直接发送命令到ESP32，不通过后端
-            fetch(`${ESP32_CONFIG.baseUrl}/command`, {
+            // 通过Railway后端发送到ESP32（后端和ESP32在同一局域网）
+            fetch('/api/sensor/command', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1219,31 +1139,15 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('✅ Command sent to ESP32 successfully:', data);
-                // 可选：同时通知后端记录命令
-                logCommandToBackend(lowerCommand);
+                if (data.success) {
+                    console.log('✅ Command sent successfully:', data);
+                } else {
+                    console.error('❌ Command failed:', data.message);
+                }
             })
             .catch(error => {
-                console.error('❌ Error sending command to ESP32:', error);
-                console.error('⚠️ 请确保：');
-                console.error('   1. 已连接到ESP32所在局域网');
-                console.error(`   2. ESP32 IP地址正确: ${ESP32_CONFIG.ip}`);
-                console.error('   3. ESP32已开启并运行');
+                console.error('❌ Error sending command:', error);
             });
-        }
-
-        // 可选：将命令记录到后端数据库
-        function logCommandToBackend(command) {
-            fetch('/api/sensor/command/log', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    command: command,
-                    timestamp: new Date().toISOString()
-                })
-            }).catch(err => console.log('Command logging failed (non-critical):', err));
         }
 
         // Initialize charts
@@ -1496,10 +1400,9 @@
             alert('Training will stop in 5 seconds!');
         }
 
-        // Start WiFi sensor data polling - 直接从ESP32读取
+        // Start WiFi sensor data polling - 通过Railway后端获取
         function startWiFiSensorPolling() {
-            console.log('📡 Starting WiFi sensor data polling from ESP32...');
-            console.log(`📍 Polling from: ${ESP32_CONFIG.baseUrl}/data`);
+            console.log('📡 Starting WiFi sensor data polling via backend...');
 
             // Poll sensor data every 200ms (5 Hz)
             window.sensorPollingInterval = setInterval(async () => {
@@ -1509,40 +1412,20 @@
                 }
 
                 try {
-                    // 直接从ESP32获取数据
-                    const response = await fetch(`${ESP32_CONFIG.baseUrl}/data`);
+                    // 通过Railway后端获取ESP32数据
+                    const response = await fetch('/api/sensor/data');
                     const result = await response.json();
 
-                    // ESP32返回格式: {angle: xxx, yaw: xxx, force: xxx}
-                    if (result.angle !== undefined || result.force !== undefined) {
-                        const sensorData = {
-                            force: result.force || 0,
-                            angle: result.angle || 0,
-                            yaw: result.yaw || 0,
-                            timestamp: Date.now()
-                        };
-                        receiveSensorData(sensorData);
-
-                        // 可选：同时发送到后端保存
-                        saveSensorDataToBackend(sensorData);
+                    if (result.success && result.data) {
+                        // Receive and process sensor data
+                        receiveSensorData(result.data);
                     } else {
-                        console.warn('⚠️ No sensor data available from ESP32');
+                        console.warn('⚠️ No sensor data available');
                     }
                 } catch (error) {
-                    console.error('❌ Error fetching data from ESP32:', error);
+                    console.error('❌ Error fetching sensor data:', error);
                 }
             }, 200); // Update every 200ms
-        }
-
-        // 可选：将传感器数据保存到后端数据库
-        function saveSensorDataToBackend(data) {
-            fetch('/api/sensor/data/save', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-            }).catch(err => console.log('Data save failed (non-critical):', err));
         }
 
     </script>
