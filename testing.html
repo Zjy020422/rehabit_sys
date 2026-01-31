@@ -1412,7 +1412,7 @@
             console.log('📡 Sending command to sensor:', lowerCommand);
 
             // Send command to Flask backend API, which forwards to ESP32
-            fetch('http://localhost:5000/api/sensor/command', {
+            fetch('/api/sensor/command', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

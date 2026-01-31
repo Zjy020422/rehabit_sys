@@ -4,9 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rehabilitation Training - Regenix</title>
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="assets/css/components.css">
-    <link rel="stylesheet" href="assets/css/responsive.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
@@ -1066,6 +1063,7 @@
             const currentModeDisplay = document.getElementById('currentModeDisplay');
             const speedInfo = document.getElementById('speedInfo');
             const amplitudeInfo = document.getElementById('amplitudeInfo');
+            const demoSubtitle = document.querySelector('.demo-subtitle');
 
             if (!lowerLeg) return;
 
@@ -1099,15 +1097,23 @@
                 'B12': 'Large (±30°)'
             };
 
-            // Update mode display
-            currentModeDisplay.textContent = trainingState.mode;
-            document.querySelector('.demo-subtitle').innerHTML = `Current Mode: <strong>${trainingState.mode}</strong> - ${modeDescriptions[trainingState.mode]}`;
+            // Update mode display (with null checks)
+            if (currentModeDisplay) {
+                currentModeDisplay.textContent = trainingState.mode;
+            }
+            if (demoSubtitle) {
+                demoSubtitle.innerHTML = `Current Mode: <strong>${trainingState.mode}</strong> - ${modeDescriptions[trainingState.mode]}`;
+            }
 
             // Update speed info
-            speedInfo.textContent = speedDescriptions[trainingState.mode];
+            if (speedInfo) {
+                speedInfo.textContent = speedDescriptions[trainingState.mode];
+            }
 
             // Update amplitude info
-            amplitudeInfo.textContent = amplitudeDescriptions[trainingState.mode];
+            if (amplitudeInfo) {
+                amplitudeInfo.textContent = amplitudeDescriptions[trainingState.mode];
+            }
 
             console.log('🦵 Leg animation updated to mode:', trainingState.mode);
         }
@@ -1119,7 +1125,7 @@
             console.log('📡 Sending command to sensor:', lowerCommand);
 
             // Send command to Flask backend API, which forwards to ESP32
-            fetch('http://localhost:5000/api/sensor/command', {
+            fetch('/api/sensor/command', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1404,7 +1410,7 @@
 
                 try {
                     // Fetch data from Flask backend API
-                    const response = await fetch('http://localhost:5000/api/sensor/data');
+                    const response = await fetch('/api/sensor/data');
                     const result = await response.json();
 
                     if (result.success && result.data) {
