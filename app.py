@@ -35,33 +35,36 @@ def init_components():
     global data_handler, analyzer, advisor
 
     try:
-        # Initialize enhanced data handler with WiFi (ESP32 leg.ino)
-        # Only try to connect to sensor if not in production (Railway)
-        if os.environ.get('RAILWAY_ENVIRONMENT') != 'production':
-            print("\n[INFO] 正在连接到ESP32传感器...")
+        # Get sensor configuration from environment variables
+        # For production (Railway), set ESP32_SENSOR_URL to your ngrok URL
+        # Example: ESP32_SENSOR_URL=https://abc123.ngrok.io
+        sensor_url = os.environ.get('ESP32_SENSOR_URL')
+        sensor_ip = os.environ.get('ESP32_SENSOR_IP', '10.253.68.180')
+        sensor_port = int(os.environ.get('ESP32_SENSOR_PORT', '80'))
+
+        print("\n[INFO] 正在连接到ESP32传感器...")
+
+        if sensor_url:
+            # Production mode: use ngrok URL
+            print(f"[INFO] 使用公网地址: {sensor_url}")
+            data_handler = EnhancedSensorDataHandler(
+                sensor_url=sensor_url
+            )
+        else:
+            # Local mode: use local IP
+            print(f"[INFO] 使用本地IP: {sensor_ip}:{sensor_port}")
             print("[INFO] 请确保已连接到 'ESP32_Server' WiFi热点")
             data_handler = EnhancedSensorDataHandler(
-                sensor_ip='10.253.68.180',
-                sensor_port=80
+                sensor_ip=sensor_ip,
+                sensor_port=sensor_port
             )
-            data_handler.connect_wifi()
-        else:
-            print("\n[INFO] Running in production mode - sensor connection skipped")
-            # Create a dummy handler for production
-            data_handler = EnhancedSensorDataHandler(
-                sensor_ip='10.253.68.180',
-                sensor_port=80
-            )
+
+        data_handler.connect_wifi()
+        print(f"✅ ESP32传感器连接成功")
     except Exception as e:
-        print(f"⚠️ Sensor initialization failed (this is OK for web-only deployment): {e}")
-        # Create a dummy handler
-        try:
-            data_handler = EnhancedSensorDataHandler(
-                sensor_ip='10.253.68.180',
-                sensor_port=80
-            )
-        except:
-            data_handler = None
+        print(f"⚠️ Sensor initialization failed: {e}")
+        print(f"⚠️ 继续运行，但传感器功能将不可用")
+        data_handler = None
 
     # Initialize enhanced analyzer
     try:

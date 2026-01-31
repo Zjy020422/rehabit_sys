@@ -25,7 +25,7 @@ class EnhancedSensorDataHandler:
     MODE_FORCE = 2
     MODE_ALL = 3
 
-    def __init__(self, db_path='rehabtech_pro.db', sensor_ip='192.168.4.1', sensor_port=80):
+    def __init__(self, db_path='rehabtech_pro.db', sensor_ip='192.168.4.1', sensor_port=80, sensor_url=None):
         """
         初始化WiFi传感器处理器
 
@@ -33,21 +33,30 @@ class EnhancedSensorDataHandler:
             db_path: 数据库路径
             sensor_ip: 传感器WiFi IP地址（ESP32 AP模式，连接到ESP32_Server后获取的IP）
             sensor_port: 传感器HTTP端口（默认80）
+            sensor_url: 传感器完整URL（如ngrok地址，优先级高于sensor_ip）
         """
         self.db_path = db_path
-        self.sensor_ip = sensor_ip
-        self.sensor_port = sensor_port
-        self.sensor_url_base = f"http://{sensor_ip}:{sensor_port}"
+
+        # 如果提供了完整URL（如ngrok），使用URL；否则使用IP和端口
+        if sensor_url:
+            self.sensor_url_base = sensor_url.rstrip('/')
+            self.sensor_ip = sensor_url  # 用于显示
+            self.sensor_port = None
+            print(f"[INFO] 使用公网URL: {sensor_url}")
+        else:
+            self.sensor_ip = sensor_ip
+            self.sensor_port = sensor_port
+            self.sensor_url_base = f"http://{sensor_ip}:{sensor_port}"
+            print("[INFO] ESP32 WiFi配置:")
+            print("       SSID: ESP32_Server")
+            print("       密码: 12345678")
+            print(f"       IP: {sensor_ip}:{sensor_port}")
+
         self.is_connected = False
         self.is_running = False
         self.current_mode = self.MODE_ALL  # 默认模式3
-        self.timeout = 5  # HTTP请求超时时间（秒）
+        self.timeout = 10  # HTTP请求超时时间（秒），ngrok可能需要更长时间
         self.init_database()
-
-        print("[INFO] ESP32 WiFi配置:")
-        print("       SSID: ESP32_Server")
-        print("       密码: 12345678")
-        print("       请先连接到ESP32的WiFi热点，然后使用ESP32的IP地址")
 
     def init_database(self):
         """Initialize enhanced database schema"""
