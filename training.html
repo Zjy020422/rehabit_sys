@@ -892,11 +892,11 @@
             <div class="training-control-panel" style="margin-top: 3rem;">
                 <div class="training-card">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                        <button class="start-test-btn" onclick="endTraining()" style="background: linear-gradient(135deg, #f56565, #c53030);">
-                            <i class="fas fa-stop-circle"></i> stop training
+                        <button class="start-test-btn" onclick="stopTraining()" style="background: linear-gradient(135deg, #f56565, #c53030);">
+                            <i class="fas fa-stop-circle"></i> Stop Training
                         </button>
                         <button class="start-test-btn" onclick="goToTesting()" style="background: linear-gradient(135deg, #10b981, #059669);">
-                            <i class="fas fa-flask"></i> start training
+                            <i class="fas fa-flask"></i> Start Testing
                         </button>
                     </div>
                 </div>
@@ -1362,6 +1362,9 @@
 
         // Stop training
         function stopTraining() {
+            // Send B12 command to ESP32 to stop the motor (5 seconds stop mode)
+            sendCommandToSensor('B12');
+
             sessionState.isTraining = false;
 
             // Clear interval
@@ -1376,13 +1379,17 @@
                 window.sensorPollingInterval = null;
             }
 
-            // Reset button
-            const button = document.querySelector('.start-test-btn');
-            button.innerHTML = '<i class="fas fa-play-circle"></i> Start Training';
-            button.disabled = false;
+            // Hide training data section
+            const trainingDataSection = document.getElementById('trainingData');
+            if (trainingDataSection) {
+                trainingDataSection.style.display = 'none';
+            }
 
-            console.log('📡 WiFi training stopped');
+            console.log('📡 WiFi training stopped - B12 command sent to ESP32 (will stop in 5 seconds)');
             console.log('Total data points:', sessionState.dataPoints);
+
+            // Show notification
+            alert('Training will stop in 5 seconds!');
         }
 
         // Start WiFi sensor data polling
