@@ -656,20 +656,28 @@ def start_test():
     try:
         user_id = request.current_user_id
         data = request.json
-        
+
         test_type = data.get('test_type')
         duration = int(data.get('duration', 60))
         interval = float(data.get('data_interval', 0.1))
-        
+
+        logging.info(f"Start test request - user: {user_id}, test_type: {test_type}, duration: {duration}s")
+
         if not test_type:
+            logging.error("No test_type provided")
             return jsonify({'error': 'Test type is required'}), 400
-        
+
         # Create training session
+        if not data_handler:
+            logging.error("data_handler is None")
+            return jsonify({'error': 'Data handler not initialized'}), 500
+
         session_id = data_handler.create_training_session(
             user_id=user_id,
             test_types=[test_type]
         )
-        
+        logging.info(f"Training session created: {session_id}")
+
         # Store session info
         current_sessions[session_id] = {
             'session_id': session_id,
@@ -681,7 +689,8 @@ def start_test():
             'data_count': 0,
             'is_collecting': True
         }
-        
+        logging.info(f"Session stored in current_sessions: {session_id}")
+
         # Start background data collection
         collection_thread = threading.Thread(
             target=collect_data_background,
@@ -689,14 +698,16 @@ def start_test():
         )
         collection_thread.daemon = True
         collection_thread.start()
-        
+        logging.info(f"Background data collection started for session: {session_id}")
+
         return jsonify({
             'success': True,
             'session_id': session_id,
             'message': 'Test started successfully'
         })
-        
+
     except Exception as e:
+        logging.error(f"Error in start_test: {e}", exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/testing/stop', methods=['POST'])
@@ -707,28 +718,49 @@ def stop_test():
         user_id = request.current_user_id
         data = request.json
         session_id = data.get('session_id')
-        
-        if not session_id or session_id not in current_sessions:
-            return jsonify({'error': 'Invalid session'}), 400
-        
+
+        logging.info(f"Stop test request - user: {user_id}, session: {session_id}")
+        logging.info(f"Current sessions: {list(current_sessions.keys())}")
+
+        if not session_id:
+            logging.error("No session_id provided")
+            return jsonify({'error': 'Session ID is required'}), 400
+
+        if session_id not in current_sessions:
+            logging.error(f"Session {session_id} not found in current_sessions")
+            return jsonify({'error': f'Invalid session: {session_id} not found'}), 400
+
         # Stop data collection
         current_sessions[session_id]['is_collecting'] = False
-        
+        logging.info(f"Data collection stopped for session {session_id}")
+
         # End training session
+        if not data_handler:
+            logging.error("data_handler is None")
+            return jsonify({'error': 'Data handler not initialized'}), 500
         data_handler.end_training_session(session_id)
-        
+        logging.info(f"Training session ended: {session_id}")
+
         # Perform analysis
+        if not analyzer:
+            logging.error("analyzer is None")
+            return jsonify({'error': 'Analyzer not initialized'}), 500
         analysis_results = analyzer.comprehensive_analysis(session_id)
-        
+        logging.info(f"Analysis completed for session {session_id}")
+
         # Get user profile for AI recommendations
         user_profile = get_user_profile_for_ai(user_id)
-        
+
         # Generate AI recommendations
+        if not advisor:
+            logging.error("advisor is None")
+            return jsonify({'error': 'Advisor not initialized'}), 500
         recommendations = advisor.generate_recommendations(analysis_results, user_profile)
-        
+        logging.info(f"Recommendations generated for session {session_id}")
+
         # Clean up session
         session_data = current_sessions.pop(session_id)
-        
+
         return jsonify({
             'success': True,
             'session_data': session_data,
@@ -736,8 +768,9 @@ def stop_test():
             'recommendations': recommendations,
             'message': 'Test completed successfully'
         })
-        
+
     except Exception as e:
+        logging.error(f"Error in stop_test: {e}", exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 @app.route('/api/testing/realtime/<session_id>', methods=['GET'])
@@ -746,28 +779,30 @@ def get_realtime_data(session_id):
     """Get real-time test data"""
     try:
         if session_id not in current_sessions:
+            logging.warning(f"Session {session_id} not found in current_sessions")
+            logging.info(f"Available sessions: {list(current_sessions.keys())}")
             return jsonify({'error': 'Session not found'}), 404
-        
+
         conn = sqlite3.connect("rehabtech_pro.db")
         cursor = conn.cursor()
-        
+
         cursor.execute('''
-            SELECT timestamp, force_value, angle_value 
-            FROM sensor_data 
-            WHERE session_id = ? 
-            ORDER BY timestamp DESC 
+            SELECT timestamp, force_value, angle_value
+            FROM sensor_data
+            WHERE session_id = ?
+            ORDER BY timestamp DESC
             LIMIT 1
         ''', (session_id,))
-        
+
         result = cursor.fetchone()
-        
+
         cursor.execute('''
             SELECT COUNT(*) FROM sensor_data WHERE session_id = ?
         ''', (session_id,))
-        
+
         data_count = cursor.fetchone()[0]
         conn.close()
-        
+
         if result:
             return jsonify({
                 'success': True,
@@ -780,6 +815,7 @@ def get_realtime_data(session_id):
                 }
             })
         else:
+            logging.debug(f"No sensor data yet for session {session_id}, count: {data_count}")
             return jsonify({
                 'success': True,
                 'data': {
@@ -788,8 +824,9 @@ def get_realtime_data(session_id):
                     'session_id': session_id
                 }
             })
-            
+
     except Exception as e:
+        logging.error(f"Error in get_realtime_data for session {session_id}: {e}", exc_info=True)
         return jsonify({'error': str(e)}), 500
 
 # =============================================================================
