@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Rehabilitation Training - Regenix</title>
+    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
     <style>
@@ -736,7 +739,8 @@
             }
         }
     </style>
-</head><body>
+</head>
+<body>
     <header class="header">
         <nav class="navbar">
             <div class="nav-container">
@@ -871,12 +875,12 @@
                             </button>
                             <button class="mode-btn" data-mode="A12" onclick="selectTrainingMode('A12', this)">
                                 <i class="fas fa-shield-alt"></i>
-                                <span>Resistive Training</span>
+                                <span>Protective Training</span>
                                 <small>Assisted & protected</small>
                             </button>
                             <button class="mode-btn" data-mode="B11" onclick="selectTrainingMode('B11', this)">
                                 <i class="fas fa-dumbbell"></i>
-                                <span>Protective Training</span>
+                                <span>Resistive Training</span>
                                 <small>With resistance</small>
                             </button>
                         </div>
@@ -888,11 +892,11 @@
             <div class="training-control-panel" style="margin-top: 3rem;">
                 <div class="training-card">
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-                        <button class="start-test-btn" onclick="stopTraining()" style="background: linear-gradient(135deg, #f56565, #c53030);">
-                            <i class="fas fa-stop-circle"></i> Stop Training
+                        <button class="start-test-btn" onclick="endTraining()" style="background: linear-gradient(135deg, #f56565, #c53030);">
+                            <i class="fas fa-stop-circle"></i> stop training
                         </button>
                         <button class="start-test-btn" onclick="goToTesting()" style="background: linear-gradient(135deg, #10b981, #059669);">
-                            <i class="fas fa-flask"></i> Start Testing
+                            <i class="fas fa-flask"></i> start training
                         </button>
                     </div>
                 </div>
@@ -974,9 +978,6 @@
     </main>
 
     <script>
-        // 使用Railway后端作为代理访问ESP32
-        // 后端和ESP32在同一局域网，可以直接通信
-
         // Global state for training parameters
         let trainingState = {
             mode: 'A11'  // A11, A12, B11, B12
@@ -1066,7 +1067,6 @@
             const currentModeDisplay = document.getElementById('currentModeDisplay');
             const speedInfo = document.getElementById('speedInfo');
             const amplitudeInfo = document.getElementById('amplitudeInfo');
-            const demoSubtitle = document.querySelector('.demo-subtitle');
 
             if (!lowerLeg) return;
 
@@ -1100,35 +1100,27 @@
                 'B12': 'Large (±30°)'
             };
 
-            // Update mode display (with null checks)
-            if (currentModeDisplay) {
-                currentModeDisplay.textContent = trainingState.mode;
-            }
-            if (demoSubtitle) {
-                demoSubtitle.innerHTML = `Current Mode: <strong>${trainingState.mode}</strong> - ${modeDescriptions[trainingState.mode]}`;
-            }
+            // Update mode display
+            currentModeDisplay.textContent = trainingState.mode;
+            document.querySelector('.demo-subtitle').innerHTML = `Current Mode: <strong>${trainingState.mode}</strong> - ${modeDescriptions[trainingState.mode]}`;
 
             // Update speed info
-            if (speedInfo) {
-                speedInfo.textContent = speedDescriptions[trainingState.mode];
-            }
+            speedInfo.textContent = speedDescriptions[trainingState.mode];
 
             // Update amplitude info
-            if (amplitudeInfo) {
-                amplitudeInfo.textContent = amplitudeDescriptions[trainingState.mode];
-            }
+            amplitudeInfo.textContent = amplitudeDescriptions[trainingState.mode];
 
             console.log('🦵 Leg animation updated to mode:', trainingState.mode);
         }
 
-        // Send command to sensor via WiFi - 通过Railway后端代理
+        // Send command to sensor via WiFi
         function sendCommandToSensor(command) {
             // Convert command to lowercase for ESP32 leg.ino compatibility
             const lowerCommand = command.toLowerCase();
-            console.log('📡 Sending command via backend:', lowerCommand);
+            console.log('📡 Sending command to sensor:', lowerCommand);
 
-            // 通过Railway后端发送到ESP32（后端和ESP32在同一局域网）
-            fetch('/api/sensor/command', {
+            // Send command to Flask backend API, which forwards to ESP32
+            fetch('http://localhost:5000/api/sensor/command', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1146,7 +1138,7 @@
                 }
             })
             .catch(error => {
-                console.error('❌ Error sending command:', error);
+                console.error('❌ Error sending command to sensor:', error);
             });
         }
 
@@ -1370,9 +1362,6 @@
 
         // Stop training
         function stopTraining() {
-            // Send B12 command to ESP32 to stop the motor (5 seconds stop mode)
-            sendCommandToSensor('B12');
-
             sessionState.isTraining = false;
 
             // Clear interval
@@ -1387,22 +1376,18 @@
                 window.sensorPollingInterval = null;
             }
 
-            // Hide training data section
-            const trainingDataSection = document.getElementById('trainingData');
-            if (trainingDataSection) {
-                trainingDataSection.style.display = 'none';
-            }
+            // Reset button
+            const button = document.querySelector('.start-test-btn');
+            button.innerHTML = '<i class="fas fa-play-circle"></i> Start Training';
+            button.disabled = false;
 
-            console.log('📡 WiFi training stopped - B12 command sent to ESP32 (will stop in 5 seconds)');
+            console.log('📡 WiFi training stopped');
             console.log('Total data points:', sessionState.dataPoints);
-
-            // Show notification
-            alert('Training will stop in 5 seconds!');
         }
 
-        // Start WiFi sensor data polling - 通过Railway后端获取
+        // Start WiFi sensor data polling
         function startWiFiSensorPolling() {
-            console.log('📡 Starting WiFi sensor data polling via backend...');
+            console.log('📡 Starting WiFi sensor data polling...');
 
             // Poll sensor data every 200ms (5 Hz)
             window.sensorPollingInterval = setInterval(async () => {
@@ -1412,8 +1397,8 @@
                 }
 
                 try {
-                    // 通过Railway后端获取ESP32数据
-                    const response = await fetch('/api/sensor/data');
+                    // Fetch data from Flask backend API
+                    const response = await fetch('http://localhost:5000/api/sensor/data');
                     const result = await response.json();
 
                     if (result.success && result.data) {
@@ -1423,7 +1408,7 @@
                         console.warn('⚠️ No sensor data available');
                     }
                 } catch (error) {
-                    console.error('❌ Error fetching sensor data:', error);
+                    console.error('❌ Error fetching WiFi sensor data:', error);
                 }
             }, 200); // Update every 200ms
         }

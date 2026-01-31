@@ -837,9 +837,6 @@
         let currentSession = null;
         let testTimer = null;
         let dataUpdateInterval = null;
-        // 使用Railway后端作为代理访问ESP32
-        // 后端和ESP32在同一局域网，可以直接通信
-
         let testStartTime = null;
         let testData = [];
         let isTestRunning = false;
@@ -1087,15 +1084,13 @@
             }, 100);
         }
 
-        // Start data collection - 通过Railway后端获取真实数据
+        // Start data collection
         function startDataCollection() {
-            console.log('📡 Starting real-time data collection via backend...');
-
             dataUpdateInterval = setInterval(async () => {
                 if (isPaused || !isTestRunning) return;
 
                 try {
-                    // 通过Railway后端获取ESP32数据
+                    // Get real-time data from backend
                     const response = await fetch(`/api/testing/realtime/${currentSession.sessionId}`, {
                         headers: {
                             'Authorization': `Bearer ${currentUser.token}`
@@ -1106,7 +1101,7 @@
                         const data = await response.json();
                         if (data.success && data.data) {
                             updateRealtimeDisplay(data.data);
-
+                            
                             // Store data locally
                             if (data.data.force_value !== undefined || data.data.angle_value !== undefined) {
                                 testData.push({
@@ -1119,7 +1114,11 @@
                         }
                     }
                 } catch (error) {
-                    console.error('❌ Data collection error:', error);
+                    console.error('Data collection error:', error);
+                    // Generate simulated data for demo
+                    const simulatedData = generateSimulatedData();
+                    updateRealtimeDisplay(simulatedData);
+                    testData.push(simulatedData);
                 }
             }, 500); // Update every 500ms
         }
@@ -1406,14 +1405,14 @@
             window.print();
         }
 
-        // Send command to sensor via WiFi - 通过Railway后端代理
+        // Send command to sensor via WiFi
         function sendCommandToSensor(command) {
             // Convert command to lowercase for ESP32 leg.ino compatibility
             const lowerCommand = command.toLowerCase();
-            console.log('📡 Sending command via backend:', lowerCommand);
+            console.log('📡 Sending command to sensor:', lowerCommand);
 
-            // 通过Railway后端发送到ESP32
-            fetch('/api/sensor/command', {
+            // Send command to Flask backend API, which forwards to ESP32
+            fetch('http://localhost:5000/api/sensor/command', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -1431,7 +1430,7 @@
                 }
             })
             .catch(error => {
-                console.error('❌ Error sending command:', error);
+                console.error('❌ Error sending command to sensor:', error);
             });
         }
 
